@@ -1,13 +1,13 @@
-package com.github.avimoto.moodledev
+package il.co.sysbind.intellij.moodledev
 
 import com.intellij.AbstractBundle
 import org.jetbrains.annotations.NonNls
 import org.jetbrains.annotations.PropertyKey
 
 @NonNls
-private const val BUNDLE = "messages.MyBundle"
+private const val BUNDLE = "messages.MoodleBundle"
 
-object MyBundle : AbstractBundle(BUNDLE) {
+object MoodleBundle : AbstractBundle(BUNDLE) {
 
     @Suppress("SpreadOperator")
     @JvmStatic
