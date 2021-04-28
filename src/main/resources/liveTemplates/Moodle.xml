@@ -1,0 +1,12 @@
+<templateSet group="Moodle">
+  <template name="ADMIN" value="/** @var admin_root $ADMIN */" description="Define global ADMIN in moodle" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="PHP" value="true" />
+    </context>
+  </template>
+  <template name="defm" value="defined('MOODLE_INTERNAL') || die();" description="Use for moodle file that should not be accesed from browser" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="PHP" value="true" />
+    </context>
+  </template>
+</templateSet>

@@ -2,23 +2,29 @@
     <id>il.co.sysbind.intellij.moodledev</id>
     <name>moodle-dev</name>
     <vendor email="support@sysbind.co.il" url="https://sysbin.co.il">SysBind</vendor>
+    <description><![CDATA[
+  <p>This plugin will help Moodle Developers to work quickly and according to Moodle requirements</p>
+  <p>To configure/use the Moodle Code Styles, go to Preferences > Editor > Code Style > PHP/JavaScript/Less/SCSS/XML, and then select "Set from..." and select "Moodle".</p>
+  <p>Source is available at <a href="https://github.com:SysBind/moodle-dev">GitHub</a>, pull requests and issues welcome.</p>
+  ]]>
+    </description>
 
     <!-- Product and plugin compatibility requirements -->
     <!-- https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html -->
     <depends>com.jetbrains.php</depends>
+    <depends>com.dmarcotte.handlebars</depends>
     <depends>com.intellij.modules.platform</depends>
-
-<!--    <extensions defaultExtensionNs="com.jetbrains.php">-->
-
-<!--    </extensions>-->
 
     <extensions defaultExtensionNs="com.intellij">
         <projectService serviceImplementation="il.co.sysbind.intellij.moodledev.project.MoodleProjectSettings"/>
+        <defaultLiveTemplates file="/liveTemplates/Moodle.xml"/>
+        <predefinedCodeStyle implementation="il.co.sysbind.intellij.moodledev.codeStyle.MoodlePhpPredefinedCodeStyle"/>
     </extensions>
     <extensions defaultExtensionNs="com.jetbrains.php">
         <frameworkProjectConfigurableProvider
                 implementation="il.co.sysbind.intellij.moodledev.project.MoodleConfigurableProvider"/>
         <frameworkUsageProvider implementation="il.co.sysbind.intellij.moodledev.project.MoodleUsageProvider"/>
+        <libraryRoot id="phpstorm.meta.php" path="/.phpstorm.meta.php/" runtime="false"/>
     </extensions>
     <projectListeners>
         <listener class="il.co.sysbind.intellij.moodledev.listeners.MoodleManagerListener"
