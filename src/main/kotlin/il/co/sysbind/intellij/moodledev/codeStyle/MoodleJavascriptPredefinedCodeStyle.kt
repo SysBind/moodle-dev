@@ -9,7 +9,7 @@ import com.intellij.psi.codeStyle.PredefinedCodeStyle
 class MoodleJavascriptPredefinedCodeStyle : PredefinedCodeStyle("Moodle", JavascriptLanguage.INSTANCE) {
     override fun apply(settings: CodeStyleSettings, language: Language) {
         val commonSettings = settings.getCommonSettings(language)
-        commonSettings.RIGHT_MARGIN = 180
+        180.also { commonSettings.RIGHT_MARGIN = it }
 
         val customSettings = settings.getCustomSettings(JSCodeStyleSettings::class.java)
         customSettings.SPACES_WITHIN_IMPORTS = true

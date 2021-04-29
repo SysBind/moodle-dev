@@ -10,7 +10,7 @@ import com.jetbrains.php.lang.formatter.PhpCodeStyleSettings
 class MoodlePhpPredefinedCodeStyle : PredefinedCodeStyle("Moodle", PhpLanguage.INSTANCE) {
     override fun apply(settings: CodeStyleSettings, language: Language) {
         val commonSettings: CommonCodeStyleSettings = settings.getCommonSettings(language)
-        commonSettings.RIGHT_MARGIN = 132
+        132.also { commonSettings.RIGHT_MARGIN = it }
         commonSettings.LINE_COMMENT_AT_FIRST_COLUMN = false
         commonSettings.KEEP_FIRST_COLUMN_COMMENT = false
         commonSettings.KEEP_BLANK_LINES_IN_DECLARATIONS = 1
@@ -32,10 +32,10 @@ class MoodlePhpPredefinedCodeStyle : PredefinedCodeStyle("Moodle", PhpLanguage.I
         commonSettings.FOR_STATEMENT_WRAP = 1
         commonSettings.ARRAY_INITIALIZER_WRAP = 1
         commonSettings.ASSIGNMENT_WRAP = 1
-        commonSettings.IF_BRACE_FORCE = 3
-        commonSettings.DOWHILE_BRACE_FORCE = 3
-        commonSettings.WHILE_BRACE_FORCE = 3
-        commonSettings.FOR_BRACE_FORCE = 3
+        3.also { commonSettings.IF_BRACE_FORCE = it }
+        3.also { commonSettings.DOWHILE_BRACE_FORCE = it }
+        3.also { commonSettings.WHILE_BRACE_FORCE = it }
+        3.also { commonSettings.FOR_BRACE_FORCE = it }
 
         val phpSettings: PhpCodeStyleSettings = settings.getCustomSettings(PhpCodeStyleSettings::class.java)
         phpSettings.PHPDOC_BLANK_LINE_BEFORE_TAGS = true

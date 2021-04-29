@@ -14,6 +14,6 @@ class MoodleLessPredefinedCodeStyle : PredefinedCodeStyle("Moodle", LESSLanguage
         customSettings.HEX_COLOR_SHORT_FORMAT = true
 
         val indentSettings = settings.getIndentOptions(LESSFileType.LESS)
-        indentSettings.INDENT_SIZE = 4
+        4.also { indentSettings.INDENT_SIZE = it }
     }
 }
