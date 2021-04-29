@@ -7,7 +7,6 @@ import com.intellij.psi.codeStyle.PredefinedCodeStyle
 import com.jetbrains.php.lang.PhpLanguage
 import com.jetbrains.php.lang.formatter.PhpCodeStyleSettings
 
-
 class MoodlePhpPredefinedCodeStyle : PredefinedCodeStyle("Moodle", PhpLanguage.INSTANCE) {
     override fun apply(settings: CodeStyleSettings, language: Language) {
         val commonSettings: CommonCodeStyleSettings = settings.getCommonSettings(language)

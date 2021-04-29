@@ -17,12 +17,15 @@ import com.jetbrains.php.frameworks.PhpFrameworkConfigurable
 import il.co.sysbind.intellij.moodledev.MoodleBundle
 import javax.swing.JComponent
 
-class MoodleSettingsForm(val project: Project): PhpFrameworkConfigurable {
+class MoodleSettingsForm(private val project: Project) : PhpFrameworkConfigurable {
     private val settings = project.getService(MoodleProjectSettings::class.java).settings
-    @Suppress("DialogTitleCapitalization")
-    private val pluginEnabled: JBCheckBox = JBCheckBox(MoodleBundle.getMessage("configurable.enabled"), settings?.pluginEnabled == true)
-    private val moodlePath: TextFieldWithBrowseButton = TextFieldWithBrowseButton()
 
+    @Suppress("DialogTitleCapitalization")
+    private val pluginEnabled: JBCheckBox = JBCheckBox(
+        MoodleBundle.getMessage("configurable.enabled"),
+        settings?.pluginEnabled == true
+    )
+    private val moodlePath: TextFieldWithBrowseButton = TextFieldWithBrowseButton()
 
     override fun createComponent(): JComponent? {
         return panel {
@@ -62,14 +65,23 @@ class MoodleSettingsForm(val project: Project): PhpFrameworkConfigurable {
     }
 
     fun importCodeStyleScheme() {
-        var codeStyleSchemeFile = ResourceFileUtil.findResourceFileInScope("codeScheme/Moodle.xml", project, GlobalSearchScope.allScope(project))
+        var codeStyleSchemeFile = ResourceFileUtil.findResourceFileInScope(
+            "codeScheme/Moodle.xml",
+            project, GlobalSearchScope.allScope(project)
+        )
         var importer = CodeStyleSchemeXmlImporter()
         CodeStyleSchemeImpl(MoodleBundle.getMessage("codeScheme.name"), false, null)
         val schemeCreator = SchemeCreator(project)
         if (codeStyleSchemeFile is VirtualFile) {
-            importer.importScheme(project, codeStyleSchemeFile, schemeCreator.createNewScheme(MoodleBundle.getMessage("codeScheme.name")), schemeCreator)
+            importer.importScheme(
+                project,
+                codeStyleSchemeFile,
+                schemeCreator.createNewScheme(MoodleBundle.getMessage("codeScheme.name")),
+                schemeCreator
+            )
         }
     }
+
     private class SchemeCreator(p0: Project) : SchemeFactory<CodeStyleScheme?> {
         var project = p0
         var isSchemeWasCreated = false
@@ -84,5 +96,4 @@ class MoodleSettingsForm(val project: Project): PhpFrameworkConfigurable {
             return newScheme
         }
     }
-
 }
