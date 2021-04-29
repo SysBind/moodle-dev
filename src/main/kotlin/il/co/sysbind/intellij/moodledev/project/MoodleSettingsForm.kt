@@ -29,9 +29,9 @@ class MoodleSettingsForm(val project: Project): PhpFrameworkConfigurable {
             row {
                 pluginEnabled()
             }
-            row {
-                moodlePath()
-            }
+//            row(MoodleBundle.getMessage("configurable.moodlePath")) {
+//                moodlePath()
+//            }
         }
     }
 

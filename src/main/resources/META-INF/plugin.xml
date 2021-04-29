@@ -13,12 +13,19 @@
     <!-- https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html -->
     <depends>com.jetbrains.php</depends>
     <depends>com.dmarcotte.handlebars</depends>
+    <depends>JavaScript</depends>
+    <depends>org.jetbrains.plugins.less</depends>
+    <depends>org.jetbrains.plugins.sass</depends>
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <projectService serviceImplementation="il.co.sysbind.intellij.moodledev.project.MoodleProjectSettings"/>
         <defaultLiveTemplates file="/liveTemplates/Moodle.xml"/>
         <predefinedCodeStyle implementation="il.co.sysbind.intellij.moodledev.codeStyle.MoodlePhpPredefinedCodeStyle"/>
+        <predefinedCodeStyle
+                implementation="il.co.sysbind.intellij.moodledev.codeStyle.MoodleJavascriptPredefinedCodeStyle"/>
+        <predefinedCodeStyle implementation="il.co.sysbind.intellij.moodledev.codeStyle.MoodleLessPredefinedCodeStyle"/>
+        <predefinedCodeStyle implementation="il.co.sysbind.intellij.moodledev.codeStyle.MoodleScssPredefinedCodeStyle"/>
     </extensions>
     <extensions defaultExtensionNs="com.jetbrains.php">
         <frameworkProjectConfigurableProvider
