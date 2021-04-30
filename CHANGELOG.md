@@ -1,10 +1,7 @@
-<!-- Keep a Changelog guide -> https://keepachangelog.com -->
-
 # moodle-dev Changelog
+All Moodle Dev plugin changes will be documented here
 
-## [1.1.0] - 2021-04-30
-### Added
-- Work on add file Template
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 
 ## [1.0.1] - 2021-04-30
 ### Changed
@@ -15,3 +12,9 @@
 - Add live Template for Moodle define internal or die by type defm
 - Add live Template for Moodle $ADMIN by type ADMIN
 - Add Moodle code style for predefined code styles for PHP/Javascript/SCSS/LESS 
+
+## [Unreleased]
+
+## [1.1.0] - 2021-05-01
+### Added
+- Work on add file Template
