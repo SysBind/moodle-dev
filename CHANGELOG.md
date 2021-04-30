@@ -6,6 +6,10 @@
 ### Added
 - Work on add file Template
 
+## [1.0.1] - 2021-04-30
+### Changed
+- Update the ChangeLog 
+
 ## [1.0.0] - 2021-04-30
 ### Added
 - Add live Template for Moodle define internal or die by type defm
