@@ -27,7 +27,6 @@
         <predefinedCodeStyle implementation="il.co.sysbind.intellij.moodledev.codeStyle.MoodleLessPredefinedCodeStyle"/>
         <predefinedCodeStyle implementation="il.co.sysbind.intellij.moodledev.codeStyle.MoodleScssPredefinedCodeStyle"/>
 
-        <internalFileTemplate name="Moodle PHP File Header"/>
         <internalFileTemplate name="PHP File"/>
         <internalFileTemplate name="PHP Class"/>
         <internalFileTemplate name="PHP Interface"/>
