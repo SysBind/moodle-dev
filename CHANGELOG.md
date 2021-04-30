@@ -2,7 +2,7 @@
 
 # moodle-dev Changelog
 
-## [Unreleased]
+## [1.1.0] - 2021-04-30
 ### Added
 - Work on add file Template
 
@@ -10,7 +10,7 @@
 ### Changed
 - Update the ChangeLog 
 
-## [1.0.0] - 2021-04-30
+## [1.0.0] - 2021-04-29
 ### Added
 - Add live Template for Moodle define internal or die by type defm
 - Add live Template for Moodle $ADMIN by type ADMIN

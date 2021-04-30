@@ -1,0 +1,12 @@
+<?php
+#parse("PHP Moodle Header.php")
+
+#if (${NAMESPACE})
+
+namespace ${NAMESPACE};
+
+#end
+
+trait ${NAME} {
+
+}
