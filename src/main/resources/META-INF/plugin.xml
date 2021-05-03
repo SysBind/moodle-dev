@@ -3,6 +3,7 @@
     <name>moodle-dev</name>
     <vendor email="support@sysbind.co.il" url="https://sysbin.co.il">SysBind</vendor>
     <description><![CDATA[
+    <h1>
   <p>This plugin will help Moodle Developers to work quickly and according to Moodle requirements</p>
   <p>To configure/use the Moodle Code Styles, go to Preferences > Editor > Code Style > PHP/JavaScript/Less/SCSS/XML, and then select "Set from..." and select "Moodle".</p>
   <p>Source is available at <a href="https://github.com:SysBind/moodle-dev">GitHub</a>, pull requests and issues welcome.</p>

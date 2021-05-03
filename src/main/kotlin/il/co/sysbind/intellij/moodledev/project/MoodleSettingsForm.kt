@@ -1,13 +1,17 @@
 package il.co.sysbind.intellij.moodledev.project
 
+import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.ui.TextBrowseFolderListener
+import com.intellij.openapi.ui.TextFieldWithBrowseButton
 import com.intellij.ui.components.JBCheckBox
 import com.intellij.ui.layout.panel
 import com.jetbrains.php.frameworks.PhpFrameworkConfigurable
 import il.co.sysbind.intellij.moodledev.MoodleBundle
+import java.awt.event.ActionListener
 import javax.swing.JComponent
 
-class MoodleSettingsForm(private val project: Project) : PhpFrameworkConfigurable {
+class MoodleSettingsForm(project: Project) : PhpFrameworkConfigurable {
     private val settings = project.getService(MoodleProjectSettings::class.java).settings
 
     @Suppress("DialogTitleCapitalization")
@@ -16,20 +20,35 @@ class MoodleSettingsForm(private val project: Project) : PhpFrameworkConfigurabl
         settings?.pluginEnabled == true
     )
 
+    private val moodlePath = TextFieldWithBrowseButton()
+    private val browserListener = TextBrowseFolderListener(FileChooserDescriptorFactory.createSingleFileDescriptor())
+
+    init {
+        moodlePath.addBrowseFolderListener(browserListener)
+        moodlePath.toolTipText = MoodleBundle.message("configurable.moodlePath.description")
+        moodlePath.text = settings?.moodlePath ?: "."
+        pluginEnabled.addActionListener(ActionListener { e -> refreshStatus(pluginEnabled.isSelected) })
+    }
     override fun createComponent(): JComponent {
         return panel {
             row {
                 pluginEnabled()
             }
+            row {
+                label(MoodleBundle.message("configurable.moodlePath"))
+                moodlePath()
+            }
         }
     }
 
     override fun isModified(): Boolean {
-        return settings?.pluginEnabled != pluginEnabled.isSelected
+        return (settings?.pluginEnabled != pluginEnabled.isSelected) || (settings?.moodlePath != moodlePath.text)
+
     }
 
     override fun apply() {
         settings?.pluginEnabled = pluginEnabled.isSelected
+        settings?.moodlePath = moodlePath.text
     }
 
     override fun getDisplayName(): String {
@@ -42,5 +61,9 @@ class MoodleSettingsForm(private val project: Project) : PhpFrameworkConfigurabl
 
     override fun isBeingUsed(): Boolean {
         return pluginEnabled.isSelected
+    }
+
+    private fun refreshStatus(isEnabled: Boolean) {
+        moodlePath.isEnabled = isEnabled
     }
 }
