@@ -7,13 +7,15 @@ class MoodleCorePathUtil {
 
     fun isMoodlePathValid(corePath: String): Boolean {
         val moodleTree = Component()
-        moodleTree.getPluginTypes().forEach(action = {
-            val moodleVersionFile = LocalFileSystem.getInstance().findFileByPath(corePath +
-                    "/" + moodleTree.getPluginPath(it))
-            if (moodleVersionFile == null || !moodleVersionFile?.isDirectory) {
+        moodleTree.getPluginTypes().forEach {
+            val moodleVersionFile = LocalFileSystem.getInstance().findFileByPath(
+                corePath +
+                        "/" + moodleTree.getPluginPath(it)
+            )
+            if (moodleVersionFile == null || !moodleVersionFile.isDirectory) {
                 return false
             }
-        })
+        }
         return true
     }
 }
