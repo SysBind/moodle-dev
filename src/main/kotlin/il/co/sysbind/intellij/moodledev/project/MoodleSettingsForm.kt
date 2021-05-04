@@ -28,7 +28,7 @@ class MoodleSettingsForm(project: Project) : PhpFrameworkConfigurable {
         moodlePath.addBrowseFolderListener(browserListener)
         moodlePath.toolTipText = MoodleBundle.message("configurable.moodlePath.description")
         moodlePath.text = settings?.moodlePath ?: "."
-        pluginEnabled.addActionListener(ActionListener { e -> refreshStatus(pluginEnabled.isSelected) })
+        pluginEnabled.addActionListener(ActionListener { refreshStatus(pluginEnabled.isSelected) })
     }
     override fun createComponent(): JComponent {
         return panel {
@@ -43,7 +43,7 @@ class MoodleSettingsForm(project: Project) : PhpFrameworkConfigurable {
     }
 
     override fun isModified(): Boolean {
-        return (settings?.pluginEnabled != pluginEnabled.isSelected) || (settings?.moodlePath != moodlePath.text)
+        return (settings?.pluginEnabled != pluginEnabled.isSelected) || (settings.moodlePath != moodlePath.text)
     }
 
     override fun apply() {
