@@ -8,6 +8,7 @@ import com.intellij.ui.components.JBCheckBox
 import com.intellij.ui.layout.panel
 import com.jetbrains.php.frameworks.PhpFrameworkConfigurable
 import il.co.sysbind.intellij.moodledev.MoodleBundle
+import il.co.sysbind.intellij.moodledev.util.MoodleCorePathUtil
 import java.awt.event.ActionListener
 import javax.swing.JComponent
 
@@ -49,6 +50,10 @@ class MoodleSettingsForm(project: Project) : PhpFrameworkConfigurable {
     override fun apply() {
         settings?.pluginEnabled = pluginEnabled.isSelected
         settings?.moodlePath = moodlePath.text
+        var pathUtil = MoodleCorePathUtil()
+        if (settings?.moodlePath != null) {
+            pathUtil.isMoodlePathValid(settings.moodlePath)
+        }
     }
 
     override fun getDisplayName(): String {
