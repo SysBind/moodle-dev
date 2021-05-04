@@ -44,13 +44,12 @@ class MoodleSettingsForm(project: Project) : PhpFrameworkConfigurable {
 
     override fun isModified(): Boolean {
         return (settings?.pluginEnabled != pluginEnabled.isSelected) || (settings?.moodlePath != moodlePath.text)
-
     }
 
     override fun apply() {
         settings?.pluginEnabled = pluginEnabled.isSelected
         settings?.moodlePath = moodlePath.text
-        var pathUtil = MoodleCorePathUtil()
+        val pathUtil = MoodleCorePathUtil()
         if (settings?.moodlePath != null) {
             pathUtil.isMoodlePathValid(settings.moodlePath)
         }

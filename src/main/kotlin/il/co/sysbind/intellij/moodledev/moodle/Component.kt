@@ -6,13 +6,13 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonObject
 
 class Component {
-    private val pluginTypesMap:  JsonObject
+    private val pluginTypesMap: JsonObject
     init {
         val pluginsObj = Json.parseToJsonElement(MoodleBundle.message("plugintypes"))
         pluginTypesMap = pluginsObj.jsonObject
     }
 
-    public fun getPluginPath(type: String) : String{
+    public fun getPluginPath(type: String): String {
         val path = pluginTypesMap[type]
         if (path != null) {
             return path.toString()
@@ -20,7 +20,7 @@ class Component {
         return ""
     }
 
-    public fun getPluginTypes() : Set<String> {
+    public fun getPluginTypes(): Set<String> {
         return pluginTypesMap.keys
     }
 }
