@@ -9,8 +9,7 @@ class MoodleCorePathUtil {
         val moodleTree = Component()
         moodleTree.getPluginTypes().forEach {
             val moodleVersionFile = LocalFileSystem.getInstance().findFileByPath(
-                corePath +
-                        "/" + moodleTree.getPluginPath(it)
+                corePath + "/" + moodleTree.getPluginPath(it)
             )
             if (moodleVersionFile == null || !moodleVersionFile.isDirectory) {
                 return false
