@@ -2,6 +2,9 @@
 All Moodle Dev plugin changes will be documented here
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
+## [1.1.1] - 2021-07-29
+### Changed
+- Fix SCSS indent
 
 ## [1.0.1] - 2021-04-30
 ### Changed
