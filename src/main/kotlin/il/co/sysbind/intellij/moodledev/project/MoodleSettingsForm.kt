@@ -5,11 +5,11 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.TextBrowseFolderListener
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
 import com.intellij.ui.components.JBCheckBox
+import com.intellij.ui.components.JBTextField
 import com.intellij.ui.layout.panel
 import com.jetbrains.php.frameworks.PhpFrameworkConfigurable
 import il.co.sysbind.intellij.moodledev.MoodleBundle
 import il.co.sysbind.intellij.moodledev.util.MoodleCorePathUtil
-import java.awt.event.ActionListener
 import javax.swing.JComponent
 
 class MoodleSettingsForm(project: Project) : PhpFrameworkConfigurable {
@@ -27,8 +27,8 @@ class MoodleSettingsForm(project: Project) : PhpFrameworkConfigurable {
     init {
         moodlePath.addBrowseFolderListener(browserListener)
         moodlePath.toolTipText = MoodleBundle.message("configurable.moodlePath.description")
-        moodlePath.text = settings?.moodlePath ?: "."
-        pluginEnabled.addActionListener(ActionListener { refreshStatus(pluginEnabled.isSelected) })
+        moodlePath.text = settings?.moodlePath ?: project.basePath.toString()
+        pluginEnabled.addActionListener { refreshStatus(pluginEnabled.isSelected) }
     }
     override fun createComponent(): JComponent {
         return panel {
