@@ -17,7 +17,6 @@
  * ${PLUGINNAME} file description here.
  *
  * @package    ${PLUGINNAME}
- * @copyright  ${YEAR} SysBind Ltd. <service@sysbind.co.il>
- * @auther     ${USER}
+ * @copyright  ${YEAR} ${USER} <${USEREMAIL}>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
