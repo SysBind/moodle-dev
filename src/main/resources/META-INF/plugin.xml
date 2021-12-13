@@ -18,9 +18,14 @@
     <depends>org.jetbrains.plugins.less</depends>
     <depends>org.jetbrains.plugins.sass</depends>
     <depends>com.intellij.modules.platform</depends>
-
+    <actions>
+        <action class="il.co.sysbind.intellij.moodledev.actions.generation.PhpCreateFileAction" id="Moodle.NewPHPFile" overrides="false">
+            <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFile"/>
+        </action>
+    </actions>
     <extensions defaultExtensionNs="com.intellij">
         <projectService serviceImplementation="il.co.sysbind.intellij.moodledev.project.MoodleProjectSettings"/>
+
         <defaultLiveTemplates file="/liveTemplates/Moodle.xml"/>
         <predefinedCodeStyle implementation="il.co.sysbind.intellij.moodledev.codeStyle.MoodlePhpPredefinedCodeStyle"/>
         <predefinedCodeStyle
@@ -28,10 +33,10 @@
         <predefinedCodeStyle implementation="il.co.sysbind.intellij.moodledev.codeStyle.MoodleLessPredefinedCodeStyle"/>
         <predefinedCodeStyle implementation="il.co.sysbind.intellij.moodledev.codeStyle.MoodleScssPredefinedCodeStyle"/>
 
-        <internalFileTemplate name="PHP File"/>
-        <internalFileTemplate name="PHP Class"/>
-        <internalFileTemplate name="PHP Interface"/>
-        <internalFileTemplate name="PHP Trait"/>
+        <internalFileTemplate name="Moodle PHP File"/>
+        <internalFileTemplate name="Moodle PHP Class"/>
+        <internalFileTemplate name="Moodle PHP Interface"/>
+        <internalFileTemplate name="Moodle PHP Trait"/>
     </extensions>
     <extensions defaultExtensionNs="com.jetbrains.php">
         <frameworkProjectConfigurableProvider
