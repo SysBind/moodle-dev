@@ -10,9 +10,9 @@ import com.intellij.openapi.components.StoragePathMacros
     storages = [Storage(StoragePathMacros.WORKSPACE_FILE)]
 )
 class MoodleProjectSettings : PersistentStateComponent<MoodleSettings> {
-    var settings: MoodleSettings? = MoodleSettings()
+    var settings: MoodleSettings = MoodleSettings()
 
-    override fun getState(): MoodleSettings? {
+    override fun getState(): MoodleSettings {
         return settings
     }
 
