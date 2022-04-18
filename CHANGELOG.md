@@ -3,14 +3,10 @@ All Moodle Dev plugin changes will be documented here
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 
-## [1.1.4] - 2021-12-13
-### Changed
-- Add support to PHPStorm 2021.3
-- Remove hard code copyright
+## [Unreleased]
 
-## [1.1.3] - 2021-08-02
-### Added
-- Support for PHPStorm 2021.2
+## [1.1.4]
+Add support for PHPStorm 2021.3
 
 ## [1.1.2] - 2021-07-29
 ### Changed
@@ -24,7 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 
 ## [1.0.1] - 2021-04-30
 ### Changed
-- Update the ChangeLog 
+- Update the ChangeLog
 
 ## [1.0.0] - 2021-04-29
 ### Added
@@ -32,8 +28,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 - Add live Template for Moodle $ADMIN by type ADMIN
 - Add Moodle code style for predefined code styles for PHP/Javascript/SCSS/LESS
 
-
-
 ## [Unreleased]
-## 1.1.5
 
+## [1.1.4]
+### Changed
+- Add support to PHPStorm 2021.3
+- Remove hard code copyright
