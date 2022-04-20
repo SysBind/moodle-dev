@@ -3,7 +3,6 @@ package il.co.sysbind.intellij.moodledev.project
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.guessProjectDir
-import com.intellij.openapi.ui.DialogPanel
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
 import com.intellij.ui.components.JBCheckBox
 import com.intellij.ui.dsl.builder.*
@@ -14,9 +13,10 @@ import javax.swing.JComponent
 
 class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
     private val settings = project.getService(MoodleProjectSettings::class.java).settings
-    lateinit var pluginEnabled: Cell<JBCheckBox>
-    lateinit var moodlePath: Cell<TextFieldWithBrowseButton>
-    private var panel: DialogPanel = panel {
+    private lateinit var pluginEnabled: Cell<JBCheckBox>
+    private lateinit var moodlePath: Cell<TextFieldWithBrowseButton>
+    @Suppress("DialogTitleCapitalization")
+    private var panel = panel {
         row {
             pluginEnabled =
                 checkBox(MoodleBundle.getMessage("configurable.enabled"))
@@ -36,7 +36,7 @@ class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
     }
 
     override fun createComponent(): JComponent {
-        return panel;
+        return panel
     }
 
     override fun isModified(): Boolean {
