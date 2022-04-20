@@ -20,12 +20,15 @@
     <depends>com.intellij.copyright</depends>
     <depends>com.intellij.modules.platform</depends>
     <actions>
-        <action class="il.co.sysbind.intellij.moodledev.actions.generation.PhpCreateFileAction" id="Moodle.NewPHPFile" overrides="false">
-            <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFile"/>
-        </action>
-        <action class="il.co.sysbind.intellij.moodledev.actions.generation.PhpCreateClassAction" id="Moodle.NewPHPClass" overrides="false">
-            <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFile"/>
-        </action>
+        <group id="Moodle.NewFile" text="Moodle Files">
+            <add-to-group group-id="PhpNewGroup" anchor="before" relative-to-action="NewFile"/>
+            <separator></separator>
+            <action class="il.co.sysbind.intellij.moodledev.actions.generation.PhpCreateFileAction" id="Moodle.NewPHPFile" overrides="false">
+            </action>
+            <action class="il.co.sysbind.intellij.moodledev.actions.generation.PhpCreateClassAction" id="Moodle.NewPHPClass" overrides="false">
+            </action>
+            <separator></separator>
+        </group>
     </actions>
     <extensions defaultExtensionNs="com.intellij">
         <directoryProjectGenerator implementation="il.co.sysbind.intellij.moodledev.MoodleProjectGenerator"/>
