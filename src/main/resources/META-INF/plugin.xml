@@ -25,7 +25,7 @@
             <separator></separator>
             <action class="il.co.sysbind.intellij.moodledev.actions.generation.PhpCreateFileAction" id="Moodle.NewPHPFile" overrides="false">
             </action>
-            <action class="il.co.sysbind.intellij.moodledev.actions.generation.PhpCreateClassAction" id="Moodle.NewPHPClass" overrides="false">
+            <action class="il.co.sysbind.intellij.moodledev.actions.generation.MoodlePHPNewClassAction" id="Moodle.NewPHPClass" overrides="false">
             </action>
             <separator></separator>
         </group>

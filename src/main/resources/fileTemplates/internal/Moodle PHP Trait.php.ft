@@ -1,5 +1,5 @@
 <?php
-#parse("PHP Moodle Header.php")
+#parse("Moodle PHP File Header.php")
 
 #if (${NAMESPACE})
 
