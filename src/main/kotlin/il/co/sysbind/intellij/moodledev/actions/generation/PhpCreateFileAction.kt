@@ -7,11 +7,10 @@ import com.intellij.openapi.actionSystem.DataContext
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
-import icons.PhpIcons
-import icons.PhpIcons.PhpIcon
+import com.jetbrains.php.PhpIcons
 import il.co.sysbind.intellij.moodledev.project.MoodleProjectSettings
 
-class PhpCreateFileAction : CreateFileFromTemplateAction(CAPTION, "", PhpIcon), DumbAware {
+class PhpCreateFileAction : CreateFileFromTemplateAction(CAPTION, "", PhpIcons.PHP_FILE), DumbAware {
     override fun getActionName(directory: PsiDirectory?, newName: String, templateName: String?): String = CAPTION
 
     override fun isAvailable(dataContext: DataContext?): Boolean {
@@ -23,7 +22,7 @@ class PhpCreateFileAction : CreateFileFromTemplateAction(CAPTION, "", PhpIcon), 
     }
     override fun buildDialog(project: Project, directory: PsiDirectory, builder: CreateFileFromTemplateDialog.Builder) {
         builder.setTitle(CAPTION)
-            .addKind("Empty file", PhpIcons.PhpIcon, "Moodle PHP File")
+            .addKind("Empty file", PhpIcons.PHP_FILE, "Moodle PHP File")
     }
 
     private companion object {

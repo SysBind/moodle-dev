@@ -17,13 +17,10 @@
     <depends>JavaScript</depends>
     <depends>org.jetbrains.plugins.less</depends>
     <depends>org.jetbrains.plugins.sass</depends>
+    <depends>com.intellij.copyright</depends>
     <depends>com.intellij.modules.platform</depends>
-    <actions>
-        <action class="il.co.sysbind.intellij.moodledev.actions.generation.PhpCreateFileAction" id="Moodle.NewPHPFile" overrides="false">
-            <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFile"/>
-        </action>
-    </actions>
     <extensions defaultExtensionNs="com.intellij">
+        <directoryProjectGenerator implementation="il.co.sysbind.intellij.moodledev.MoodleProjectGenerator"/>
         <projectService serviceImplementation="il.co.sysbind.intellij.moodledev.project.MoodleProjectSettings"/>
 
         <defaultLiveTemplates file="/liveTemplates/Moodle.xml"/>
@@ -37,6 +34,10 @@
         <internalFileTemplate name="Moodle PHP Class"/>
         <internalFileTemplate name="Moodle PHP Interface"/>
         <internalFileTemplate name="Moodle PHP Trait"/>
+        <internalFileTemplate name="PHP File"/>
+        <internalFileTemplate name="PHP Class"/>
+        <internalFileTemplate name="PHP Interface"/>
+        <internalFileTemplate name="PHP Trait"/>
     </extensions>
     <extensions defaultExtensionNs="com.jetbrains.php">
         <frameworkProjectConfigurableProvider

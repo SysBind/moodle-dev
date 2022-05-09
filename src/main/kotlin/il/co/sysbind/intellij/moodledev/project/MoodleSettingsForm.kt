@@ -2,56 +2,55 @@ package il.co.sysbind.intellij.moodledev.project
 
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.ui.TextBrowseFolderListener
+import com.intellij.openapi.project.guessProjectDir
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
 import com.intellij.ui.components.JBCheckBox
-import com.intellij.ui.layout.panel
+import com.intellij.ui.dsl.builder.*
 import com.jetbrains.php.frameworks.PhpFrameworkConfigurable
 import il.co.sysbind.intellij.moodledev.MoodleBundle
 import il.co.sysbind.intellij.moodledev.util.MoodleCorePathUtil
-import java.awt.event.ActionListener
 import javax.swing.JComponent
 
-class MoodleSettingsForm(project: Project) : PhpFrameworkConfigurable {
+class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
     private val settings = project.getService(MoodleProjectSettings::class.java).settings
-
+    private lateinit var pluginEnabled: Cell<JBCheckBox>
+    private lateinit var moodlePath: Cell<TextFieldWithBrowseButton>
     @Suppress("DialogTitleCapitalization")
-    private val pluginEnabled: JBCheckBox = JBCheckBox(
-        MoodleBundle.getMessage("configurable.enabled"),
-        settings?.pluginEnabled == true
-    )
-
-    private val moodlePath = TextFieldWithBrowseButton()
-    private val browserListener = TextBrowseFolderListener(FileChooserDescriptorFactory.createSingleFileDescriptor())
-
-    init {
-        moodlePath.addBrowseFolderListener(browserListener)
-        moodlePath.toolTipText = MoodleBundle.message("configurable.moodlePath.description")
-        moodlePath.text = settings?.moodlePath ?: "."
-        pluginEnabled.addActionListener(ActionListener { refreshStatus(pluginEnabled.isSelected) })
-    }
-    override fun createComponent(): JComponent {
-        return panel {
-            row {
-                pluginEnabled()
-            }
-            row {
-                label(MoodleBundle.message("configurable.moodlePath"))
-                moodlePath()
-            }
+    private var panel = panel {
+        row {
+            pluginEnabled =
+                checkBox(MoodleBundle.getMessage("configurable.enabled"))
+                    .bindSelected(settings::pluginEnabled)
         }
+        indent {
+            row {
+                moodlePath =
+                    textFieldWithBrowseButton(
+                        MoodleBundle.message("configurable.moodlePath"),
+                        project,
+                        FileChooserDescriptorFactory.createSingleFolderDescriptor()
+                    ).bindText(settings::moodlePath)
+
+            }
+        }.enabledIf(pluginEnabled.selected)
+    }
+
+    override fun createComponent(): JComponent {
+        return panel
     }
 
     override fun isModified(): Boolean {
-        return (settings?.pluginEnabled != pluginEnabled.isSelected) || (settings.moodlePath != moodlePath.text)
+        return panel.isModified()
     }
 
     override fun apply() {
-        settings?.pluginEnabled = pluginEnabled.isSelected
-        settings?.moodlePath = moodlePath.text
+        settings.moodlePath = moodlePath.component.text
+        settings.pluginEnabled = pluginEnabled.component.isSelected
         val pathUtil = MoodleCorePathUtil()
-        if (settings?.moodlePath != null) {
+        if (settings.moodlePath != "") {
             pathUtil.isMoodlePathValid(settings.moodlePath)
+        } else {
+            settings.moodlePath = project.guessProjectDir()?.path ?: ""
         }
     }
 
@@ -64,10 +63,6 @@ class MoodleSettingsForm(project: Project) : PhpFrameworkConfigurable {
     }
 
     override fun isBeingUsed(): Boolean {
-        return pluginEnabled.isSelected
-    }
-
-    private fun refreshStatus(isEnabled: Boolean) {
-        moodlePath.isEnabled = isEnabled
+        return settings.pluginEnabled
     }
 }
