@@ -19,17 +19,6 @@
     <depends>org.jetbrains.plugins.sass</depends>
     <depends>com.intellij.copyright</depends>
     <depends>com.intellij.modules.platform</depends>
-    <actions>
-        <group id="Moodle.NewFile" text="Moodle Files">
-            <add-to-group group-id="PhpNewGroup" anchor="before" relative-to-action="NewFile"/>
-            <separator></separator>
-            <action class="il.co.sysbind.intellij.moodledev.actions.generation.PhpCreateFileAction" id="Moodle.NewPHPFile" overrides="false">
-            </action>
-            <action class="il.co.sysbind.intellij.moodledev.actions.generation.MoodlePHPNewClassAction" id="Moodle.NewPHPClass" overrides="false">
-            </action>
-            <separator></separator>
-        </group>
-    </actions>
     <extensions defaultExtensionNs="com.intellij">
         <directoryProjectGenerator implementation="il.co.sysbind.intellij.moodledev.MoodleProjectGenerator"/>
         <projectService serviceImplementation="il.co.sysbind.intellij.moodledev.project.MoodleProjectSettings"/>
@@ -45,6 +34,10 @@
         <internalFileTemplate name="Moodle PHP Class"/>
         <internalFileTemplate name="Moodle PHP Interface"/>
         <internalFileTemplate name="Moodle PHP Trait"/>
+        <internalFileTemplate name="PHP File"/>
+        <internalFileTemplate name="PHP Class"/>
+        <internalFileTemplate name="PHP Interface"/>
+        <internalFileTemplate name="PHP Trait"/>
     </extensions>
     <extensions defaultExtensionNs="com.jetbrains.php">
         <frameworkProjectConfigurableProvider
