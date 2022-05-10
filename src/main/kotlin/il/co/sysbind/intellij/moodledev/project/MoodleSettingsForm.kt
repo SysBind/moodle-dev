@@ -22,17 +22,16 @@ class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
                 checkBox(MoodleBundle.getMessage("configurable.enabled"))
                     .bindSelected(settings::pluginEnabled)
         }
-        indent {
-            row {
-                moodlePath =
-                    textFieldWithBrowseButton(
-                        MoodleBundle.message("configurable.moodlePath"),
-                        project,
-                        FileChooserDescriptorFactory.createSingleFolderDescriptor()
-                    ).bindText(settings::moodlePath)
 
-            }
-        }.enabledIf(pluginEnabled.selected)
+        row("Moodle project directory:") {
+            moodlePath =
+                textFieldWithBrowseButton(
+                    MoodleBundle.message("configurable.moodlePath"),
+                    project,
+                    FileChooserDescriptorFactory.createSingleFolderDescriptor()
+                ).bindText(settings::moodlePath).enabledIf(pluginEnabled.selected)
+
+        }
     }
 
     override fun createComponent(): JComponent {

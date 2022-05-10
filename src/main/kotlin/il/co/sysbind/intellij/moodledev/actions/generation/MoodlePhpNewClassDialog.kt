@@ -60,6 +60,6 @@ class MoodlePhpNewClassDialog(project: Project, directory: PsiDirectory) : PhpNe
 
     override fun getSuperFqn(): String? {
         val superFqn = mySuperFqnTextField.text
-        return if (StringUtil.isNotEmpty(superFqn)) PhpLangUtil.toFQN(superFqn!!) else null
+        return if (StringUtil.isNotEmpty(superFqn)) PhpLangUtil.toFQN(superFqn) else null
     }
 }
