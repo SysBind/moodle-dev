@@ -16,9 +16,9 @@ class PhpCreateFileAction : CreateFileFromTemplateAction(CAPTION, "", PhpIcons.P
     override fun isAvailable(dataContext: DataContext?): Boolean {
         if (!super.isAvailable(dataContext)) return false
         val project = CommonDataKeys.PROJECT.getData(dataContext!!) ?: return false
-        val vFile = CommonDataKeys.VIRTUAL_FILE.getData(dataContext) ?: return false
+        CommonDataKeys.VIRTUAL_FILE.getData(dataContext) ?: return false
         val moodle = project.getService(MoodleProjectSettings::class.java).settings
-        return moodle?.pluginEnabled ?: false
+        return moodle.pluginEnabled
     }
     override fun buildDialog(project: Project, directory: PsiDirectory, builder: CreateFileFromTemplateDialog.Builder) {
         builder.setTitle(CAPTION)

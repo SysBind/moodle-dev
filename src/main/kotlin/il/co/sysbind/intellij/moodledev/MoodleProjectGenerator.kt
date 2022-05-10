@@ -1,11 +1,8 @@
 package il.co.sysbind.intellij.moodledev
 
-import com.intellij.ide.IdeBundle
 import com.intellij.ide.util.projectWizard.WebProjectTemplate
-import com.intellij.openapi.GitRepositoryInitializer
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.module.Module
-import com.intellij.openapi.progress.runBackgroundableTask
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiManager
@@ -33,23 +30,12 @@ class MoodleProjectGenerator : WebProjectTemplate<MoodleProjectGeneratorSettings
         var dataService: MoodleProjectSettings = project.getService(MoodleProjectSettings::class.java)
         dataService.loadState(settings.getMoodleSettings())
 
-        val generate =
-            Runnable {
-                ApplicationManager.getApplication().runWriteAction {
-                    val baseDirElement = PsiManager
-                        .getInstance(project)
-                        .findDirectory(baseDir) ?: return@runWriteAction
-                    runBackgroundableTask(IdeBundle.message("progress.title.creating.git.repository"), project) {
-                        GitRepositoryInitializer.getInstance()!!.initRepository(project, baseDir)
-//                        git()
-                    }
-//                    generateComposerJson(project, baseDirElement, settings)
-//                    generateRegistrationPhp(project, baseDirElement, settings)
-//                    generateModuleXml(project, baseDirElement, settings)
-//                    ConfigurationManager
-//                        .getInstance()
-//                        .refreshIncludePaths(dataService.state, project)
-                }
+        Runnable {
+            ApplicationManager.getApplication().runWriteAction {
+                PsiManager
+                    .getInstance(project)
+                    .findDirectory(baseDir) ?: return@runWriteAction
             }
+        }
     }
 }

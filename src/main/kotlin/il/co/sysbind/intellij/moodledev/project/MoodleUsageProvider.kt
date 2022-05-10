@@ -10,6 +10,6 @@ class MoodleUsageProvider : PhpFrameworkUsageProvider {
     }
 
     override fun isEnabled(p0: Project): Boolean {
-        return p0.getService(MoodleProjectSettings::class.java).state?.pluginEnabled ?: false
+        return p0.getService(MoodleProjectSettings::class.java).state.pluginEnabled
     }
 }
