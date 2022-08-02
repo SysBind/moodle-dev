@@ -3,15 +3,14 @@ All Moodle Dev plugin changes will be documented here
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 
-## [1.1.7] - 2022-08-02
-### Added
-- Support for PHPStorm 2022.2
+## [Unreleased]
+
+## [1.1.7]
+Add support for PHPStorm 2022.2
 
 ## [1.1.6] - 2022-05-10
 ### Added
 - Support for PHPStorm 2022.1
-### Changed
-**Full Changelog**: https://github.com/SysBind/moodle-dev/compare/v1.1.5...v1.1.6
 
 ## [1.1.4] - 2021-12-13
 ### Added
