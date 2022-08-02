@@ -3,6 +3,9 @@ All Moodle Dev plugin changes will be documented here
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 
+## [1.1.7] - 2022-08-02
+### Added
+- Support for PHPStorm 2022.2
 
 ## [1.1.6] - 2022-05-10
 ### Added
@@ -36,6 +39,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 
 ## [Unreleased]
 
-## [1.1.7]
+## [1.1.8]
 ### Changed
 - Create new action for create Moodle PHP files
