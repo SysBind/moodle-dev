@@ -5,6 +5,6 @@
 namespace ${NAMESPACE};
 
 #end
-class ${NAME} {
+enum ${NAME}#if (${BACKED_TYPE}) : ${BACKED_TYPE} #end{
 
 }

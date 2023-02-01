@@ -13,12 +13,10 @@
     <!-- Product and plugin compatibility requirements -->
     <!-- https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html -->
     <depends>com.jetbrains.php</depends>
-    <depends>com.dmarcotte.handlebars</depends>
+    <depends>com.intellij.modules.platform</depends>
     <depends>JavaScript</depends>
     <depends>org.jetbrains.plugins.less</depends>
     <depends>org.jetbrains.plugins.sass</depends>
-    <depends>com.intellij.copyright</depends>
-    <depends>com.intellij.modules.platform</depends>
     <extensions defaultExtensionNs="com.intellij">
         <directoryProjectGenerator implementation="il.co.sysbind.intellij.moodledev.MoodleProjectGenerator"/>
         <projectService serviceImplementation="il.co.sysbind.intellij.moodledev.project.MoodleProjectSettings"/>
@@ -34,19 +32,29 @@
         <internalFileTemplate name="Moodle PHP Class"/>
         <internalFileTemplate name="Moodle PHP Interface"/>
         <internalFileTemplate name="Moodle PHP Trait"/>
-        <internalFileTemplate name="PHP File"/>
-        <internalFileTemplate name="PHP Class"/>
-        <internalFileTemplate name="PHP Interface"/>
-        <internalFileTemplate name="PHP Trait"/>
+        <internalFileTemplate name="Moodle JavaScript File"/>
+        <internalFileTemplate name="Moodle SCSS File"/>
     </extensions>
     <extensions defaultExtensionNs="com.jetbrains.php">
         <frameworkProjectConfigurableProvider
                 implementation="il.co.sysbind.intellij.moodledev.project.MoodleConfigurableProvider"/>
         <frameworkUsageProvider implementation="il.co.sysbind.intellij.moodledev.project.MoodleUsageProvider"/>
-        <libraryRoot id="phpstorm.meta.php" path="/.phpstorm.meta.php/" runtime="false"/>
+        <libraryRoot id="phpstorm.meta.php" path="/moodle-dev/" runtime="false"/>
     </extensions>
     <projectListeners>
         <listener class="il.co.sysbind.intellij.moodledev.listeners.MoodleManagerListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
     </projectListeners>
+    
+    <actions>
+        <group id="Moodle.NewFile" text="Moodle Files">
+            <add-to-group group-id="PhpNewGroup" anchor="before" relative-to-action="NewFile"/>
+            <separator></separator>
+            <action class="il.co.sysbind.intellij.moodledev.actions.generation.PhpCreateFileAction" id="Moodle.NewPHPFile" overrides="false">
+            </action>
+            <action class="il.co.sysbind.intellij.moodledev.actions.generation.MoodlePHPNewClassAction" id="Moodle.NewPHPClass" overrides="false">
+            </action>
+            <separator></separator>
+        </group>
+    </actions>
 </idea-plugin>
