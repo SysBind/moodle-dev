@@ -43,7 +43,7 @@
     </extensions>
     <projectListeners>
         <listener class="il.co.sysbind.intellij.moodledev.listeners.MoodleManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
+                  topic="com.intellij.openapi.startup.StartupActivity"/>
     </projectListeners>
     
     <actions>
