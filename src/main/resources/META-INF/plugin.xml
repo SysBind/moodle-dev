@@ -43,7 +43,7 @@
     </extensions>
     <projectListeners>
         <listener class="il.co.sysbind.intellij.moodledev.listeners.MoodleManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
+                  topic="com.intellij.openapi.startup.StartupActivity"/>
     </projectListeners>
     
     <actions>
@@ -51,6 +51,8 @@
             <add-to-group group-id="PhpNewGroup" anchor="before" relative-to-action="NewFile"/>
             <separator></separator>
             <action class="il.co.sysbind.intellij.moodledev.actions.generation.PhpCreateFileAction" id="Moodle.NewPHPFile" overrides="false">
+            </action>
+            <action class="il.co.sysbind.intellij.moodledev.actions.generation.MoodlePHPNewClassAction" id="Moodle.NewPHPClass" overrides="false">
             </action>
             <separator></separator>
         </group>

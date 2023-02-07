@@ -5,6 +5,11 @@ All Moodle Dev plugin changes will be documented here
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 
 ## [Unreleased]
+### Added
+- Add new Action to create Moodle php class
+
+### Changed
+- Remove deprecated functions
 
 ## [1.1.8]
 
