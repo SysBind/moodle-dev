@@ -5,6 +5,8 @@ All Moodle Dev plugin changes will be documented here
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 
+## [1.1.7]
+Add support for PHPStorm 2022.2
 
 ## [1.1.6] - 2022-05-10
 ### Added
@@ -35,3 +37,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 - Add live Template for Moodle define internal or die by type defm
 - Add live Template for Moodle $ADMIN by type ADMIN
 - Add Moodle code style for predefined code styles for PHP/Javascript/SCSS/LESS
+
+## [Unreleased]
+
+## [1.1.8]
+### Changed
+- Create new action for create Moodle PHP files
