@@ -14,7 +14,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * ${PLUGINNAME} file description here.
+ * ${PLUGINNAME} ${FILE_NAME} description here.
  *
  * @package    ${PLUGINNAME}
  * @copyright  ${YEAR} ${USER} <${USEREMAIL}>
