@@ -7,8 +7,9 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiManager
 import il.co.sysbind.intellij.moodledev.project.MoodleProjectSettings
+import javax.swing.Icon
 
-class MoodleProjectGenerator : WebProjectTemplate<MoodleProjectGeneratorSettings>() {
+class MoodlePluginGenerator : WebProjectTemplate<MoodlePluginGeneratorSettings>() {
     override fun getName(): String {
         return buildString {
             append("Moodle Project")
@@ -21,10 +22,16 @@ class MoodleProjectGenerator : WebProjectTemplate<MoodleProjectGeneratorSettings
         }
     }
 
+    override fun getIcon(): Icon {
+        return MoodleIcons.LOGO
+    }
+
+
+
     override fun generateProject(
         project: Project,
         baseDir: VirtualFile,
-        settings: MoodleProjectGeneratorSettings,
+        settings: MoodlePluginGeneratorSettings,
         module: Module
     ) {
         var dataService: MoodleProjectSettings = project.getService(MoodleProjectSettings::class.java)

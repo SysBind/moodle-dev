@@ -1,5 +1,7 @@
 package il.co.sysbind.intellij.moodledev.project
 
+import com.intellij.application.options.CodeStyle;
+import com.intellij.lang.javascript.JavascriptLanguage
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.guessProjectDir
@@ -7,8 +9,15 @@ import com.intellij.openapi.ui.TextFieldWithBrowseButton
 import com.intellij.ui.components.JBCheckBox
 import com.intellij.ui.dsl.builder.*
 import com.jetbrains.php.frameworks.PhpFrameworkConfigurable
+import com.jetbrains.php.lang.PhpLanguage
 import il.co.sysbind.intellij.moodledev.MoodleBundle
+import il.co.sysbind.intellij.moodledev.codeStyle.MoodleJavascriptPredefinedCodeStyle
+import il.co.sysbind.intellij.moodledev.codeStyle.MoodleLessPredefinedCodeStyle
+import il.co.sysbind.intellij.moodledev.codeStyle.MoodlePhpPredefinedCodeStyle
+import il.co.sysbind.intellij.moodledev.codeStyle.MoodleScssPredefinedCodeStyle
 import il.co.sysbind.intellij.moodledev.util.MoodleCorePathUtil
+import org.jetbrains.plugins.less.LESSLanguage
+import org.jetbrains.plugins.scss.SCSSLanguage
 import javax.swing.JComponent
 
 class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
@@ -45,11 +54,17 @@ class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
     override fun apply() {
         settings.moodlePath = moodlePath.component.text
         settings.pluginEnabled = pluginEnabled.component.isSelected
-        val pathUtil = MoodleCorePathUtil()
         if (settings.moodlePath != "") {
-            pathUtil.isMoodlePathValid(settings.moodlePath)
+            MoodleCorePathUtil.isMoodlePathValid(settings.moodlePath)
         } else {
             settings.moodlePath = project.guessProjectDir()?.path ?: ""
+        }
+        if (isBeingUsed) {
+            val codeStyleSettings = CodeStyle.getSettings(project)
+            MoodlePhpPredefinedCodeStyle().apply(codeStyleSettings, PhpLanguage.INSTANCE)
+            MoodleJavascriptPredefinedCodeStyle().apply(codeStyleSettings, JavascriptLanguage.INSTANCE)
+            MoodleLessPredefinedCodeStyle().apply(codeStyleSettings, LESSLanguage.INSTANCE)
+            MoodleScssPredefinedCodeStyle().apply(codeStyleSettings, SCSSLanguage.INSTANCE)
         }
     }
 

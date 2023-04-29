@@ -2,7 +2,7 @@ package il.co.sysbind.intellij.moodledev
 
 import il.co.sysbind.intellij.moodledev.project.MoodleSettings
 
-class MoodleProjectGeneratorSettings(moodleSettings: MoodleSettings) {
+class MoodlePluginGeneratorSettings(moodleSettings: MoodleSettings) {
     private var myMoodleSettings: MoodleSettings = moodleSettings
     private var myMoodlePath: String = ""
     private var myMoodleVersion: String = "master"
