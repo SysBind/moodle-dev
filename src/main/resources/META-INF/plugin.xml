@@ -18,7 +18,10 @@
     <depends>org.jetbrains.plugins.less</depends>
     <depends>org.jetbrains.plugins.sass</depends>
     <extensions defaultExtensionNs="com.intellij">
-        <directoryProjectGenerator implementation="il.co.sysbind.intellij.moodledev.MoodleProjectGenerator"/>
+        <directoryProjectGenerator implementation="il.co.sysbind.intellij.moodledev.MoodlePluginGenerator"/>
+        <projectTemplatesFactory implementation="il.co.sysbind.intellij.moodledev.MoodleTemplateFactory" />
+        <directoryProjectConfigurator implementation="il.co.sysbind.intellij.moodledev.MoodleProjectConfiguration" order="after PlatformProjectConfigurator" />
+
         <projectService serviceImplementation="il.co.sysbind.intellij.moodledev.project.MoodleProjectSettings"/>
 
         <defaultLiveTemplates file="/liveTemplates/Moodle.xml"/>
@@ -34,6 +37,7 @@
         <internalFileTemplate name="Moodle PHP Trait"/>
         <internalFileTemplate name="Moodle JavaScript File"/>
         <internalFileTemplate name="Moodle SCSS File"/>
+        <moduleBuilder builderClass="il.co.sysbind.intellij.moodledev.project.wizard.MoodlePlugin" id="MOODLE_PLUGIN" order="first" />
     </extensions>
     <extensions defaultExtensionNs="com.jetbrains.php">
         <frameworkProjectConfigurableProvider
@@ -54,7 +58,6 @@
             </action>
             <action class="il.co.sysbind.intellij.moodledev.actions.generation.MoodlePHPNewClassAction" id="Moodle.NewPHPClass" overrides="false">
             </action>
-            <separator></separator>
         </group>
     </actions>
 </idea-plugin>

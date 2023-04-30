@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 
 ## [Unreleased]
 
+### Changed
+- Auto assign predefined Moodle CodeStyle if framework enabled 
+
 ## [1.2.1] - 2023-04-04
 
 ### Changed

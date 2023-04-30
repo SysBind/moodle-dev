@@ -1,9 +1,12 @@
 package il.co.sysbind.intellij.moodledev.util
 
 import com.intellij.openapi.vfs.LocalFileSystem
+import com.intellij.openapi.vfs.VirtualFile
 import il.co.sysbind.intellij.moodledev.moodle.Component
 
-class MoodleCorePathUtil {
+object MoodleCorePathUtil {
+
+    private val MOODLE_VERSION_FILE = "version.php"
 
     fun isMoodlePathValid(corePath: String): Boolean {
         val moodleTree = Component()
@@ -16,5 +19,15 @@ class MoodleCorePathUtil {
             }
         }
         return true
+    }
+
+    @JvmStatic
+    fun findMoodleVersion(dir: VirtualFile?): VirtualFile? {
+        if (dir == null || !dir.isValid) return null
+        val versionfile = dir.findChild(MOODLE_VERSION_FILE)
+        if (versionfile != null) {
+            return versionfile
+        }
+        return null
     }
 }
