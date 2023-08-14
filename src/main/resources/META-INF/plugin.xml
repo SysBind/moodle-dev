@@ -1,5 +1,5 @@
 <idea-plugin>
-    <id>il.co.sysbind.intellij.moodledev</id>
+    <id>il.co.sysbind.moodledev</id>
     <name>Moodle Development</name>
     <vendor email="support@sysbind.co.il" url="https://sysbin.co.il">SysBind</vendor>
     <description><![CDATA[
@@ -18,18 +18,18 @@
     <depends>org.jetbrains.plugins.less</depends>
     <depends>org.jetbrains.plugins.sass</depends>
     <extensions defaultExtensionNs="com.intellij">
-        <directoryProjectGenerator implementation="il.co.sysbind.intellij.moodledev.MoodlePluginGenerator"/>
-        <projectTemplatesFactory implementation="il.co.sysbind.intellij.moodledev.MoodleTemplateFactory" />
-        <directoryProjectConfigurator implementation="il.co.sysbind.intellij.moodledev.MoodleProjectConfiguration" order="after PlatformProjectConfigurator" />
+        <directoryProjectGenerator implementation="il.co.sysbind.moodledev.MoodlePluginGenerator"/>
+        <projectTemplatesFactory implementation="il.co.sysbind.moodledev.MoodleTemplateFactory" />
+        <directoryProjectConfigurator implementation="il.co.sysbind.moodledev.MoodleProjectConfiguration" order="after PlatformProjectConfigurator" />
 
-        <projectService serviceImplementation="il.co.sysbind.intellij.moodledev.project.MoodleProjectSettings"/>
+        <projectService serviceImplementation="il.co.sysbind.moodledev.project.MoodleProjectSettings"/>
 
         <defaultLiveTemplates file="/liveTemplates/Moodle.xml"/>
-        <predefinedCodeStyle implementation="il.co.sysbind.intellij.moodledev.codeStyle.MoodlePhpPredefinedCodeStyle"/>
+        <predefinedCodeStyle implementation="il.co.sysbind.moodledev.codeStyle.MoodlePhpPredefinedCodeStyle"/>
         <predefinedCodeStyle
-                implementation="il.co.sysbind.intellij.moodledev.codeStyle.MoodleJavascriptPredefinedCodeStyle"/>
-        <predefinedCodeStyle implementation="il.co.sysbind.intellij.moodledev.codeStyle.MoodleLessPredefinedCodeStyle"/>
-        <predefinedCodeStyle implementation="il.co.sysbind.intellij.moodledev.codeStyle.MoodleScssPredefinedCodeStyle"/>
+                implementation="il.co.sysbind.moodledev.codeStyle.MoodleJavascriptPredefinedCodeStyle"/>
+        <predefinedCodeStyle implementation="il.co.sysbind.moodledev.codeStyle.MoodleLessPredefinedCodeStyle"/>
+        <predefinedCodeStyle implementation="il.co.sysbind.moodledev.codeStyle.MoodleScssPredefinedCodeStyle"/>
 
         <internalFileTemplate name="Moodle PHP File"/>
         <internalFileTemplate name="Moodle PHP Class"/>
@@ -37,16 +37,16 @@
         <internalFileTemplate name="Moodle PHP Trait"/>
         <internalFileTemplate name="Moodle JavaScript File"/>
         <internalFileTemplate name="Moodle SCSS File"/>
-        <moduleBuilder builderClass="il.co.sysbind.intellij.moodledev.project.wizard.MoodlePlugin" id="MOODLE_PLUGIN" order="first" />
+        <moduleBuilder builderClass="il.co.sysbind.moodledev.project.wizard.MoodlePlugin" id="MOODLE_PLUGIN" order="first" />
     </extensions>
     <extensions defaultExtensionNs="com.jetbrains.php">
         <frameworkProjectConfigurableProvider
-                implementation="il.co.sysbind.intellij.moodledev.project.MoodleConfigurableProvider"/>
-        <frameworkUsageProvider implementation="il.co.sysbind.intellij.moodledev.project.MoodleUsageProvider"/>
+                implementation="il.co.sysbind.moodledev.project.MoodleConfigurableProvider"/>
+        <frameworkUsageProvider implementation="il.co.sysbind.moodledev.project.MoodleUsageProvider"/>
         <libraryRoot id="phpstorm.meta.php" path="/moodle-dev/" runtime="false"/>
     </extensions>
     <projectListeners>
-        <listener class="il.co.sysbind.intellij.moodledev.listeners.MoodleManagerListener"
+        <listener class="il.co.sysbind.moodledev.listeners.MoodleManagerListener"
                   topic="com.intellij.openapi.startup.StartupActivity"/>
     </projectListeners>
     
@@ -54,9 +54,9 @@
         <group id="Moodle.NewFile" text="Moodle Files">
             <add-to-group group-id="PhpNewGroup" anchor="before" relative-to-action="NewFile"/>
             <separator></separator>
-            <action class="il.co.sysbind.intellij.moodledev.actions.generation.PhpCreateFileAction" id="Moodle.NewPHPFile" overrides="false">
+            <action class="il.co.sysbind.moodledev.actions.generation.PhpCreateFileAction" id="Moodle.NewPHPFile" overrides="false">
             </action>
-            <action class="il.co.sysbind.intellij.moodledev.actions.generation.MoodlePHPNewClassAction" id="Moodle.NewPHPClass" overrides="false">
+            <action class="il.co.sysbind.moodledev.actions.generation.MoodlePHPNewClassAction" id="Moodle.NewPHPClass" overrides="false">
             </action>
         </group>
     </actions>
