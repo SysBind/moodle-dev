@@ -5,6 +5,9 @@ All Moodle Dev plugin changes will be documented here
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 
 ## [Unreleased]
+
+## [1.2.3] - 2023-08-14
+
 ### Changed
 - Support PHPStorm 2023.2
 
@@ -68,7 +71,8 @@ Add support for PHPStorm 2022.2
 - Add live Template for Moodle $ADMIN by type ADMIN
 - Add Moodle code style for predefined code styles for PHP/Javascript/SCSS/LESS
 
-[Unreleased]: https://github.com/SysBind/moodle-dev/compare/v1.2.2...HEAD
+[Unreleased]: https://github.com/SysBind/moodle-dev/compare/v1.2.3...HEAD
+[1.2.3]: https://github.com/SysBind/moodle-dev/compare/v1.2.2...v1.2.3
 [1.2.2]: https://github.com/SysBind/moodle-dev/compare/v1.2.1...v1.2.2
 [1.2.1]: https://github.com/SysBind/moodle-dev/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/SysBind/moodle-dev/compare/v1.1.8...v1.2.0
