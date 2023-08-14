@@ -6,8 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 
 ## [Unreleased]
 
+## [1.2.2] - 2023-04-30
+
 ### Changed
-- Auto assign predefined Moodle CodeStyle if framework enabled 
+- Auto assign predefined Moodle CodeStyle if framework enabled
 
 ## [1.2.1] - 2023-04-04
 
@@ -64,7 +66,8 @@ Add support for PHPStorm 2022.2
 - Add live Template for Moodle $ADMIN by type ADMIN
 - Add Moodle code style for predefined code styles for PHP/Javascript/SCSS/LESS
 
-[Unreleased]: https://github.com/SysBind/moodle-dev/compare/v1.2.1...HEAD
+[Unreleased]: https://github.com/SysBind/moodle-dev/compare/v1.2.2...HEAD
+[1.2.2]: https://github.com/SysBind/moodle-dev/compare/v1.2.1...v1.2.2
 [1.2.1]: https://github.com/SysBind/moodle-dev/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/SysBind/moodle-dev/compare/v1.1.8...v1.2.0
 [1.1.8]: https://github.com/SysBind/moodle-dev/compare/v1.1.7...v1.1.8
