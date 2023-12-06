@@ -2,46 +2,188 @@ package il.co.sysbind.intellij.moodledev.actions.generation
 
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.util.text.StringUtil
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiFile
-import com.intellij.util.PlatformIcons
-import com.jetbrains.php.PhpIcons
+import com.intellij.psi.util.PsiTreeUtil
+import com.intellij.util.ObjectUtils
+import com.intellij.util.containers.ContainerUtil
 import com.jetbrains.php.actions.PhpNewBaseAction
+import com.jetbrains.php.actions.PhpNewClassDataProvider
 import com.jetbrains.php.actions.PhpNewClassDialog
 import com.jetbrains.php.actions.newClassDataProvider.ClassCreationType
-import com.jetbrains.php.config.PhpLanguageFeature
+import com.jetbrains.php.actions.statistics.PhpNewClassUsageLogger
+import com.jetbrains.php.codeInsight.PhpCodeInsightUtil
+import com.jetbrains.php.completion.insert.PhpReferenceInsertHandler
 import com.jetbrains.php.lang.PhpFileType
+import com.jetbrains.php.lang.PhpLangUtil
+import com.jetbrains.php.lang.inspections.classes.PhpAddMethodStubsQuickFix
+import com.jetbrains.php.lang.intentions.PhpImportClassIntention
+import com.jetbrains.php.lang.psi.PhpGroupUseElement.PhpUseKeyword
+import com.jetbrains.php.lang.psi.elements.Method
+import com.jetbrains.php.lang.psi.elements.PhpClass
+import com.jetbrains.php.lang.psi.elements.PhpPsiElement
+import com.jetbrains.php.refactoring.extract.extractInterface.PhpExtractInterfaceProcessor
 import com.jetbrains.php.templates.PhpCreateFileFromTemplateDataProvider
+import com.jetbrains.php.templates.PhpTemplatesSettings
+import java.util.*
+import java.util.function.BiConsumer
 
 class MoodlePHPNewClassAction : PhpNewBaseAction(CAPTION, "", PhpFileType.INSTANCE.icon), DumbAware {
 
+    val SUPERCLASSES_IMPLEMENTOR: BiConsumer<PsiFile, PhpNewClassDialog> =
+        BiConsumer { psiFile: PsiFile?, dataProvider: PhpNewClassDialog ->
+            if (dataProvider.canInheritSuperClasses()) {
+                val phpClass = PsiTreeUtil.findChildOfType(
+                    psiFile,
+                    PhpClass::class.java
+                )
+                if (phpClass != null) {
+                    inheritSuperClasses(phpClass, dataProvider)
+                    implementAbstractMethods(phpClass, dataProvider)
+                }
+            }
+        }
 
     private companion object {
         private const val CAPTION = "Moodle Class File"
     }
 
-    override fun getDataProvider(p0: Project, p1: PsiDirectory, p2: PsiFile?): PhpCreateFileFromTemplateDataProvider? {
-        val dialog = object : PhpNewClassDialog(p0, p1) {
+    private fun generateDialog(p0: Project, p1: PsiDirectory): PhpNewClassDialog {
+        return object : PhpNewClassDialog(p0, p1) {
 
-            override fun init() {
-                super.init()
-                this.myTemplateComboBox.removeAllItems()
-                this.myTemplateComboBox.addItem(ClassCreationType("Class", PhpIcons.CLASS, "Moodle PHP Class"))
-                this.myTemplateComboBox.addItem(ClassCreationType("Interface", PhpIcons.INTERFACE, "Moodle PHP Interface"))
-                if (PhpLanguageFeature.TRAITS.isSupported(myProject)) {
-                    this.myTemplateComboBox.addItem(ClassCreationType("Tarit", PhpIcons.TRAIT, "Moodle PHP Trait"))
-                }
-                if (PhpLanguageFeature.ENUM_CLASSES.isSupported(myProject)) {
-                    this.myTemplateComboBox.addItem(ClassCreationType("Enum",
-                        PlatformIcons.ENUM_ICON, "Moodle PHP Enum"))
-                }
+            private var myTemplateName: String = "My Custom Template"
+            private var myCustomProperty : Properties = Properties()
 
+            init {
+                classCreationTypeChanged()
             }
 
-            override fun canInheritSuperClasses(): Boolean {
+            private fun classCreationTypeChanged() {
+                val selectedItem = getSelectedClassCreationType()
+                if (selectedItem == ClassCreationType.CLASS) {
+                    myTemplateName = "Moodle PHP Class"
+                } else if (selectedItem == ClassCreationType.INTERFACE) {
+                    myTemplateName = "Moodle PHP Interface"
+                } else if (selectedItem == ClassCreationType.TRAIT) {
+                    myTemplateName = "Moodle PHP Trait"
+                } else if (selectedItem == ClassCreationType.ENUM) {
+                    myTemplateName = "Moodle PHP Enum"
+                }
+            }
+
+            override fun getTemplateName(): String {
+                return myTemplateName
+            }
+
+            override fun hasCustomProperties(): Boolean {
                 return false
             }
-        };
+
+            // Get namespace only after the user submits the dialog
+            override fun doOKAction() {
+                PhpTemplatesSettings.getInstance(this.myProject).NEW_PHP_CLASS_LAST_EXTENSION = this.extension
+                PhpNewClassUsageLogger.logNewClass(this.myProject, this)
+
+                if (this.okAction.isEnabled) {
+                    this.applyFields()
+                    this.close(0)
+                }
+            }
+
+            override fun getProperties(directory: PsiDirectory): Properties {
+                myCustomProperty = super.getProperties(directory)
+                myCustomProperty.setProperty("PLUGIN_NAME", namespaceName.takeWhile {  it != '\\' })
+                return myCustomProperty
+            }
+        }
+    }
+
+    override fun getDataProvider(p0: Project, p1: PsiDirectory, p2: PsiFile?): PhpNewClassDialog? {
+        val dialog = generateDialog(p0, p1)
         return if (!dialog.showAndGet()) null else dialog
+    }
+
+    override fun createFile(project: Project, dataProvider: PhpCreateFileFromTemplateDataProvider): PsiFile? {
+        val classDataProvider = ObjectUtils.tryCast(
+            dataProvider,
+            PhpNewClassDialog::class.java
+        )
+        return if (classDataProvider == null) super.createFile(project, dataProvider) else createFile(
+            project, dataProvider,
+            { file: PsiFile ->
+                SUPERCLASSES_IMPLEMENTOR.accept(file, classDataProvider)
+            },
+            this.actionName
+        )
+    }
+
+    private fun inheritSuperClasses(phpClass: PhpClass, dataProvider: PhpNewClassDataProvider) {
+
+        val scope = PhpCodeInsightUtil.findScopeForUseOperator(phpClass)
+        overrideClass(phpClass, scope, dataProvider.superFqn)
+        implementInterfaces(phpClass, scope, dataProvider.interfaceFqnsToImplement)
+    }
+
+    private fun overrideClass(phpClass: PhpClass, scope: PhpPsiElement?, superFqn: String?) {
+
+        if (!StringUtil.isEmpty(superFqn) && !StringUtil.isNotEmpty(phpClass.superFQN)) {
+            val classQualifiedName = if (scope != null) PhpCodeInsightUtil.createQualifiedName(
+                scope,
+                superFqn!!
+            ) else superFqn!!
+            PhpLangUtil.addExtendsClause(phpClass, classQualifiedName)
+            if (PhpReferenceInsertHandler.shouldInsertImport(phpClass, phpClass, superFqn)) {
+                PhpImportClassIntention.apply(
+                    phpClass.project,
+                    scope!!, superFqn, null as String?, null as String?, PhpUseKeyword.CLASS
+                )
+            }
+        }
+    }
+
+    private fun implementInterfaces(
+        phpClass: PhpClass,
+        scope: PhpPsiElement?,
+        interfacesToImplement: Collection<String>
+    ) {
+
+        val implementedInterfaces: MutableSet<String> = ContainerUtil.newHashSet(*phpClass.interfaceNames)
+        val project = phpClass.project
+        val var5: Iterator<*> = interfacesToImplement.iterator()
+
+        while (var5.hasNext()) {
+            val interfaceToImplement = var5.next() as String
+            val interfaceFqn = PhpLangUtil.toFQN(interfaceToImplement)
+            if (!StringUtil.isEmpty(interfaceToImplement) && implementedInterfaces.add(interfaceFqn)) {
+                val interfaceQualifiedName =
+                    if (scope != null) PhpCodeInsightUtil.createQualifiedName(scope, interfaceFqn) else interfaceFqn
+                PhpExtractInterfaceProcessor.addImplementClause(project, phpClass, interfaceQualifiedName)
+                if (PhpReferenceInsertHandler.shouldInsertImport(phpClass, phpClass, interfaceFqn)) {
+                    PhpImportClassIntention.apply(
+                        project,
+                        scope!!, interfaceFqn, null as String?, null as String?, PhpUseKeyword.CLASS
+                    )
+                }
+            }
+        }
+    }
+
+    private fun implementAbstractMethods(phpClass: PhpClass, dataProvider: PhpNewClassDataProvider) {
+
+        if (dataProvider.shouldImplementAbstractMethods()) {
+            PhpAddMethodStubsQuickFix.addMethodStubs(
+                phpClass.project,
+                phpClass,
+                getAbstractMethodsToImplement(phpClass)
+            )
+        }
+    }
+
+    private fun getAbstractMethodsToImplement(phpClass: PhpClass): Collection<Method> {
+
+        return ContainerUtil.filter(
+            phpClass.methods
+        ) { method: Method -> method.isAbstract && method.containingClass !== phpClass }
     }
 }
