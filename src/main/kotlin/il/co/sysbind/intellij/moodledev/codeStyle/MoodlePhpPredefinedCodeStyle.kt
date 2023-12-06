@@ -38,12 +38,16 @@ class MoodlePhpPredefinedCodeStyle : PredefinedCodeStyle("Moodle", PhpLanguage.I
         3.also { commonSettings.FOR_BRACE_FORCE = it }
 
         val phpSettings: PhpCodeStyleSettings = settings.getCustomSettings(PhpCodeStyleSettings::class.java)
+        phpSettings.COMMA_AFTER_LAST_ARRAY_ELEMENT = true
+        phpSettings.FORCE_SHORT_DECLARATION_ARRAY_STYLE = true
         phpSettings.PHPDOC_BLANK_LINE_BEFORE_TAGS = true
         phpSettings.PHPDOC_WRAP_LONG_LINES = true
         phpSettings.LOWER_CASE_BOOLEAN_CONST = true
         phpSettings.LOWER_CASE_NULL_CONST = true
         phpSettings.ELSE_IF_STYLE = PhpCodeStyleSettings.ElseIfStyle.SEPARATE
         phpSettings.KEEP_RPAREN_AND_LBRACE_ON_ONE_LINE = true
+        phpSettings.KEEP_BLANK_LINES_AFTER_LBRACE = 1
         phpSettings.SPACE_BEFORE_CLOSURE_LEFT_PARENTHESIS = false
+        phpSettings.SPACE_AROUND_ASSIGNMENT_IN_DECLARE = true
     }
 }
