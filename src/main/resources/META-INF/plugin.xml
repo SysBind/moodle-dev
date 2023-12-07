@@ -35,8 +35,6 @@
         <internalFileTemplate name="Moodle PHP Class"/>
         <internalFileTemplate name="Moodle PHP Interface"/>
         <internalFileTemplate name="Moodle PHP Trait"/>
-        <internalFileTemplate name="Moodle JavaScript File"/>
-        <internalFileTemplate name="Moodle SCSS File"/>
         <moduleBuilder builderClass="il.co.sysbind.intellij.moodledev.project.wizard.MoodlePlugin" id="MOODLE_PLUGIN" order="first" />
     </extensions>
     <extensions defaultExtensionNs="com.jetbrains.php">
