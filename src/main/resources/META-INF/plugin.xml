@@ -9,14 +9,13 @@
   <p>Source is available at <a href="https://github.com:SysBind/moodle-dev">GitHub</a>, pull requests and issues welcome.</p>
   ]]>
     </description>
-
-    <!-- Product and plugin compatibility requirements -->
-    <!-- https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html -->
     <depends>com.jetbrains.php</depends>
     <depends>com.intellij.modules.platform</depends>
     <depends>JavaScript</depends>
     <depends>org.jetbrains.plugins.less</depends>
     <depends>org.jetbrains.plugins.sass</depends>
+    <depends>com.dmarcotte.handlebars</depends>
+
     <extensions defaultExtensionNs="com.intellij">
         <directoryProjectGenerator implementation="il.co.sysbind.intellij.moodledev.MoodlePluginGenerator"/>
         <projectTemplatesFactory implementation="il.co.sysbind.intellij.moodledev.MoodleTemplateFactory" />
@@ -35,6 +34,7 @@
         <internalFileTemplate name="Moodle PHP Class"/>
         <internalFileTemplate name="Moodle PHP Interface"/>
         <internalFileTemplate name="Moodle PHP Trait"/>
+        <internalFileTemplate name="Moodle Mustache Template"/>
         <moduleBuilder builderClass="il.co.sysbind.intellij.moodledev.project.wizard.MoodlePlugin" id="MOODLE_PLUGIN" order="first" />
     </extensions>
     <extensions defaultExtensionNs="com.jetbrains.php">
@@ -56,6 +56,7 @@
             </action>
             <action class="il.co.sysbind.intellij.moodledev.actions.generation.MoodlePHPNewClassAction" id="Moodle.NewPHPClass" overrides="false">
             </action>
+            <action class="il.co.sysbind.intellij.moodledev.actions.generation.MoodleMustacheTemplateAction" id="Moodle.NewMustache" overrides="false"></action>
         </group>
     </actions>
 </idea-plugin>
