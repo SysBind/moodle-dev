@@ -26,6 +26,7 @@ import com.jetbrains.php.lang.psi.elements.PhpPsiElement
 import com.jetbrains.php.refactoring.extract.extractInterface.PhpExtractInterfaceProcessor
 import com.jetbrains.php.templates.PhpCreateFileFromTemplateDataProvider
 import com.jetbrains.php.templates.PhpTemplatesSettings
+import il.co.sysbind.intellij.moodledev.project.MoodleProjectSettings
 import java.util.*
 import java.util.function.BiConsumer
 
@@ -93,7 +94,10 @@ class MoodlePHPNewClassAction : PhpNewBaseAction(CAPTION, "", PhpFileType.INSTAN
 
             override fun getProperties(directory: PsiDirectory): Properties {
                 myCustomProperty = super.getProperties(directory)
+                val settings = project.getService(MoodleProjectSettings::class.java).settings
                 myCustomProperty.setProperty("PLUGIN_NAME", namespaceName.takeWhile {  it != '\\' })
+                myCustomProperty.setProperty("USER_NAME", settings.userName)
+                myCustomProperty.setProperty("USER_EMAIL", settings.userEmail)
                 return myCustomProperty
             }
         }
