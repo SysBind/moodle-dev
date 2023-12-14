@@ -19,17 +19,28 @@ import il.co.sysbind.intellij.moodledev.util.MoodleCorePathUtil
 import org.jetbrains.plugins.less.LESSLanguage
 import org.jetbrains.plugins.scss.SCSSLanguage
 import javax.swing.JComponent
+import javax.swing.JTextField
 
 class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
     private val settings = project.getService(MoodleProjectSettings::class.java).settings
     private lateinit var pluginEnabled: Cell<JBCheckBox>
     private lateinit var moodlePath: Cell<TextFieldWithBrowseButton>
+    private lateinit var userName: Cell<JTextField>
+    private lateinit var userEmail: Cell<JTextField>
     @Suppress("DialogTitleCapitalization")
     private var panel = panel {
         row {
             pluginEnabled =
                 checkBox(MoodleBundle.getMessage("configurable.enabled"))
                     .bindSelected(settings::pluginEnabled)
+        }
+
+        row(MoodleBundle.message("configurable.username")) {
+            userName = textField().bindText(settings::userName)
+        }
+
+        row(MoodleBundle.message("configurable.useremail")) {
+            userEmail = textField().bindText(settings::userEmail)
         }
 
         row("Moodle project directory:") {
@@ -39,7 +50,6 @@ class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
                     project,
                     FileChooserDescriptorFactory.createSingleFolderDescriptor()
                 ).bindText(settings::moodlePath).enabledIf(pluginEnabled.selected)
-
         }
     }
 
@@ -54,6 +64,8 @@ class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
     override fun apply() {
         settings.moodlePath = moodlePath.component.text
         settings.pluginEnabled = pluginEnabled.component.isSelected
+        settings.userName = userName.component.text
+        settings.userEmail = userEmail.component.text
         if (settings.moodlePath != "") {
             MoodleCorePathUtil.isMoodlePathValid(settings.moodlePath)
         } else {

@@ -1,6 +1,7 @@
 package il.co.sysbind.intellij.moodledev.util
 
 import com.intellij.openapi.vfs.LocalFileSystem
+import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VirtualFile
 import il.co.sysbind.intellij.moodledev.moodle.Component
 
@@ -27,6 +28,18 @@ object MoodleCorePathUtil {
         val versionfile = dir.findChild(MOODLE_VERSION_FILE)
         if (versionfile != null) {
             return versionfile
+        }
+        return null
+    }
+
+    fun findFileUpwards(startDir: VirtualFile, filename: String): VirtualFile? {
+        var dir: VirtualFile? = startDir
+        while (dir != null) {
+            val file = VfsUtil.findRelativeFile(dir, filename)
+            if (file != null) {
+                return file
+            }
+            dir = dir.parent
         }
         return null
     }

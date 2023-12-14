@@ -2,13 +2,20 @@ package il.co.sysbind.intellij.moodledev.actions.generation
 
 import com.intellij.ide.actions.CreateFileFromTemplateAction
 import com.intellij.ide.actions.CreateFileFromTemplateDialog
+import com.intellij.ide.fileTemplates.FileTemplate
+import com.intellij.ide.fileTemplates.FileTemplateManager
+import com.intellij.ide.fileTemplates.FileTemplateUtil
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.actionSystem.DataContext
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
+import com.intellij.psi.PsiFile
 import com.jetbrains.php.PhpIcons
 import il.co.sysbind.intellij.moodledev.project.MoodleProjectSettings
+import il.co.sysbind.intellij.moodledev.util.MoodleCorePathUtil
+import java.nio.file.FileSystems
+import java.nio.file.Files
 
 class PhpCreateFileAction : CreateFileFromTemplateAction(CAPTION, "", PhpIcons.PHP_FILE), DumbAware {
     override fun getActionName(directory: PsiDirectory?, newName: String, templateName: String?): String = CAPTION
@@ -23,6 +30,30 @@ class PhpCreateFileAction : CreateFileFromTemplateAction(CAPTION, "", PhpIcons.P
     override fun buildDialog(project: Project, directory: PsiDirectory, builder: CreateFileFromTemplateDialog.Builder) {
         builder.setTitle(CAPTION)
             .addKind("Empty file", PhpIcons.PHP_FILE, "Moodle PHP File")
+    }
+
+    override fun createFileFromTemplate(name: String, template: FileTemplate, dir: PsiDirectory): PsiFile {
+        val project = dir.project
+        val settings = project.getService(MoodleProjectSettings::class.java).settings
+
+        // Create properties for the template
+        val templateManager = FileTemplateManager.getInstance(project)
+        val props = templateManager.defaultProperties
+        props["USER_NAME"] = settings.userName
+        props["USER_EMAIL"] = settings.userEmail
+
+        // Extract PLUGIN_NAME from the closest version.php
+        val versionFilePath = MoodleCorePathUtil.findFileUpwards(dir.virtualFile, "version.php")?.path
+        if (Files.exists(FileSystems.getDefault().getPath(versionFilePath!!))) {
+            val componentLine = Files.readAllLines(FileSystems.getDefault().getPath(versionFilePath))
+                . firstOrNull { it.trim().startsWith("\$plugin->component") }
+            if (componentLine != null) {
+                val pluginName = componentLine.split("=")[1].trim().removeSuffix(";").removeSurrounding("\"", "\"").removeSurrounding("\'", "\'")
+                props["PLUGIN_NAME"] = pluginName
+            }
+        }
+
+        return FileTemplateUtil.createFromTemplate(template, name, props, dir).containingFile
     }
 
     private companion object {
