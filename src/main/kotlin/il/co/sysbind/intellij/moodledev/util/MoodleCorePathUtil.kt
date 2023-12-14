@@ -11,6 +11,7 @@ import java.nio.file.Files
 object MoodleCorePathUtil {
 
     private val MOODLE_VERSION_FILE = "version.php"
+    private val MOODLE_CLASSES_DIR = "classes"
 
     fun isMoodlePathValid(corePath: String): Boolean {
         val moodleTree = Component()
@@ -50,7 +51,7 @@ object MoodleCorePathUtil {
     }
 
     fun getPluginName(startDir: PsiDirectory): String {
-        val versionFilePath = findFileUpwards(startDir, "version.php")?.path
+        val versionFilePath = findFileUpwards(startDir, MOODLE_VERSION_FILE)?.path
         if (versionFilePath != null && Files.exists(FileSystems.getDefault().getPath(versionFilePath))) {
             val componentLine = Files.readAllLines(FileSystems.getDefault().getPath(versionFilePath))
                 .firstOrNull { it.trim().startsWith("\$plugin->component") }
@@ -61,5 +62,12 @@ object MoodleCorePathUtil {
             }
         }
         return ""
+    }
+
+    fun getNamespace(directory: PsiDirectory): String {
+        var namespace = getPluginName(directory)
+        val suffixDirectory = directory.toString().substringAfter(MOODLE_CLASSES_DIR, "")
+            .replace("/", "\\")
+        return namespace + suffixDirectory
     }
 }

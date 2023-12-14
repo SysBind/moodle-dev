@@ -27,6 +27,7 @@ import com.jetbrains.php.refactoring.extract.extractInterface.PhpExtractInterfac
 import com.jetbrains.php.templates.PhpCreateFileFromTemplateDataProvider
 import com.jetbrains.php.templates.PhpTemplatesSettings
 import il.co.sysbind.intellij.moodledev.project.MoodleProjectSettings
+import il.co.sysbind.intellij.moodledev.util.MoodleCorePathUtil
 import java.util.*
 import java.util.function.BiConsumer
 
@@ -73,6 +74,16 @@ class MoodlePHPNewClassAction : PhpNewBaseAction(CAPTION, "", PhpFileType.INSTAN
                 }
             }
 
+            override fun updateNamespacesSuggestions(namespaces: List<String?>) {
+                val pluginName = MoodleCorePathUtil.getPluginName(p1)
+                if (this.myNamespaceCombobox != null) {
+                    val mainSuggestion = if (!namespaces.toString().startsWith(pluginName)) MoodleCorePathUtil.getNamespace(p1) else namespaces[0]!!
+                    val suggestions: List<String?>? =
+                        if (namespaces.size > 1) namespaces.subList(1, namespaces.size) else null
+                    myNamespaceCombobox.updateItems(mainSuggestion, suggestions)
+                }
+            }
+
             override fun getTemplateName(): String {
                 return myTemplateName
             }
@@ -95,7 +106,7 @@ class MoodlePHPNewClassAction : PhpNewBaseAction(CAPTION, "", PhpFileType.INSTAN
             override fun getProperties(directory: PsiDirectory): Properties {
                 myCustomProperty = super.getProperties(directory)
                 val settings = project.getService(MoodleProjectSettings::class.java).settings
-                myCustomProperty.setProperty("PLUGIN_NAME", namespaceName.takeWhile {  it != '\\' })
+                myCustomProperty.setProperty("PLUGIN_NAME", MoodleCorePathUtil.getPluginName(directory))
                 myCustomProperty.setProperty("USER_NAME", settings.userName)
                 myCustomProperty.setProperty("USER_EMAIL", settings.userEmail)
                 return myCustomProperty
