@@ -16,7 +16,7 @@
 /**
  * ${PLUGIN_NAME} ${FILE_NAME} description here.
  *
- * @module     ${PLUGIN_NAME}/${FILE_NAME}
+ * @module     ${PLUGIN_NAME}/${NAME}
  * @copyright  ${YEAR} ${USER_NAME} <${USER_EMAIL}>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

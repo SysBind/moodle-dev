@@ -12,6 +12,13 @@ object MoodleCorePathUtil {
 
     private val MOODLE_VERSION_FILE = "version.php"
     private val MOODLE_CLASSES_DIR = "classes"
+    private val MOODLE_TEMPLATES_DIR = "templates"
+    private val MOODLE_DB_DIR = "db"
+    private val MOODLE_LANG_DIR = "lang"
+    private val MOODLE_JS_DIR = "amd"
+    private val MOODLE_CLI_DIR = "cli"
+    private val MOODLE_BACKUP_DIR = "backup"
+    private val MOODLE_PIX_DIR = "pix"
 
     fun isMoodlePathValid(corePath: String): Boolean {
         val moodleTree = Component()
@@ -56,8 +63,8 @@ object MoodleCorePathUtil {
             val componentLine = Files.readAllLines(FileSystems.getDefault().getPath(versionFilePath))
                 .firstOrNull { it.trim().startsWith("\$plugin->component") }
             if (componentLine != null) {
-                val pluginName = componentLine.split("=")[1].trim().removeSuffix(";").removeSurrounding("\"", "\"")
-                    .removeSurrounding("\'", "\'")
+                val pluginName = componentLine.split("=")[1].trim().removeSuffix(";")
+                    .removeSurrounding("\"", "\"").removeSurrounding("\'", "\'")
                 return pluginName
             }
         }

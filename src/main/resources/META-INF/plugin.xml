@@ -35,6 +35,7 @@
         <internalFileTemplate name="Moodle PHP Interface"/>
         <internalFileTemplate name="Moodle PHP Trait"/>
         <internalFileTemplate name="Moodle Mustache Template"/>
+        <internalFileTemplate name="Moodle JavaScript File"/>
         <moduleBuilder builderClass="il.co.sysbind.intellij.moodledev.project.wizard.MoodlePlugin" id="MOODLE_PLUGIN" order="first" />
     </extensions>
     <extensions defaultExtensionNs="com.jetbrains.php">
