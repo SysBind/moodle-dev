@@ -14,9 +14,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * ${PLUGIN_NAME} ${FILE_NAME} description here.
+ *  description here.
  *
- * @module     ${PLUGIN_NAME}/${NAME}
+ * @module     ${MODULE_DIR}/${NAME}
  * @copyright  ${YEAR} ${USER_NAME} <${USER_EMAIL}>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

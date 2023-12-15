@@ -53,11 +53,14 @@
         <group id="Moodle.NewFile" text="Moodle Files">
             <add-to-group group-id="PhpNewGroup" anchor="before" relative-to-action="NewFile"/>
             <separator></separator>
-            <action class="il.co.sysbind.intellij.moodledev.actions.generation.PhpCreateFileAction" id="Moodle.NewPHPFile" overrides="false">
-            </action>
-            <action class="il.co.sysbind.intellij.moodledev.actions.generation.MoodlePHPNewClassAction" id="Moodle.NewPHPClass" overrides="false">
-            </action>
-            <action class="il.co.sysbind.intellij.moodledev.actions.generation.MoodleMustacheTemplateAction" id="Moodle.NewMustache" overrides="false"></action>
+            <action class="il.co.sysbind.intellij.moodledev.actions.generation.PhpCreateFileAction"
+                    id="Moodle.NewPHPFile" overrides="false"/>
+            <action class="il.co.sysbind.intellij.moodledev.actions.generation.MoodlePHPNewClassAction"
+                    id="Moodle.NewPHPClass" overrides="false"/>
+            <action class="il.co.sysbind.intellij.moodledev.actions.generation.MoodleMustacheTemplateAction"
+                    id="Moodle.NewMustache" overrides="false"/>
+            <action class="il.co.sysbind.intellij.moodledev.actions.generation.MoodleJavaScriptFileAction"
+                    id="Moodle.NewJavascript" overrides="false"/>
         </group>
     </actions>
 </idea-plugin>

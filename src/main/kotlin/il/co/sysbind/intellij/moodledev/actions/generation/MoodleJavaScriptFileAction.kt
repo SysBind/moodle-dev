@@ -5,19 +5,23 @@ import com.intellij.ide.actions.CreateFileFromTemplateDialog
 import com.intellij.ide.fileTemplates.FileTemplate
 import com.intellij.ide.fileTemplates.FileTemplateManager
 import com.intellij.ide.fileTemplates.FileTemplateUtil
+import com.intellij.lang.javascript.JavaScriptFileType
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.actionSystem.DataContext
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiFile
-import icons.HandlebarsIcons
 import il.co.sysbind.intellij.moodledev.project.MoodleProjectSettings
 import il.co.sysbind.intellij.moodledev.util.MoodleCorePathUtil
 
-class MoodleMustacheTemplateAction : CreateFileFromTemplateAction(CAPTION, "", HandlebarsIcons.Handlebars_icon),
-    DumbAware {
-    override fun getActionName(directory: PsiDirectory?, newName: String, templateName: String?): String = CAPTION
+
+class MoodleJavaScriptFileAction: CreateFileFromTemplateAction(CAPTION, "", JavaScriptFileType.INSTANCE.icon)
+    , DumbAware {
+
+    private companion object {
+        private const val CAPTION = "Moodle Javascript File"
+    }
 
     override fun isAvailable(dataContext: DataContext?): Boolean {
         if (!super.isAvailable(dataContext)) return false
@@ -29,24 +33,24 @@ class MoodleMustacheTemplateAction : CreateFileFromTemplateAction(CAPTION, "", H
 
     override fun buildDialog(project: Project, directory: PsiDirectory, builder: CreateFileFromTemplateDialog.Builder) {
         builder.setTitle(PhpCreateFileAction.CAPTION)
-            .addKind("Empty file", HandlebarsIcons.Handlebars_icon, "Moodle Mustache Template")
+            .addKind("Empty file", JavaScriptFileType.INSTANCE.icon, "Moodle JavaScript File")
     }
+
+    override fun getActionName(directory: PsiDirectory?, newName: String, templateName: String?): String = CAPTION
 
     override fun createFileFromTemplate(name: String, template: FileTemplate, dir: PsiDirectory): PsiFile {
         val project = dir.project
+        val settings = project.getService(MoodleProjectSettings::class.java).settings
 
         // Create properties for the template
         val templateManager = FileTemplateManager.getInstance(project)
         val props = templateManager.defaultProperties
+        props["USER_NAME"] = settings.userName
+        props["USER_EMAIL"] = settings.userEmail
 
         // Extract PLUGIN_NAME from the closest version.php
-        props["PLUGIN_NAME"] = MoodleCorePathUtil.getModuleName(dir, "mustache")
+        props["MODULE_DIR"] = MoodleCorePathUtil.getModuleName(dir, "js")
 
         return FileTemplateUtil.createFromTemplate(template, name, props, dir).containingFile
     }
-
-    private companion object {
-        private const val CAPTION = "Moodle Mustache Template"
-    }
-
 }

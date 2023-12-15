@@ -15,7 +15,7 @@ object MoodleCorePathUtil {
     private val MOODLE_TEMPLATES_DIR = "templates"
     private val MOODLE_DB_DIR = "db"
     private val MOODLE_LANG_DIR = "lang"
-    private val MOODLE_JS_DIR = "amd"
+    private val MOODLE_JS_DIR = "amd/src"
     private val MOODLE_CLI_DIR = "cli"
     private val MOODLE_BACKUP_DIR = "backup"
     private val MOODLE_PIX_DIR = "pix"
@@ -72,9 +72,20 @@ object MoodleCorePathUtil {
     }
 
     fun getNamespace(directory: PsiDirectory): String {
-        var namespace = getPluginName(directory)
+        val namespace = getPluginName(directory)
         val suffixDirectory = directory.toString().substringAfter(MOODLE_CLASSES_DIR, "")
             .replace("/", "\\")
+        return namespace + suffixDirectory
+    }
+
+    fun getModuleName(directory: PsiDirectory, type: String): String {
+        val namespace = getPluginName(directory)
+        var suffixDirectory = ""
+        when(type) {
+            "js" -> suffixDirectory = directory.toString().substringAfter(MOODLE_JS_DIR, "")
+            "mustache" -> suffixDirectory = directory.toString().substringAfter(MOODLE_TEMPLATES_DIR, "")
+            else -> suffixDirectory = ""
+        }
         return namespace + suffixDirectory
     }
 }
