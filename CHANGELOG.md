@@ -7,6 +7,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 
 ## [Unreleased]
 
+## [1.2.6] - 2023-12-15
+
+- Changelog update - `v1.2.5` by @github-actions in https://github.com/SysBind/moodle-dev/pull/68
+- Bump JetBrains/qodana-action from 2023.2.9 to 2023.3.0 by @dependabot in https://github.com/SysBind/moodle-dev/pull/69
+- Get user detailes by @AviMoto in https://github.com/SysBind/moodle-dev/pull/70
+
 ## [1.2.5] - 2023-12-07
 
 Make aduptation to PHPStorm 2023.3 and Improve Moodle PHP class creating
@@ -89,7 +95,8 @@ Add support for PHPStorm 2022.2
 - Add live Template for Moodle $ADMIN by type ADMIN
 - Add Moodle code style for predefined code styles for PHP/Javascript/SCSS/LESS
 
-[Unreleased]: https://github.com/SysBind/moodle-dev/compare/v1.2.5...HEAD
+[Unreleased]: https://github.com/SysBind/moodle-dev/compare/v1.2.6...HEAD
+[1.2.6]: https://github.com/SysBind/moodle-dev/compare/v1.2.5...v1.2.6
 [1.2.5]: https://github.com/SysBind/moodle-dev/compare/v1.2.3...v1.2.5
 [1.2.3]: https://github.com/SysBind/moodle-dev/compare/v1.2.2...v1.2.3
 [1.2.2]: https://github.com/SysBind/moodle-dev/compare/v1.2.1...v1.2.2
