@@ -62,15 +62,20 @@ class MoodlePHPNewClassAction : PhpNewBaseAction(CAPTION, "", PhpFileType.INSTAN
             }
 
             private fun classCreationTypeChanged() {
-                val selectedItem = getSelectedClassCreationType()
-                if (selectedItem == ClassCreationType.CLASS) {
-                    myTemplateName = "Moodle PHP Class"
-                } else if (selectedItem == ClassCreationType.INTERFACE) {
-                    myTemplateName = "Moodle PHP Interface"
-                } else if (selectedItem == ClassCreationType.TRAIT) {
-                    myTemplateName = "Moodle PHP Trait"
-                } else if (selectedItem == ClassCreationType.ENUM) {
-                    myTemplateName = "Moodle PHP Enum"
+                val selectedItem = selectedClassCreationType
+                when (selectedItem) {
+                    ClassCreationType.CLASS -> {
+                        myTemplateName = "Moodle PHP Class"
+                    }
+                    ClassCreationType.INTERFACE -> {
+                        myTemplateName = "Moodle PHP Interface"
+                    }
+                    ClassCreationType.TRAIT -> {
+                        myTemplateName = "Moodle PHP Trait"
+                    }
+                    ClassCreationType.ENUM -> {
+                        myTemplateName = "Moodle PHP Enum"
+                    }
                 }
             }
 

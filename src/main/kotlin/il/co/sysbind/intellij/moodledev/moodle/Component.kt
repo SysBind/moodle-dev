@@ -12,7 +12,7 @@ class Component {
         pluginTypesMap = pluginsObj.jsonObject
     }
 
-    public fun getPluginPath(type: String): String {
+    fun getPluginPath(type: String): String {
         val path = pluginTypesMap[type]
         if (path != null) {
             return path.toString()
@@ -20,7 +20,7 @@ class Component {
         return ""
     }
 
-    public fun getPluginTypes(): Set<String> {
+    fun getPluginTypes(): Set<String> {
         return pluginTypesMap.keys
     }
 }

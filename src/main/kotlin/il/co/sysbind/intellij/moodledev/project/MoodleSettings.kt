@@ -5,5 +5,6 @@ class MoodleSettings {
     var moodlePath: String = ""
     var userName: String = ""
     var userEmail: String = ""
-    var MoodleVersion: String = "master"
+    var moodleVersion: String = "master"
+    val defaultMoodleTablePrefix = "mdl_"
 }

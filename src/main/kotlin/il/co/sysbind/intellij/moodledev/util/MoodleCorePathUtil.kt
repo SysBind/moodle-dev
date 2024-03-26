@@ -10,15 +10,15 @@ import java.nio.file.Files
 
 object MoodleCorePathUtil {
 
-    private val MOODLE_VERSION_FILE = "version.php"
-    private val MOODLE_CLASSES_DIR = "classes"
-    private val MOODLE_TEMPLATES_DIR = "templates"
-    private val MOODLE_DB_DIR = "db"
-    private val MOODLE_LANG_DIR = "lang"
-    private val MOODLE_JS_DIR = "amd/src"
-    private val MOODLE_CLI_DIR = "cli"
-    private val MOODLE_BACKUP_DIR = "backup"
-    private val MOODLE_PIX_DIR = "pix"
+    private const val MOODLE_VERSION_FILE = "version.php"
+    private const val MOODLE_CLASSES_DIR = "classes"
+    private const val MOODLE_TEMPLATES_DIR = "templates"
+    private const val MOODLE_DB_DIR = "db"
+    private const val MOODLE_LANG_DIR = "lang"
+    private const val MOODLE_JS_DIR = "amd/src"
+    private const val MOODLE_CLI_DIR = "cli"
+    private const val MOODLE_BACKUP_DIR = "backup"
+    private const val MOODLE_PIX_DIR = "pix"
 
     fun isMoodlePathValid(corePath: String): Boolean {
         val moodleTree = Component()
@@ -43,7 +43,21 @@ object MoodleCorePathUtil {
         return null
     }
 
-    fun findFileUpwards(startDir: PsiDirectory, filename: String): VirtualFile? {
+    fun getMoodleVersion(dir: VirtualFile?): String {
+        val versionFilePath = findMoodleVersion(dir).toString()
+        if (Files.exists(FileSystems.getDefault().getPath(versionFilePath))) {
+            val componentLine = Files.readAllLines(FileSystems.getDefault().getPath(versionFilePath))
+                .firstOrNull { it.trim().startsWith("\$version") }
+            if (componentLine != null) {
+                val pluginName = componentLine.split("=")[1].trim().substringBefore(".")
+                    .removeSurrounding("\"", "\"").removeSurrounding("\'", "\'")
+                return pluginName
+            }
+        }
+        return ""
+    }
+
+    private fun findFileUpwards(startDir: PsiDirectory, filename: String): VirtualFile? {
         var dir: VirtualFile = startDir.virtualFile
         val project = startDir.project
         while (dir.path.startsWith(project.basePath.toString())) {
@@ -81,10 +95,10 @@ object MoodleCorePathUtil {
     fun getModuleName(directory: PsiDirectory, type: String): String {
         val namespace = getPluginName(directory)
         var suffixDirectory = ""
-        when(type) {
-            "js" -> suffixDirectory = directory.toString().substringAfter(MOODLE_JS_DIR, "")
-            "mustache" -> suffixDirectory = directory.toString().substringAfter(MOODLE_TEMPLATES_DIR, "")
-            else -> suffixDirectory = ""
+        suffixDirectory = when(type) {
+            "js" -> directory.toString().substringAfter(MOODLE_JS_DIR, "")
+            "mustache" -> directory.toString().substringAfter(MOODLE_TEMPLATES_DIR, "")
+            else -> ""
         }
         return namespace + suffixDirectory
     }
