@@ -8,7 +8,7 @@ import com.intellij.openapi.roots.ui.configuration.ModulesProvider
 
 class MoodlePlugin : ModuleBuilder() {
     override fun getModuleType(): ModuleType<*> {
-        return ModuleType.EMPTY;
+        return ModuleType.EMPTY
     }
 
     override fun createWizardSteps(

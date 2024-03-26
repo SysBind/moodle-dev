@@ -171,8 +171,11 @@ jobs:
       # Run Qodana inspections
       - name: Qodana - Code Inspection
         uses: JetBrains/qodana-action@v2023.3.2
+        env:
+          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }} # read the steps about it below
         with:
           cache-default-branch-only: true
+          upload-result: true
 
   # Run plugin structure verification along with IntelliJ Plugin Verifier
   verify:

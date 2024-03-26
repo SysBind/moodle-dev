@@ -1,6 +1,6 @@
 package il.co.sysbind.intellij.moodledev.project
 
-import com.intellij.application.options.CodeStyle;
+import com.intellij.application.options.CodeStyle
 import com.intellij.lang.javascript.JavascriptLanguage
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory
 import com.intellij.openapi.project.Project
