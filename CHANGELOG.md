@@ -7,6 +7,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 
 ## [Unreleased]
 
+### Changed
+
+- Update build libraries
+- Add support for build 241
+
 ## [1.2.6] - 2023-12-15
 
 - Changelog update - `v1.2.5` by @github-actions in https://github.com/SysBind/moodle-dev/pull/68
