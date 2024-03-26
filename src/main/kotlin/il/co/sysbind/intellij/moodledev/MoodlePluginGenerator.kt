@@ -64,7 +64,6 @@ class MoodlePluginGenerator : WebProjectTemplate<MoodlePluginGeneratorSettings>(
 
     private inner class MoodlePluginGeneratorPeer : ProjectGeneratorPeer<MoodlePluginGeneratorSettings> {
         private var myContentRoot: TextAccessor? = null
-        val plugin = MoodlePluginGeneratorSettings()
         private lateinit var myPluginType : Cell<ComboBox<String>>
         override fun getComponent(): JComponent {
             val moodleTree = Component()

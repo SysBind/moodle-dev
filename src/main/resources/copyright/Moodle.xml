@@ -1,6 +1,6 @@
 <component name="CopyrightManager">
   <copyright>
-    <option name="notice" value="This file is part of Moodle - http://moodle.org/&#10;&#10;Moodle is free software: you can redistribute it and/or modify &#10;but WITHOUT ANY WARRANTY; without even the implied warranty of &#10;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&#10;GNU General Public License for more details.&#10;&#10;You should have received a copy of the GNU General Public License&#10;along with Moodle.  If not, see &lt;http://www.gnu.org/licenses/&gt;." />
+    <option name="notice" value="This file is part of Moodle - https://moodle.org/&#10;&#10;Moodle is free software: you can redistribute it and/or modify &#10;but WITHOUT ANY WARRANTY; without even the implied warranty of &#10;MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the&#10;GNU General Public License for more details.&#10;&#10;You should have received a copy of the GNU General Public License&#10;along with Moodle.  If not, see &lt;https://www.gnu.org/licenses/&gt;." />
     <option name="myName" value="Moodle" />
   </copyright>
 </component>
