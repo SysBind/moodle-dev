@@ -43,6 +43,20 @@ object MoodleCorePathUtil {
         return null
     }
 
+    fun getMoodleVersion(dir: VirtualFile?): String {
+        val versionFilePath = findMoodleVersion(dir).toString()
+        if (Files.exists(FileSystems.getDefault().getPath(versionFilePath))) {
+            val componentLine = Files.readAllLines(FileSystems.getDefault().getPath(versionFilePath))
+                .firstOrNull { it.trim().startsWith("\$version") }
+            if (componentLine != null) {
+                val pluginName = componentLine.split("=")[1].trim().substringBefore(".")
+                    .removeSurrounding("\"", "\"").removeSurrounding("\'", "\'")
+                return pluginName
+            }
+        }
+        return ""
+    }
+
     fun findFileUpwards(startDir: PsiDirectory, filename: String): VirtualFile? {
         var dir: VirtualFile = startDir.virtualFile
         val project = startDir.project
