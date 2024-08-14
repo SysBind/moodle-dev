@@ -1,21 +1,20 @@
 package il.co.sysbind.moodledev
 
-import com.intellij.AbstractBundle
+import com.intellij.DynamicBundle
 import org.jetbrains.annotations.NonNls
 import org.jetbrains.annotations.PropertyKey
 
 @NonNls
 private const val BUNDLE = "messages.MoodleBundle"
 
-object MoodleBundle : AbstractBundle(BUNDLE) {
+object MoodleBundle : DynamicBundle(BUNDLE) {
 
-    @Suppress("SpreadOperator")
     @JvmStatic
-    fun message(@PropertyKey(resourceBundle = BUNDLE) key: String, vararg params: Any) = getMessage(key, *params)
+    fun message(@PropertyKey(resourceBundle = BUNDLE) key: String, vararg params: Any) =
+        getMessage(key, *params)
 
-    @Suppress("SpreadOperator")
+    @Suppress("unused")
     @JvmStatic
-    fun messagePointer(@PropertyKey(resourceBundle = BUNDLE) key: String, vararg params: Any) = run {
-        message(key, *params)
-    }
+    fun messagePointer(@PropertyKey(resourceBundle = BUNDLE) key: String, vararg params: Any) =
+        getLazyMessage(key, *params)
 }
