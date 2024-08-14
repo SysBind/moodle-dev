@@ -7,6 +7,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 
 ## [Unreleased]
 
+### Changed
+- Add support for build 242
+
 ## [1.2.7] - 2024-03-26
 
 ### Changed

@@ -1,6 +1,8 @@
 .gradle
 .idea
-.qodana
 build
+.intellijPlatform
+.qodana
+.kotlin
 /private.pem
 /chain.crt
