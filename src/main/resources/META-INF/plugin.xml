@@ -6,7 +6,12 @@
     <description><![CDATA[
     <h1>Plugin For Moodle Developers</h1>
   <p>This plugin will help Moodle Developers to work quickly and according to Moodle requirements</p>
-  <p>To configure/use the Moodle Code Styles, go to Preferences > Editor > Code Style > PHP/JavaScript/Less/SCSS/XML, and then select "Set from..." and select "Moodle".</p>
+  <ol>
+  <li>Search for Moodle Development and click install</li>
+  <li>In Settings->PHP->Framework enable the Moodle checkbox</li>
+  <li>Enter Your full name and email in the relevant fields</li>
+  <li>For moodle project field enter the directory where the Moodle root directories (if the project is not plugin it should be the same directory as the project)</li>
+  </ol>
   <p>Source is available at <a href="https://github.com:SysBind/moodle-dev">GitHub</a>, pull requests and issues welcome.</p>
   ]]>
     </description>
