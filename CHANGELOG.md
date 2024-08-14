@@ -7,6 +7,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 
 ## [Unreleased]
 
+## [1.2.9]
+
+### Added
+
+- Auto complete to Database object dependency injection
+- Add Moodle directory to PHP include path
+
 ## [1.2.8] - 2024-08-14
 
 ### Changed

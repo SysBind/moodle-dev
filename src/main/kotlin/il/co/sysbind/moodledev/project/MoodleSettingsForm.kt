@@ -8,6 +8,7 @@ import com.intellij.openapi.project.guessProjectDir
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
 import com.intellij.ui.components.JBCheckBox
 import com.intellij.ui.dsl.builder.*
+import com.jetbrains.php.config.library.PhpIncludePathManager
 import com.jetbrains.php.frameworks.PhpFrameworkConfigurable
 import com.jetbrains.php.lang.PhpLanguage
 import il.co.sysbind.moodledev.MoodleBundle
@@ -71,12 +72,32 @@ class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
         } else {
             settings.moodlePath = project.guessProjectDir()?.path ?: ""
         }
+        val moodlePathStr = settings.moodlePath
         if (isBeingUsed) {
             val codeStyleSettings = CodeStyle.getSettings(project)
             MoodlePhpPredefinedCodeStyle().apply(codeStyleSettings, PhpLanguage.INSTANCE)
             MoodleJavascriptPredefinedCodeStyle().apply(codeStyleSettings, JavascriptLanguage.INSTANCE)
             MoodleLessPredefinedCodeStyle().apply(codeStyleSettings, LESSLanguage.INSTANCE)
             MoodleScssPredefinedCodeStyle().apply(codeStyleSettings, SCSSLanguage.INSTANCE)
+            if (settings.moodlePath.isNotBlank()) {
+                // Get the PhpIncludePathManager for the current project
+                val includePathManager = PhpIncludePathManager.getInstance(project)
+                // Add the Moodle path to the PHP include paths
+                val includePathList = includePathManager.includePath
+                if (!includePathList.contains(moodlePathStr)) {
+                    includePathList.add(moodlePathStr)
+                    includePathManager.includePath = includePathList
+                }
+            }
+        } else {
+            if (moodlePathStr.isNotBlank() && moodlePathStr != project.guessProjectDir()?.path) {
+                val includePathManager = PhpIncludePathManager.getInstance(project)
+                val includePathList = includePathManager.includePath
+                if (includePathList.contains(moodlePathStr)) {
+                    includePathList.remove(moodlePathStr)
+                    includePathManager.includePath = includePathList
+                }
+            }
         }
     }
 
