@@ -1,3 +1,4 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>il.co.sysbind.intellij.moodledev</id>
     <name>Moodle Development</name>
@@ -9,7 +10,7 @@
   <p>Source is available at <a href="https://github.com:SysBind/moodle-dev">GitHub</a>, pull requests and issues welcome.</p>
   ]]>
     </description>
-    <depends>com.jetbrains.php</depends>
+    <depends>--</depends>
     <depends>com.intellij.modules.platform</depends>
     <depends>JavaScript</depends>
     <depends>org.jetbrains.plugins.less</depends>
