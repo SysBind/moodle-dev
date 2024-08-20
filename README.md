@@ -1,9 +1,9 @@
 # moodle-dev
 
 ![Build](https://github.com/SysBind/moodle-dev/workflows/Build/badge.svg)
-![Version](https://img.shields.io/jetbrains/plugin/v/25109)
-![Downloads](https://img.shields.io/jetbrains/plugin/d/25109)
-![Rating](https://img.shields.io/jetbrains/plugin/r/rating/25109)
+![Version](https://img.shields.io/jetbrains/plugin/v/16702)
+![Downloads](https://img.shields.io/jetbrains/plugin/d/16702)
+![Rating](https://img.shields.io/jetbrains/plugin/r/rating/16702)
 
 <!-- Plugin description -->
 This plugin will help Moodle Developers to work quickly and according to Moodle requirements
