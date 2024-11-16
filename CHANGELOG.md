@@ -131,7 +131,8 @@ Add support for PHPStorm 2022.2
 - Add live Template for Moodle $ADMIN by type ADMIN
 - Add Moodle code style for predefined code styles for PHP/Javascript/SCSS/LESS
 
-[Unreleased]: https://github.com/SysBind/moodle-dev/compare/v1.3.0...HEAD
+[Unreleased]: https://github.com/SysBind/moodle-dev/compare/v1.3.1...HEAD
+[1.3.1]: https://github.com/SysBind/moodle-dev/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/SysBind/moodle-dev/compare/v1.2.9...v1.3.0
 [1.2.9]: https://github.com/SysBind/moodle-dev/compare/v1.2.8...v1.2.9
 [1.2.8]: https://github.com/SysBind/moodle-dev/compare/v1.2.7...v1.2.8
