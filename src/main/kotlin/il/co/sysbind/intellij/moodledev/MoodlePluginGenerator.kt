@@ -6,6 +6,7 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ComboBox
+import com.intellij.openapi.ui.TextFieldWithBrowseButton
 import com.intellij.openapi.ui.ValidationInfo
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.platform.ProjectGeneratorPeer
@@ -13,11 +14,14 @@ import com.intellij.psi.PsiManager
 import com.intellij.ui.TextAccessor
 import com.intellij.ui.dsl.builder.Cell
 import com.intellij.ui.dsl.builder.panel
-import com.intellij.ui.dsl.builder.whenTextChangedFromUi
 import il.co.sysbind.intellij.moodledev.moodle.Component
 import il.co.sysbind.intellij.moodledev.project.MoodleProjectSettings
+import java.awt.event.ActionListener
 import javax.swing.Icon
 import javax.swing.JComponent
+import javax.swing.JTextField
+import javax.swing.event.DocumentEvent
+import javax.swing.event.DocumentListener
 
 class MoodlePluginGenerator : WebProjectTemplate<MoodlePluginGeneratorSettings>() {
     override fun getName(): String {
@@ -65,21 +69,46 @@ class MoodlePluginGenerator : WebProjectTemplate<MoodlePluginGeneratorSettings>(
     private inner class MoodlePluginGeneratorPeer : ProjectGeneratorPeer<MoodlePluginGeneratorSettings> {
         private var myContentRoot: TextAccessor? = null
         private lateinit var myPluginType : Cell<ComboBox<String>>
-        override fun getComponent(): JComponent {
+        override fun getComponent(
+            myLocationField: TextFieldWithBrowseButton,
+            checkValid: Runnable
+        ): JComponent {
             val moodleTree = Component()
+
             val myPanel = panel {
-                row("Plugin Type:"){
-                    myPluginType = comboBox(moodleTree.getPluginTypes().toList())
+                row("Plugin Type:") {
+                    val pluginTypeComboBox = comboBox(moodleTree.getPluginTypes().toList())
+                    pluginTypeComboBox.component.addActionListener(ActionListener {
+                        // Call checkValid whenever plugin type changes
+                        checkValid.run()
+                    })
                 }
                 row("Plugin Name:") {
-                    textField().whenTextChangedFromUi {
-                        myContentRoot!!.text = myContentRoot!!.text.substringBeforeLast('/') +
-                                "/" + moodleTree.getPluginPath(myPluginType.component.item) + "/" + it
-                    }
+                    val pluginNameTextField = JTextField()
+                    pluginNameTextField.document.addDocumentListener(object : DocumentListener {
+                        override fun insertUpdate(e: DocumentEvent?) = updateLocationField(pluginNameTextField, moodleTree)
+                        override fun removeUpdate(e: DocumentEvent?) = updateLocationField(pluginNameTextField, moodleTree)
+                        override fun changedUpdate(e: DocumentEvent?) = updateLocationField(pluginNameTextField, moodleTree)
+                    })
                 }
             }
 
+            myLocationField.textField.document.addDocumentListener(object : DocumentListener {
+                override fun insertUpdate(e: DocumentEvent?) = checkValid.run()
+                override fun removeUpdate(e: DocumentEvent?) = checkValid.run()
+                override fun changedUpdate(e: DocumentEvent?) = checkValid.run()
+            })
+
             return myPanel
+        }
+
+        private fun updateLocationField(textField: JTextField, moodleTree: Component) {
+            if (myContentRoot != null && myPluginType.component.selectedItem != null) {
+                val pluginType = myPluginType.component.selectedItem.toString()
+                val updatedPath = myContentRoot!!.text.substringBeforeLast('/') +
+                        "/" + moodleTree.getPluginPath(pluginType) + "/" + textField.text
+                myContentRoot!!.text = updatedPath
+            }
         }
 
         override fun buildUI(settingsStep: SettingsStep) {

@@ -75,15 +75,21 @@ class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
         if (isBeingUsed) {
             val codeStyleSettings = CodeStyle.getSettings(project)
             MoodlePhpPredefinedCodeStyle().apply(codeStyleSettings, PhpLanguage.INSTANCE)
-            MoodleJavascriptPredefinedCodeStyle().apply(codeStyleSettings, JavascriptLanguage.INSTANCE)
+            MoodleJavascriptPredefinedCodeStyle().apply(codeStyleSettings, JavascriptLanguage)
             MoodleLessPredefinedCodeStyle().apply(codeStyleSettings, LESSLanguage.INSTANCE)
             MoodleScssPredefinedCodeStyle().apply(codeStyleSettings, SCSSLanguage.INSTANCE)
             if (settings.moodlePath.isNotBlank()) {
                 // Get the PhpIncludePathManager for the current project
                 val includePathManager = PhpIncludePathManager.getInstance(project)
+
                 // Add the Moodle path to the PHP include paths
                 val includePathList = includePathManager.includePath
-                if (!includePathList.contains(moodlePathStr)) {
+
+                // Compare the input Moodle path with the project root directory
+                val projectRootPath = project.basePath ?: ""
+
+                // Check if the path exists in the list or matches the project root location
+                if (moodlePathStr != projectRootPath && !includePathList.contains(moodlePathStr)) {
                     includePathList.add(moodlePathStr)
                     includePathManager.includePath = includePathList
                 }

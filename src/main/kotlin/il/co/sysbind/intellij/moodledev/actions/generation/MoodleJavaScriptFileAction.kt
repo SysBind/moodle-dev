@@ -16,7 +16,7 @@ import il.co.sysbind.intellij.moodledev.project.MoodleProjectSettings
 import il.co.sysbind.intellij.moodledev.util.MoodleCorePathUtil
 
 
-class MoodleJavaScriptFileAction: CreateFileFromTemplateAction(CAPTION, "", JavaScriptFileType.INSTANCE.icon)
+class MoodleJavaScriptFileAction: CreateFileFromTemplateAction(CAPTION, "", JavaScriptFileType.icon)
     , DumbAware {
 
     private companion object {
@@ -33,7 +33,7 @@ class MoodleJavaScriptFileAction: CreateFileFromTemplateAction(CAPTION, "", Java
 
     override fun buildDialog(project: Project, directory: PsiDirectory, builder: CreateFileFromTemplateDialog.Builder) {
         builder.setTitle(PhpCreateFileAction.CAPTION)
-            .addKind("Empty file", JavaScriptFileType.INSTANCE.icon, "Moodle JavaScript File")
+            .addKind("Empty file", JavaScriptFileType.icon, "Moodle JavaScript File")
     }
 
     override fun getActionName(directory: PsiDirectory?, newName: String, templateName: String?): String = CAPTION

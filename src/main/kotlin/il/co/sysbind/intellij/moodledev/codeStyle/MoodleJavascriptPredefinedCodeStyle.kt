@@ -6,7 +6,7 @@ import com.intellij.lang.javascript.formatter.JSCodeStyleSettings
 import com.intellij.psi.codeStyle.CodeStyleSettings
 import com.intellij.psi.codeStyle.PredefinedCodeStyle
 
-class MoodleJavascriptPredefinedCodeStyle : PredefinedCodeStyle("Moodle", JavascriptLanguage.INSTANCE) {
+class MoodleJavascriptPredefinedCodeStyle : PredefinedCodeStyle("Moodle", JavascriptLanguage) {
     override fun apply(settings: CodeStyleSettings, language: Language) {
         val commonSettings = settings.getCommonSettings(language)
         180.also { commonSettings.RIGHT_MARGIN = it }
