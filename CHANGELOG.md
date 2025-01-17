@@ -7,6 +7,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 
 ## [Unreleased]
 
+### Changed 
+- Add support to PHPStorm 2025.1
+
+### Fixed
+- Looping in include path of php when add the currnt project as Moodle project
+
 ## [1.3.1] - 2024-11-16
 
 ### Changed
