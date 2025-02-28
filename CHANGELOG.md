@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 
 ## [Unreleased]
 
+## [1.3.3] - 2025-02-28
+
 ### Changed
 
 - Add some fix to compatible with Next PHPStorm Versions
@@ -145,7 +147,8 @@ Add support for PHPStorm 2022.2
 - Add live Template for Moodle $ADMIN by type ADMIN
 - Add Moodle code style for predefined code styles for PHP/Javascript/SCSS/LESS
 
-[Unreleased]: https://github.com/SysBind/moodle-dev/compare/v1.3.2...HEAD
+[Unreleased]: https://github.com/SysBind/moodle-dev/compare/v1.3.3...HEAD
+[1.3.3]: https://github.com/SysBind/moodle-dev/compare/v1.3.2...v1.3.3
 [1.3.2]: https://github.com/SysBind/moodle-dev/compare/v1.3.1...v1.3.2
 [1.3.1]: https://github.com/SysBind/moodle-dev/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/SysBind/moodle-dev/compare/v1.2.9...v1.3.0
