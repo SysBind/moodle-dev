@@ -45,11 +45,12 @@ class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
         }
 
         row("Moodle project directory:") {
-            moodlePath =
-                textFieldWithBrowseButton(
-                    FileChooserDescriptorFactory.createSingleFolderDescriptor().withTitle(MoodleBundle.message("configurable.moodlePath")),
-                    project
-                ).bindText(settings::moodlePath).enabledIf(pluginEnabled.selected)
+            moodlePath = textFieldWithBrowseButton(
+                FileChooserDescriptorFactory.createSingleFolderDescriptor()
+                    .withTitle(MoodleBundle.message("configurable.moodlePath")),
+                project
+            ).bindText(settings::moodlePath)
+             .enabledIf(pluginEnabled.selected)
         }
     }
 

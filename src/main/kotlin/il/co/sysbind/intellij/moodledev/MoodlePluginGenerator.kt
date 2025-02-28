@@ -16,7 +16,6 @@ import com.intellij.ui.dsl.builder.Cell
 import com.intellij.ui.dsl.builder.panel
 import il.co.sysbind.intellij.moodledev.moodle.Component
 import il.co.sysbind.intellij.moodledev.project.MoodleProjectSettings
-import java.awt.event.ActionListener
 import javax.swing.Icon
 import javax.swing.JComponent
 import javax.swing.JTextField
@@ -78,10 +77,10 @@ class MoodlePluginGenerator : WebProjectTemplate<MoodlePluginGeneratorSettings>(
             val myPanel = panel {
                 row("Plugin Type:") {
                     val pluginTypeComboBox = comboBox(moodleTree.getPluginTypes().toList())
-                    pluginTypeComboBox.component.addActionListener(ActionListener {
+                    pluginTypeComboBox.component.addActionListener {
                         // Call checkValid whenever plugin type changes
                         checkValid.run()
-                    })
+                    }
                 }
                 row("Plugin Name:") {
                     val pluginNameTextField = JTextField()

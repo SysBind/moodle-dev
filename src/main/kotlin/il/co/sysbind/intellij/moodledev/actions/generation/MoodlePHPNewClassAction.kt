@@ -179,11 +179,7 @@ class MoodlePHPNewClassAction : PhpNewBaseAction(CAPTION, "", PhpFileType.INSTAN
                 val interfaceQualifiedName =
                     if (scope != null) PhpCodeInsightUtil.createQualifiedName(scope, interfaceFqn) else interfaceFqn
                 val implementsClause = PhpPsiElementFactory.createImplementsList(project, interfaceQualifiedName)
-                if (phpClass.implementsList != null) {
-                    phpClass.implementsList!!.add(implementsClause)
-                } else {
-                    phpClass.add(implementsClause)
-                }
+                phpClass.implementsList.add(implementsClause)
                 if (PhpReferenceInsertHandler.shouldInsertImport(phpClass, phpClass, interfaceFqn)) {
                     PhpImportClassIntention.apply(
                         project,
