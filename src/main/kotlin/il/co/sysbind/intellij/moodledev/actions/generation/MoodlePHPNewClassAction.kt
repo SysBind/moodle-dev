@@ -20,10 +20,10 @@ import com.jetbrains.php.lang.PhpLangUtil
 import com.jetbrains.php.lang.inspections.classes.PhpAddMethodStubsQuickFix
 import com.jetbrains.php.lang.intentions.PhpImportClassIntention
 import com.jetbrains.php.lang.psi.PhpGroupUseElement.PhpUseKeyword
+import com.jetbrains.php.lang.psi.PhpPsiElementFactory
 import com.jetbrains.php.lang.psi.elements.Method
 import com.jetbrains.php.lang.psi.elements.PhpClass
 import com.jetbrains.php.lang.psi.elements.PhpPsiElement
-import com.jetbrains.php.refactoring.extract.extractInterface.PhpExtractInterfaceProcessor
 import com.jetbrains.php.templates.PhpCreateFileFromTemplateDataProvider
 import com.jetbrains.php.templates.PhpTemplatesSettings
 import il.co.sysbind.intellij.moodledev.project.MoodleProjectSettings
@@ -178,7 +178,12 @@ class MoodlePHPNewClassAction : PhpNewBaseAction(CAPTION, "", PhpFileType.INSTAN
             if (!StringUtil.isEmpty(interfaceToImplement) && implementedInterfaces.add(interfaceFqn)) {
                 val interfaceQualifiedName =
                     if (scope != null) PhpCodeInsightUtil.createQualifiedName(scope, interfaceFqn) else interfaceFqn
-                PhpExtractInterfaceProcessor.addImplementClause(project, phpClass, interfaceQualifiedName)
+                val implementsClause = PhpPsiElementFactory.createImplementsList(project, interfaceQualifiedName)
+                if (phpClass.implementsList != null) {
+                    phpClass.implementsList!!.add(implementsClause)
+                } else {
+                    phpClass.add(implementsClause)
+                }
                 if (PhpReferenceInsertHandler.shouldInsertImport(phpClass, phpClass, interfaceFqn)) {
                     PhpImportClassIntention.apply(
                         project,
