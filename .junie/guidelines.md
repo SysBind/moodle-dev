@@ -62,10 +62,12 @@ This is an IntelliJ Platform plugin project for Moodle development support.
 
 ## Development Guidelines
 1. Use Kotlin coding conventions
-2. Add tests for new features
+2. Follow instructions from [Jetbriain Plugins docs](https://plugins.jetbrains.com/docs/intellij)
+2. Add tests for new features or to any old feature that you updated 
 3. Update CHANGELOG.md for changes
-4. Follow semantic versioning
-5. Keep plugin.xml up to date
+4. Update Readme.md if the new feature need Users actions.
+5. Follow semantic versioning
+6. Keep plugin.xml up to date
 
 ## Useful Commands
 - Clean and build: `./gradlew clean build`

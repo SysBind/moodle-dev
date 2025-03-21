@@ -43,6 +43,9 @@
         <internalFileTemplate name="Moodle PHP Trait"/>
         <internalFileTemplate name="Moodle Mustache Template"/>
         <internalFileTemplate name="Moodle JavaScript File"/>
+
+        <notificationGroup id="Moodle.Notifications"
+                          displayType="BALLOON"/>
         <moduleBuilder builderClass="il.co.sysbind.intellij.moodledev.project.wizard.MoodlePlugin" id="MOODLE_PLUGIN" order="first" />
     </extensions>
     <extensions defaultExtensionNs="com.jetbrains.php">
@@ -55,7 +58,7 @@
         <listener class="il.co.sysbind.intellij.moodledev.listeners.MoodleManagerListener"
                   topic="com.intellij.openapi.startup.StartupActivity"/>
     </projectListeners>
-    
+
     <actions>
         <group id="Moodle.NewFile" text="Moodle Files">
             <add-to-group group-id="PhpNewGroup" anchor="before" relative-to-action="NewFile"/>

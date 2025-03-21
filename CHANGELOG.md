@@ -7,6 +7,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 
 ## [Unreleased]
 
+### Added
+
+- Automatically setup Moodle Code Sniffer via Composer when enabling Moodle framework
+- Automatically run composer install when project directory matches Moodle directory
+- Added user settings (username and email) in Moodle Settings
+- New ComposerUtil for managing Composer operations
+- Added tests for MoodleSettingsForm and ComposerUtil
+- Added notification for PHP_Codesniffer configuration with automatic path detection and easy setup guidance
+
+### Changed
+
+- Improved PHP include path management in MoodleSettingsForm
+- Added support for setting the tool_path attribute for phpcs_by_interpreter configuration
+
+### Fixed
+
+- Fixed issue in ComposerUtil.getComposerGlobalDir() where it was returning the command instead of the command results
+
+
 ## [1.3.3] - 2025-02-28
 
 ### Changed
