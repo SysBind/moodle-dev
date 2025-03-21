@@ -26,6 +26,7 @@ import com.jetbrains.php.lang.psi.elements.PhpClass
 import com.jetbrains.php.lang.psi.elements.PhpPsiElement
 import com.jetbrains.php.templates.PhpCreateFileFromTemplateDataProvider
 import com.jetbrains.php.templates.PhpTemplatesSettings
+import il.co.sysbind.intellij.moodledev.MoodleBundle
 import il.co.sysbind.intellij.moodledev.project.MoodleProjectSettings
 import il.co.sysbind.intellij.moodledev.util.MoodleCorePathUtil
 import java.util.*
@@ -48,13 +49,13 @@ class MoodlePHPNewClassAction : PhpNewBaseAction(CAPTION, "", PhpFileType.INSTAN
         }
 
     private companion object {
-        private const val CAPTION = "Moodle Class File"
+        private val CAPTION = MoodleBundle.getMessage("action.class.caption")
     }
 
     private fun generateDialog(p0: Project, p1: PsiDirectory): PhpNewClassDialog {
         return object : PhpNewClassDialog(p0, p1) {
 
-            private var myTemplateName: String = "My Custom Template"
+            private var myTemplateName: String = MoodleBundle.getMessage("action.class.template.default")
             private var myCustomProperty : Properties = Properties()
 
             init {
@@ -65,16 +66,16 @@ class MoodlePHPNewClassAction : PhpNewBaseAction(CAPTION, "", PhpFileType.INSTAN
                 val selectedItem = selectedClassCreationType
                 when (selectedItem) {
                     ClassCreationType.CLASS -> {
-                        myTemplateName = "Moodle PHP Class"
+                        myTemplateName = MoodleBundle.getMessage("action.class.template.class")
                     }
                     ClassCreationType.INTERFACE -> {
-                        myTemplateName = "Moodle PHP Interface"
+                        myTemplateName = MoodleBundle.getMessage("action.class.template.interface")
                     }
                     ClassCreationType.TRAIT -> {
-                        myTemplateName = "Moodle PHP Trait"
+                        myTemplateName = MoodleBundle.getMessage("action.class.template.trait")
                     }
                     ClassCreationType.ENUM -> {
-                        myTemplateName = "Moodle PHP Enum"
+                        myTemplateName = MoodleBundle.getMessage("action.class.template.enum")
                     }
                 }
             }

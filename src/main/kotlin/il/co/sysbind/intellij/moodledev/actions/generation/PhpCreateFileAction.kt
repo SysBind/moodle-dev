@@ -12,6 +12,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiFile
 import com.jetbrains.php.PhpIcons
+import il.co.sysbind.intellij.moodledev.MoodleBundle
 import il.co.sysbind.intellij.moodledev.project.MoodleProjectSettings
 import il.co.sysbind.intellij.moodledev.util.MoodleCorePathUtil
 
@@ -27,7 +28,7 @@ class PhpCreateFileAction : CreateFileFromTemplateAction(CAPTION, "", PhpIcons.P
     }
     override fun buildDialog(project: Project, directory: PsiDirectory, builder: CreateFileFromTemplateDialog.Builder) {
         builder.setTitle(CAPTION)
-            .addKind("Empty file", PhpIcons.PHP_FILE, "Moodle PHP File")
+            .addKind(MoodleBundle.getMessage("action.php.empty.file"), PhpIcons.PHP_FILE, MoodleBundle.getMessage("action.php.template"))
     }
 
     override fun createFileFromTemplate(name: String, template: FileTemplate, dir: PsiDirectory): PsiFile {
@@ -47,6 +48,6 @@ class PhpCreateFileAction : CreateFileFromTemplateAction(CAPTION, "", PhpIcons.P
     }
 
     companion object {
-        internal const val CAPTION = "Moodle PHP File"
+        internal val CAPTION = MoodleBundle.getMessage("action.php.caption")
     }
 }

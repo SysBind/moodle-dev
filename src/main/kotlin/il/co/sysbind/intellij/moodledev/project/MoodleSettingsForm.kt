@@ -57,7 +57,7 @@ class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
             userEmail = textField().bindText(settings::userEmail)
         }
 
-        row("Moodle project directory:") {
+        row(MoodleBundle.getMessage("configurable.moodlePath.directory")) {
             moodlePath = textFieldWithBrowseButton(
                 FileChooserDescriptorFactory.createSingleFolderDescriptor()
                     .withTitle(MoodleBundle.message("configurable.moodlePath")),
@@ -91,17 +91,11 @@ class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
                 NotificationGroupManager.getInstance()
                     .getNotificationGroup("Moodle.Notifications")
                     .createNotification(
-                        "PHP_Codesniffer Configuration",
-                        """
-                        Moodle Code Sniffer tools have been detected at:
-                        PHPCS: $detectedPhpcsPath
-                        PHPCBF: $detectedPhpcbfPath
-
-                        Would you like to configure PHP_Codesniffer settings?
-                        """.trimIndent(),
+                        MoodleBundle.getMessage("configurable.phpcs.title"),
+                        MoodleBundle.getMessage("configurable.phpcs.detected", detectedPhpcsPath, detectedPhpcbfPath),
                         NotificationType.INFORMATION
                     )
-                    .addAction(NotificationAction.createSimple("Auto Settings") {
+                    .addAction(NotificationAction.createSimple(MoodleBundle.getMessage("configurable.phpcs.auto.settings")) {
                         try {
                             ApplicationManager.getApplication().runWriteAction {
                                 // Configure PHP_Codesniffer settings
@@ -134,17 +128,8 @@ class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
                                 NotificationGroupManager.getInstance()
                                     .getNotificationGroup("Moodle.Notifications")
                                     .createNotification(
-                                        "PHP_Codesniffer Configuration",
-                                        """
-                                        Successfully configured PHP_Codesniffer for System PHP interpreter:
-                                        - PHPCS Path: $detectedPhpcsPath (direct path to bin file)
-                                        - PHPCBF Path: $detectedPhpcbfPath
-                                        - Coding Standard: moodle
-                                        - Show Sniffs: enabled
-                                        - Highlight Level: WARNING
-                                        - Validation: enabled
-                                        - PhpCSValidationInspection: enabled
-                                        """.trimIndent(),
+                                        MoodleBundle.getMessage("configurable.phpcs.title"),
+                                        MoodleBundle.getMessage("configurable.phpcs.success", detectedPhpcsPath, detectedPhpcbfPath),
                                         NotificationType.INFORMATION
                                     )
                                     .notify(project)
@@ -155,23 +140,20 @@ class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
                             LOG.error("Failed to configure PHP_Codesniffer automatically: ${e.message}", e)
                         }
                     })
-                    .addAction(NotificationAction.createSimple("Open Settings") {
+                    .addAction(NotificationAction.createSimple(MoodleBundle.getMessage("configurable.phpcs.open.settings")) {
                         ShowSettingsUtil.getInstance().showSettingsDialog(
                             project,
-                            "Languages & Frameworks | PHP | Quality Tools | PHP_CodeSniffer"
+                            MoodleBundle.getMessage("configurable.phpcs.settings.path")
                         )
                         LOG.info("Opened PHP_Codesniffer settings")
                     })
-                    .addAction(NotificationAction.createSimple("Copy Paths") {
-                        val content = """
-                            PHPCS Path: $detectedPhpcsPath
-                            PHPCBF Path: $detectedPhpcbfPath
-                        """.trimIndent()
+                    .addAction(NotificationAction.createSimple(MoodleBundle.getMessage("configurable.phpcs.copy.paths")) {
+                        val content = MoodleBundle.getMessage("configurable.phpcs.paths.content", detectedPhpcsPath, detectedPhpcbfPath)
                         val clipboard = com.intellij.openapi.ide.CopyPasteManager.getInstance()
                         clipboard.setContents(java.awt.datatransfer.StringSelection(content))
                         LOG.info("Copied PHP_Codesniffer paths to clipboard")
                     })
-                    .addAction(NotificationAction.createSimple("Ignore") {
+                    .addAction(NotificationAction.createSimple(MoodleBundle.getMessage("configurable.phpcs.ignore")) {
                         LOG.info("User chose to ignore PHP_Codesniffer configuration")
                     })
                     .notify(project)
@@ -236,7 +218,7 @@ class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
     }
 
     override fun getId(): String {
-        return "moodle.project.MoodleSettingsForm"
+        return MoodleBundle.getMessage("configurable.id")
     }
 
     override fun isBeingUsed(): Boolean {
