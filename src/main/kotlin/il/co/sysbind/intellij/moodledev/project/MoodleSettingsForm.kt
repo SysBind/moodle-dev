@@ -12,6 +12,7 @@ import com.intellij.openapi.options.ShowSettingsUtil
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.guessProjectDir
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
+import com.intellij.profile.codeInspection.InspectionProjectProfileManager
 import com.intellij.ui.components.JBCheckBox
 import com.intellij.ui.dsl.builder.*
 import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl
@@ -115,6 +116,12 @@ class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
                                 optionsConfig.isShowSniffs = true
                                 optionsConfig.codingStandard = "moodle"
 
+                                // Enable PhpCSValidationInspection
+                                val profileManager = InspectionProjectProfileManager.getInstance(project)
+                                val profile = profileManager.currentProfile
+                                profile.setToolEnabled("PhpCSValidationInspection", true)
+                                LOG.info("Successfully enabled PhpCSValidationInspection")
+
                                 // Try to set the configuration for phpcs_by_interpreter
                                 try {
                                     manager.markAndSetNewSettings(listOf(configuration))
@@ -135,6 +142,8 @@ class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
                                         - Coding Standard: moodle
                                         - Show Sniffs: enabled
                                         - Highlight Level: WARNING
+                                        - Validation: enabled
+                                        - PhpCSValidationInspection: enabled
                                         """.trimIndent(),
                                         NotificationType.INFORMATION
                                     )
