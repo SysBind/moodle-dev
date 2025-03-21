@@ -19,6 +19,7 @@ import com.jetbrains.php.config.library.PhpIncludePathManager
 import com.jetbrains.php.frameworks.PhpFrameworkConfigurable
 import com.jetbrains.php.lang.PhpLanguage
 import com.jetbrains.php.tools.quality.phpcs.PhpCSConfigurationManager
+import com.jetbrains.php.tools.quality.phpcs.PhpCSOptionsConfiguration
 import il.co.sysbind.intellij.moodledev.MoodleBundle
 import il.co.sysbind.intellij.moodledev.codeStyle.MoodleJavascriptPredefinedCodeStyle
 import il.co.sysbind.intellij.moodledev.codeStyle.MoodleLessPredefinedCodeStyle
@@ -110,6 +111,9 @@ class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
 
                                 configuration.phpCodeBeautifierPath = detectedPhpcbfPath
                                 configuration.toolPath = detectedPhpcsPath
+                                val optionsConfig = PhpCSOptionsConfiguration.getInstance(project)
+                                optionsConfig.isShowSniffs = true
+                                optionsConfig.codingStandard = "moodle"
 
                                 // Try to set the configuration for phpcs_by_interpreter
                                 try {
