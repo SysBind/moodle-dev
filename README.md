@@ -96,11 +96,17 @@ If you need to adjust settings manually:
    - Verify Composer is installed and in PATH
    - Check Composer global installation directory permissions
    - Try running `composer global require moodlehq/moodle-cs` manually
+   - For Windows users, the plugin now automatically detects .bat extensions for executables
 
 3. **Code style not applying**
    - Ensure the plugin is enabled
    - Verify the Moodle project directory is correctly set
    - Try restarting the IDE
+
+4. **Composer operations failing**
+   - The plugin now includes improved error handling and fallback mechanisms
+   - Default Composer directories are checked if the command-line detection fails
+   - More detailed logs are available for troubleshooting
 
 ### Getting Help
 

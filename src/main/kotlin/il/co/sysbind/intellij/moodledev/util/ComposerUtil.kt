@@ -37,21 +37,61 @@ object ComposerUtil {
             processHandler.waitFor()
 
             if (processHandler.exitCode == 0 && output.isNotEmpty()) {
-                composerGlobalDir = output.toString()
+                // Clean up the output - remove any extra whitespace or newlines
+                composerGlobalDir = output.toString().trim()
+                LOG.debug("Found composer global directory: $composerGlobalDir")
                 return composerGlobalDir
+            } else {
+                LOG.warn("Composer command exited with code ${processHandler.exitCode} or empty output")
             }
         } catch (e: Exception) {
             LOG.error("Failed to get composer global directory: ${e.message}", e)
         }
+
+        // Fallback to default locations if composer command fails
+        val userHome = System.getProperty("user.home")
+        val possibleLocations = listOf(
+            "$userHome/.composer",                // Linux/Mac
+            "$userHome/AppData/Roaming/Composer"  // Windows
+        )
+
+        for (location in possibleLocations) {
+            val dir = java.io.File(location)
+            if (dir.exists() && dir.isDirectory) {
+                LOG.debug("Using fallback composer global directory: $location")
+                composerGlobalDir = location
+                return composerGlobalDir
+            }
+        }
+
+        LOG.warn("Could not determine composer global directory")
         return null
     }
 
     fun getPhpcsPath(): String? {
-        return getComposerGlobalDir()?.let { "$it/vendor/bin/phpcs" }
+        return getComposerGlobalDir()?.let { 
+            val path = java.io.File(it, "vendor/bin/phpcs")
+            if (System.getProperty("os.name").lowercase().contains("windows")) {
+                // On Windows, the executable might have a .bat extension
+                if (java.io.File("${path}.bat").exists()) {
+                    return@let "${path}.bat"
+                }
+            }
+            path.absolutePath
+        }
     }
 
     fun getPhpcbfPath(): String? {
-        return getComposerGlobalDir()?.let { "$it/vendor/bin/phpcbf" }
+        return getComposerGlobalDir()?.let { 
+            val path = java.io.File(it, "vendor/bin/phpcbf")
+            if (System.getProperty("os.name").lowercase().contains("windows")) {
+                // On Windows, the executable might have a .bat extension
+                if (java.io.File("${path}.bat").exists()) {
+                    return@let "${path}.bat"
+                }
+            }
+            path.absolutePath
+        }
     }
 
     fun runComposerInstall(project: Project, directory: String): Boolean {
@@ -90,20 +130,82 @@ object ComposerUtil {
     }
 
     fun setupMoodleCs(project: Project): Boolean {
+        LOG.debug("Setting up Moodle CS...")
+
+        // First check if phpcs and phpcbf already exist
+        val phpcsPath = getPhpcsPath()
+        val phpcbfPath = getPhpcbfPath()
+
+        if (phpcsPath != null && phpcbfPath != null) {
+            val phpcsFile = java.io.File(phpcsPath)
+            val phpcbfFile = java.io.File(phpcbfPath)
+
+            if (phpcsFile.exists() && phpcbfFile.exists()) {
+                LOG.debug("PHPCS and PHPCBF already exist, checking if moodle standard is available")
+
+                // Check if moodle standard is available
+                try {
+                    val commandLine = GeneralCommandLine(phpcsPath)
+                    commandLine.addParameters(listOf("-i"))
+
+                    val output = StringBuilder()
+                    val processHandler = OSProcessHandler(commandLine)
+                    processHandler.addProcessListener(object : ProcessAdapter() {
+                        override fun onTextAvailable(event: ProcessEvent, outputType: Key<*>) {
+                            output.append(event.text)
+                        }
+                    })
+
+                    processHandler.startNotify()
+                    processHandler.waitFor()
+
+                    if (processHandler.exitCode == 0 && output.toString().lowercase().contains("moodle")) {
+                        LOG.debug("Moodle standard is already available")
+                        return true
+                    }
+                } catch (e: Exception) {
+                    LOG.warn("Failed to check if moodle standard is available: ${e.message}")
+                    // Continue with setup
+                }
+            }
+        }
+
         try {
             // Set minimum-stability to dev
+            LOG.debug("Setting composer minimum-stability to dev")
             if (!executeComposerCommand(project, listOf("global", "config", "minimum-stability", "dev"))) {
-                LOG.error("Failed to set composer minimum-stability to dev")
-                return false
+                LOG.warn("Failed to set composer minimum-stability to dev, but continuing with installation")
             }
 
             // Install moodlehq/moodle-cs
+            LOG.debug("Installing moodlehq/moodle-cs")
             if (!executeComposerCommand(project, listOf("global", "require", "moodlehq/moodle-cs"))) {
                 LOG.error("Failed to install moodlehq/moodle-cs")
-                return false
+
+                // Try alternative approach - install with --dev flag
+                LOG.debug("Trying alternative approach with --dev flag")
+                if (!executeComposerCommand(project, listOf("global", "require", "--dev", "moodlehq/moodle-cs"))) {
+                    LOG.error("Failed to install moodlehq/moodle-cs with --dev flag")
+                    return false
+                }
             }
 
-            return true
+            // Verify installation
+            val newPhpcsPath = getPhpcsPath()
+            val newPhpcbfPath = getPhpcbfPath()
+
+            if (newPhpcsPath != null && newPhpcbfPath != null) {
+                val newPhpcsFile = java.io.File(newPhpcsPath)
+                val newPhpcbfFile = java.io.File(newPhpcbfPath)
+
+                if (newPhpcsFile.exists() && newPhpcbfFile.exists()) {
+                    LOG.debug("Successfully installed PHPCS and PHPCBF")
+                    return true
+                }
+            }
+
+            LOG.warn("PHPCS or PHPCBF not found after installation")
+            return false
         } catch (e: Exception) {
             LOG.error("Error setting up Moodle CS: ${e.message}", e)
             return false

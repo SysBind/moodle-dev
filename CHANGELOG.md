@@ -15,15 +15,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 - New ComposerUtil for managing Composer operations
 - Added tests for MoodleSettingsForm and ComposerUtil
 - Added notification for PHP_Codesniffer configuration with automatic path detection and easy setup guidance
+- Added fallback to default Composer directories when command-line detection fails
+- Added Windows compatibility with automatic detection of .bat extensions for executables
 
 ### Changed
 
 - Improved PHP include path management in MoodleSettingsForm
 - Added support for setting the tool_path attribute for phpcs_by_interpreter configuration
+- Updated platform version from 251.23536.39 to 251.23774.350
+- Updated handlebars plugin version from 251.23536.38 to 251.23774.318
+- Enhanced error handling and logging in Composer operations
+- Improved verification of Moodle CS installation
 
 ### Fixed
 
 - Fixed issue in ComposerUtil.getComposerGlobalDir() where it was returning the command instead of the command results
+- Fixed path handling in getPhpcsPath() and getPhpcbfPath() for cross-platform compatibility
+- Fixed output handling in getComposerGlobalDir() by properly trimming whitespace and newlines
 
 
 ## [1.3.3] - 2025-02-28
