@@ -17,6 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 - Added notification for PHP_Codesniffer configuration with automatic path detection and easy setup guidance
 - Added fallback to default Composer directories when command-line detection fails
 - Added Windows compatibility with automatic detection of .bat extensions for executables
+- Added composer availability check to prevent errors when composer is not installed
 
 ### Changed
 
@@ -26,6 +27,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 - Updated handlebars plugin version from 251.23536.38 to 251.23774.318
 - Enhanced error handling and logging in Composer operations
 - Improved verification of Moodle CS installation
+- Improved handling of composer operations when composer is not available
+- Enhanced test stability by skipping composer-dependent tests when composer is not available
 
 ### Fixed
 

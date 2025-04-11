@@ -11,41 +11,74 @@ import com.intellij.openapi.util.Key
 object ComposerUtil {
     private val LOG = Logger.getInstance(ComposerUtil::class.java)
     private var composerGlobalDir: String? = null
+    private var isComposerAvailable: Boolean? = null
+
+    /**
+     * Check if composer is available in the system
+     * @return true if composer is available, false otherwise
+     */
+    fun isComposerAvailable(): Boolean {
+        if (isComposerAvailable != null) {
+            return isComposerAvailable!!
+        }
+
+        try {
+            val commandLine = GeneralCommandLine("composer")
+            commandLine.addParameters(listOf("--version"))
+
+            val processHandler = OSProcessHandler(commandLine)
+            processHandler.startNotify()
+            processHandler.waitFor()
+
+            isComposerAvailable = processHandler.exitCode == 0
+            LOG.debug("Composer availability check: $isComposerAvailable")
+            return isComposerAvailable!!
+        } catch (e: Exception) {
+            LOG.warn("Failed to check composer availability: ${e.message}")
+            isComposerAvailable = false
+            return false
+        }
+    }
 
     fun getComposerGlobalDir(): String? {
         if (composerGlobalDir != null) {
             return composerGlobalDir
         }
 
-        try {
-            val commandLine = GeneralCommandLine("composer")
-            commandLine.addParameters(listOf("config", "--global", "home"))
+        // Check if composer is available before trying to run composer commands
+        if (isComposerAvailable()) {
+            try {
+                val commandLine = GeneralCommandLine("composer")
+                commandLine.addParameters(listOf("config", "--global", "home"))
 
-            val output = StringBuilder()
-            val processHandler = OSProcessHandler(commandLine)
-            processHandler.addProcessListener(object : ProcessAdapter() {
-                override fun onTextAvailable(event: ProcessEvent, outputType: Key<*>) {
-                    // Only append the actual output, not the command itself
-                    val text = event.text.trim()
-                    if (!text.startsWith("composer config --global home")) {
-                        output.append(text)
+                val output = StringBuilder()
+                val processHandler = OSProcessHandler(commandLine)
+                processHandler.addProcessListener(object : ProcessAdapter() {
+                    override fun onTextAvailable(event: ProcessEvent, outputType: Key<*>) {
+                        // Only append the actual output, not the command itself
+                        val text = event.text.trim()
+                        if (!text.startsWith("composer config --global home")) {
+                            output.append(text)
+                        }
                     }
+                })
+
+                processHandler.startNotify()
+                processHandler.waitFor()
+
+                if (processHandler.exitCode == 0 && output.isNotEmpty()) {
+                    // Clean up the output - remove any extra whitespace or newlines
+                    composerGlobalDir = output.toString().trim()
+                    LOG.debug("Found composer global directory: $composerGlobalDir")
+                    return composerGlobalDir
+                } else {
+                    LOG.warn("Composer command exited with code ${processHandler.exitCode} or empty output")
                 }
-            })
-
-            processHandler.startNotify()
-            processHandler.waitFor()
-
-            if (processHandler.exitCode == 0 && output.isNotEmpty()) {
-                // Clean up the output - remove any extra whitespace or newlines
-                composerGlobalDir = output.toString().trim()
-                LOG.debug("Found composer global directory: $composerGlobalDir")
-                return composerGlobalDir
-            } else {
-                LOG.warn("Composer command exited with code ${processHandler.exitCode} or empty output")
+            } catch (e: Exception) {
+                LOG.error("Failed to get composer global directory: ${e.message}", e)
             }
-        } catch (e: Exception) {
-            LOG.error("Failed to get composer global directory: ${e.message}", e)
+        } else {
+            LOG.warn("Composer is not available, falling back to default locations")
         }
 
         // Fallback to default locations if composer command fails
@@ -95,6 +128,12 @@ object ComposerUtil {
     }
 
     fun runComposerInstall(project: Project, directory: String): Boolean {
+        // First check if composer is available
+        if (!isComposerAvailable()) {
+            LOG.warn("Composer is not available, skipping composer install")
+            return false
+        }
+
         val workDir = java.io.File(directory)
         if (!workDir.exists() || !workDir.isDirectory) {
             LOG.debug("Directory does not exist or is not a directory: $directory")
@@ -132,7 +171,13 @@ object ComposerUtil {
     fun setupMoodleCs(project: Project): Boolean {
         LOG.debug("Setting up Moodle CS...")
 
-        // First check if phpcs and phpcbf already exist
+        // First check if composer is available
+        if (!isComposerAvailable()) {
+            LOG.warn("Composer is not available, skipping Moodle CS setup")
+            return false
+        }
+
+        // Check if phpcs and phpcbf already exist
         val phpcsPath = getPhpcsPath()
         val phpcbfPath = getPhpcbfPath()
 
@@ -213,6 +258,12 @@ object ComposerUtil {
     }
 
     private fun executeComposerCommand(project: Project, arguments: List<String>): Boolean {
+        // First check if composer is available
+        if (!isComposerAvailable()) {
+            LOG.warn("Composer is not available, skipping composer command: ${arguments.joinToString(" ")}")
+            return false
+        }
+
         val commandLine = GeneralCommandLine("composer")
         commandLine.addParameters(arguments)
 

@@ -2,6 +2,8 @@ package il.co.sysbind.intellij.moodledev.project
 
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import il.co.sysbind.intellij.moodledev.util.ComposerUtil
+import org.junit.Assume
+import org.junit.Before
 import org.junit.Test
 import java.io.File
 
@@ -9,9 +11,19 @@ class MoodleSettingsFormTest : BasePlatformTestCase() {
     private var composerSetupCalled = false
     private lateinit var settingsForm: MoodleSettingsForm
 
+    @Before
+    fun checkComposerAvailability() {
+        // Log composer availability for debugging
+        println("[DEBUG_LOG] Composer available: ${ComposerUtil.isComposerAvailable()}")
+    }
+
     @Test
     fun testComposerSetupOnFrameworkEnable() {
         println("[DEBUG_LOG] Starting testComposerSetupOnFrameworkEnable")
+
+        // Skip detailed composer-related assertions if composer is not available
+        val composerAvailable = ComposerUtil.isComposerAvailable()
+        println("[DEBUG_LOG] Composer available in test: $composerAvailable")
 
         // Get current settings
         val projectSettings = project.getService(MoodleProjectSettings::class.java)
@@ -40,7 +52,7 @@ class MoodleSettingsFormTest : BasePlatformTestCase() {
         println("[DEBUG_LOG] Applying settings with plugin enabled")
         settingsForm.apply()
 
-        // Verify the plugin is enabled and composer setup was attempted
+        // Verify the plugin is enabled
         assertTrue("Plugin should be enabled", settingsForm.isBeingUsed)
         println("[DEBUG_LOG] Framework enabled status: ${settingsForm.isBeingUsed}")
 
@@ -72,6 +84,17 @@ class MoodleSettingsFormTest : BasePlatformTestCase() {
     @Test
     fun testPhpCodesnifferPathDetection() {
         println("[DEBUG_LOG] Starting testPhpCodesnifferPathDetection")
+
+        // Check if composer is available
+        val composerAvailable = ComposerUtil.isComposerAvailable()
+        println("[DEBUG_LOG] Composer available in test: $composerAvailable")
+
+        // Skip test if composer is not available
+        if (!composerAvailable) {
+            println("[DEBUG_LOG] Skipping PHPCS path detection test as composer is not available")
+            Assume.assumeTrue("Composer is not available, skipping test", false)
+            return
+        }
 
         // Verify paths can be detected
         val phpcsPath = ComposerUtil.getPhpcsPath()

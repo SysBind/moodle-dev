@@ -5,12 +5,31 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.application.WriteAction
 import com.intellij.testFramework.TempFiles
 import java.io.File
+import org.junit.Assume
+import org.junit.Before
 import org.junit.Test
 
 class ComposerUtilTest : BasePlatformTestCase() {
+    @Before
+    fun checkComposerAvailability() {
+        // Log composer availability for debugging
+        println("[DEBUG_LOG] Composer available: ${ComposerUtil.isComposerAvailable()}")
+    }
+
     @Test
     fun testSetupMoodleCs() {
         println("[DEBUG_LOG] Starting testSetupMoodleCs")
+
+        // Check if composer is available
+        val composerAvailable = ComposerUtil.isComposerAvailable()
+        println("[DEBUG_LOG] Composer available in test: $composerAvailable")
+
+        // Skip test if composer is not available
+        if (!composerAvailable) {
+            println("[DEBUG_LOG] Skipping Moodle CS setup test as composer is not available")
+            Assume.assumeTrue("Composer is not available, skipping test", false)
+            return
+        }
 
         // Test the setup
         val result = ComposerUtil.setupMoodleCs(project)
@@ -25,6 +44,17 @@ class ComposerUtilTest : BasePlatformTestCase() {
     @Test
     fun testRunComposerInstall() {
         println("[DEBUG_LOG] Starting testRunComposerInstall")
+
+        // Check if composer is available
+        val composerAvailable = ComposerUtil.isComposerAvailable()
+        println("[DEBUG_LOG] Composer available in test: $composerAvailable")
+
+        // Skip test if composer is not available
+        if (!composerAvailable) {
+            println("[DEBUG_LOG] Skipping composer install test as composer is not available")
+            Assume.assumeTrue("Composer is not available, skipping test", false)
+            return
+        }
 
         // Create a real filesystem directory for testing
         val tempDir = File(System.getProperty("java.io.tmpdir"), "moodle_test_${System.currentTimeMillis()}")
@@ -74,11 +104,23 @@ class ComposerUtilTest : BasePlatformTestCase() {
     fun testGetComposerGlobalDir() {
         println("[DEBUG_LOG] Starting testGetComposerGlobalDir")
 
-        // First call should execute composer command
+        // Check if composer is available
+        val composerAvailable = ComposerUtil.isComposerAvailable()
+        println("[DEBUG_LOG] Composer available in test: $composerAvailable")
+
+        // First call should execute composer command or use fallback
         val globalDir = ComposerUtil.getComposerGlobalDir()
         println("[DEBUG_LOG] First call to getComposerGlobalDir: $globalDir")
+
+        // Even if composer is not available, we should still get a directory from fallback
         assertNotNull("Composer global directory should be found", globalDir)
-        assertTrue("Global directory should exist", File(globalDir!!).exists())
+
+        // Check if the directory exists
+        if (globalDir != null) {
+            val dirExists = File(globalDir).exists()
+            println("[DEBUG_LOG] Global directory exists: $dirExists")
+            assertTrue("Global directory should exist", dirExists)
+        }
 
         // Second call should use cached value
         val cachedDir = ComposerUtil.getComposerGlobalDir()
@@ -89,6 +131,17 @@ class ComposerUtilTest : BasePlatformTestCase() {
     @Test
     fun testGetPhpcsAndPhpcbfPaths() {
         println("[DEBUG_LOG] Starting testGetPhpcsAndPhpcbfPaths")
+
+        // Check if composer is available
+        val composerAvailable = ComposerUtil.isComposerAvailable()
+        println("[DEBUG_LOG] Composer available in test: $composerAvailable")
+
+        // Skip test if composer is not available
+        if (!composerAvailable) {
+            println("[DEBUG_LOG] Skipping PHPCS and PHPCBF path test as composer is not available")
+            Assume.assumeTrue("Composer is not available, skipping test", false)
+            return
+        }
 
         val phpcsPath = ComposerUtil.getPhpcsPath()
         val phpcbfPath = ComposerUtil.getPhpcbfPath()
