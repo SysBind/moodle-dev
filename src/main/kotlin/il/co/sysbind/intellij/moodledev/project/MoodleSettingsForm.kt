@@ -34,7 +34,7 @@ import javax.swing.JComponent
 import javax.swing.JTextField
 
 class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
-    private val LOG = Logger.getInstance(MoodleSettingsForm::class.java)
+    private val log = Logger.getInstance(MoodleSettingsForm::class.java)
     private val settings = project.getService(MoodleProjectSettings::class.java).settings
     lateinit var pluginEnabled: Cell<JBCheckBox>
         private set
@@ -94,7 +94,7 @@ class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
                         NotificationType.WARNING
                     )
                     .notify(project)
-                LOG.warn("Composer is not available, skipping PHP_Codesniffer configuration")
+                log.warn("Composer is not available, skipping PHP_Codesniffer configuration")
             } else {
                 val detectedPhpcsPath = ComposerUtil.getPhpcsPath()
                 val detectedPhpcbfPath = ComposerUtil.getPhpcbfPath()
@@ -127,14 +127,14 @@ class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
                                     val profileManager = InspectionProjectProfileManager.getInstance(project)
                                     val profile = profileManager.currentProfile
                                     profile.setToolEnabled("PhpCSValidationInspection", true)
-                                    LOG.info("Successfully enabled PhpCSValidationInspection")
+                                    log.info("Successfully enabled PhpCSValidationInspection")
 
                                     // Try to set the configuration for phpcs_by_interpreter
                                     try {
                                         manager.markAndSetNewSettings(listOf(configuration))
-                                        LOG.info("Successfully set tool path for phpcs_by_interpreter")
+                                        log.info("Successfully set tool path for phpcs_by_interpreter")
                                     } catch (e: Exception) {
-                                        LOG.warn("Could not set tool path for phpcs_by_interpreter: ${e.message}")
+                                        log.warn("Could not set tool path for phpcs_by_interpreter: ${e.message}")
                                     }
 
                                     // Show success notification
@@ -147,10 +147,10 @@ class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
                                         )
                                         .notify(project)
 
-                                    LOG.info("Successfully configured PHP_Codesniffer automatically")
+                                    log.info("Successfully configured PHP_Codesniffer automatically")
                                 }
                             } catch (e: Exception) {
-                                LOG.error("Failed to configure PHP_Codesniffer automatically: ${e.message}", e)
+                                log.error("Failed to configure PHP_Codesniffer automatically: ${e.message}", e)
                             }
                         })
                         .addAction(NotificationAction.createSimple(MoodleBundle.getMessage("configurable.phpcs.open.settings")) {
@@ -158,22 +158,22 @@ class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
                                 project,
                                 MoodleBundle.getMessage("configurable.phpcs.settings.path")
                             )
-                            LOG.info("Opened PHP_Codesniffer settings")
+                            log.info("Opened PHP_Codesniffer settings")
                         })
                         .addAction(NotificationAction.createSimple(MoodleBundle.getMessage("configurable.phpcs.copy.paths")) {
                             val content = MoodleBundle.getMessage("configurable.phpcs.paths.content", detectedPhpcsPath, detectedPhpcbfPath)
                             val clipboard = com.intellij.openapi.ide.CopyPasteManager.getInstance()
                             clipboard.setContents(java.awt.datatransfer.StringSelection(content))
-                            LOG.info("Copied PHP_Codesniffer paths to clipboard")
+                            log.info("Copied PHP_Codesniffer paths to clipboard")
                         })
                         .addAction(NotificationAction.createSimple(MoodleBundle.getMessage("configurable.phpcs.ignore")) {
-                            LOG.info("User chose to ignore PHP_Codesniffer configuration")
+                            log.info("User chose to ignore PHP_Codesniffer configuration")
                         })
                         .notify(project)
 
-                    LOG.info("Showed PHP_Codesniffer configuration options to user")
+                    log.info("Showed PHP_Codesniffer configuration options to user")
                 } else {
-                    LOG.warn("Failed to get PHP_Codesniffer paths from composer global directory")
+                    log.warn("Failed to get PHP_Codesniffer paths from composer global directory")
                 }
             }
         }
@@ -187,10 +187,10 @@ class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
             // Setup Moodle CS via Composer if composer is available
             if (ComposerUtil.isComposerAvailable()) {
                 if (!ComposerUtil.setupMoodleCs(project)) {
-                    LOG.warn("Failed to setup Moodle CS via Composer")
+                    log.warn("Failed to setup Moodle CS via Composer")
                 }
             } else {
-                LOG.warn("Composer is not available, skipping Moodle CS setup")
+                log.warn("Composer is not available, skipping Moodle CS setup")
             }
 
             val codeStyleSettings = CodeStyle.getSettings(project)
@@ -212,10 +212,10 @@ class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
                     // If paths are equal, run composer install if composer is available
                     if (ComposerUtil.isComposerAvailable()) {
                         if (!ComposerUtil.runComposerInstall(project, moodlePathStr)) {
-                            LOG.warn("Failed to run composer install in $moodlePathStr")
+                            log.warn("Failed to run composer install in $moodlePathStr")
                         }
                     } else {
-                        LOG.warn("Composer is not available, skipping composer install in $moodlePathStr")
+                        log.warn("Composer is not available, skipping composer install in $moodlePathStr")
                     }
                 } else if (!includePathList.contains(moodlePathStr)) {
                     // If paths are different and the Moodle path is not in include paths, add it
