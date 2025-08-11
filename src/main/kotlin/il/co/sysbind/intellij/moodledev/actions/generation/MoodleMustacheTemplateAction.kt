@@ -5,28 +5,16 @@ import com.intellij.ide.actions.CreateFileFromTemplateDialog
 import com.intellij.ide.fileTemplates.FileTemplate
 import com.intellij.ide.fileTemplates.FileTemplateManager
 import com.intellij.ide.fileTemplates.FileTemplateUtil
-import com.intellij.openapi.actionSystem.CommonDataKeys
-import com.intellij.openapi.actionSystem.DataContext
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiFile
 import icons.HandlebarsIcons
-import il.co.sysbind.intellij.moodledev.MoodleBundle
-import il.co.sysbind.intellij.moodledev.project.MoodleProjectSettings
 import il.co.sysbind.intellij.moodledev.util.MoodleCorePathUtil
 
 class MoodleMustacheTemplateAction : CreateFileFromTemplateAction(CAPTION, "", HandlebarsIcons.Handlebars_icon),
     DumbAware {
     override fun getActionName(directory: PsiDirectory?, newName: String, templateName: String?): String = CAPTION
-
-    override fun isAvailable(dataContext: DataContext?): Boolean {
-        if (!super.isAvailable(dataContext)) return false
-        val project = CommonDataKeys.PROJECT.getData(dataContext!!) ?: return false
-        CommonDataKeys.VIRTUAL_FILE.getData(dataContext) ?: return false
-        val moodle = project.getService(MoodleProjectSettings::class.java).settings
-        return moodle.pluginEnabled
-    }
 
     override fun buildDialog(project: Project, directory: PsiDirectory, builder: CreateFileFromTemplateDialog.Builder) {
         builder.setTitle(PhpCreateFileAction.CAPTION)

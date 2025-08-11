@@ -8,6 +8,7 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.ObjectUtils
 import com.intellij.util.containers.ContainerUtil
+import com.jetbrains.php.PhpIcons
 import com.jetbrains.php.actions.PhpNewBaseAction
 import com.jetbrains.php.actions.PhpNewClassDataProvider
 import com.jetbrains.php.actions.PhpNewClassDialog
@@ -15,7 +16,6 @@ import com.jetbrains.php.actions.newClassDataProvider.ClassCreationType
 import com.jetbrains.php.actions.statistics.PhpNewClassUsageLogger
 import com.jetbrains.php.codeInsight.PhpCodeInsightUtil
 import com.jetbrains.php.completion.insert.PhpReferenceInsertHandler
-import com.jetbrains.php.lang.PhpFileType
 import com.jetbrains.php.lang.PhpLangUtil
 import com.jetbrains.php.lang.inspections.classes.PhpAddMethodStubsQuickFix
 import com.jetbrains.php.lang.intentions.PhpImportClassIntention
@@ -32,7 +32,7 @@ import il.co.sysbind.intellij.moodledev.util.MoodleCorePathUtil
 import java.util.*
 import java.util.function.BiConsumer
 
-class MoodlePHPNewClassAction : PhpNewBaseAction(CAPTION, "", PhpFileType.INSTANCE.icon), DumbAware {
+class MoodlePHPNewClassAction : PhpNewBaseAction(CAPTION, "", PhpIcons.PHP_FILE), DumbAware {
 
     val SUPERCLASSES_IMPLEMENTOR: BiConsumer<PsiFile, PhpNewClassDialog> =
         BiConsumer { psiFile: PsiFile?, dataProvider: PhpNewClassDialog ->
