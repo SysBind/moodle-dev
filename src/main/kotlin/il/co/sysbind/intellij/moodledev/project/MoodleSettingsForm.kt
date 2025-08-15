@@ -58,12 +58,13 @@ class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
         }
 
         row(MoodleBundle.getMessage("configurable.moodlePath.directory")) {
-            moodlePath = textFieldWithBrowseButton(
-                FileChooserDescriptorFactory.createSingleFolderDescriptor()
-                    .withTitle(MoodleBundle.message("configurable.moodlePath")),
-                project
-            ).bindText(settings::moodlePath)
-             .enabledIf(pluginEnabled.selected)
+            val chooser = TextFieldWithBrowseButton()
+            val descriptor = FileChooserDescriptorFactory.createSingleFolderDescriptor()
+                .withTitle(MoodleBundle.message("configurable.moodlePath"))
+            chooser.addBrowseFolderListener(com.intellij.openapi.ui.TextBrowseFolderListener(descriptor, project))
+            moodlePath = cell(chooser)
+                .bindText(settings::moodlePath)
+                .enabledIf(pluginEnabled.selected)
         }
     }
 
