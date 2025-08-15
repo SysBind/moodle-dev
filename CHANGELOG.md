@@ -7,6 +7,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 
 ## [Unreleased]
 
+### Fixed
+
+- Replaced deprecated ProcessAdapter with ProcessListener in ComposerUtil.kt to maintain compatibility with latest IntelliJ Platform SDK
+
 ## [2.0.0] - 2025-04-15
 
 ### Added
