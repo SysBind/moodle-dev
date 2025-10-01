@@ -7,8 +7,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 
 ## [Unreleased]
 
+### Added
+
+- Bundled Moodle inspection profile and registered it in plugin.xml so it becomes available after plugin installation
+- Automatically set the bundled "Moodle" inspection profile as the Project profile on first project open so it appears in Settings | Editor | Inspections and is selected in the Project profiles dropdown (non-intrusive: won’t override an existing custom selection)
+- On project open, construct InspectionProfileImpl from bundled resources/inspectionProfiles/Moodle.xml and set it as the project profile via ProjectInspectionProfileManager#setCurrentProfile
+
 ### Fixed
 
+- Corrected automatic selection of the bundled "Moodle" inspection profile as the Project profile on project open so it reliably appears in Settings | Editor | Inspections profiles dropdown
 - Replaced deprecated ProcessAdapter with ProcessListener in ComposerUtil.kt to maintain compatibility with latest IntelliJ Platform SDK
 - Removed usage of unstable UI DSL builder textFieldWithBrowseButton in MoodleSettingsForm by using Swing TextFieldWithBrowseButton within cell(...); satisfies UnstableApiUsage inspection
 

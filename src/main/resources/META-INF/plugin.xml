@@ -38,6 +38,7 @@
                 implementation="il.co.sysbind.intellij.moodledev.codeStyle.MoodleJavascriptPredefinedCodeStyle"/>
         <predefinedCodeStyle implementation="il.co.sysbind.intellij.moodledev.codeStyle.MoodleLessPredefinedCodeStyle"/>
         <predefinedCodeStyle implementation="il.co.sysbind.intellij.moodledev.codeStyle.MoodleScssPredefinedCodeStyle"/>
+        <bundledInspectionProfile path="/inspectionProfiles/Moodle" id="Moodle.InspecProfile"/>
 
         <internalFileTemplate name="Moodle PHP File"/>
         <internalFileTemplate name="Moodle PHP Class"/>
@@ -56,10 +57,6 @@
         <frameworkUsageProvider implementation="il.co.sysbind.intellij.moodledev.project.MoodleUsageProvider"/>
         <libraryRoot id="phpstorm.meta.php" path="/moodle-dev/" runtime="false"/>
     </extensions>
-    <projectListeners>
-        <listener class="il.co.sysbind.intellij.moodledev.listeners.MoodleManagerListener"
-                  topic="com.intellij.openapi.startup.StartupActivity"/>
-    </projectListeners>
 
     <actions>
         <group id="Moodle.NewFile" text="Moodle Files">
