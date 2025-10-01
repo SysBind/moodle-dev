@@ -1,46 +1,53 @@
-<component name="InspectionProjectProfileManager">
-  <profile version="1.0">
-    <option name="myName" value="Moodle" />
-    <inspection_tool class="Eslint" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="JSHint" enabled="true" level="ERROR" enabled_by_default="true" />
-    <inspection_tool class="PhpCSValidationInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
-    <inspection_tool class="PhpClassNamingConventionInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
-      <option name="m_regex" value="[a-z][_a-z\d]*" />
-      <option name="m_minLength" value="0" />
-      <option name="m_maxLength" value="132" />
+<profile version="1.0">
+    <description>Moodle Code Inspections</description>
+    <option name="myName" value="Moodle"/>
+    <inspection_tool class="Eslint" enabled="true" level="WARNING" enabled_by_default="true"/>
+    <inspection_tool class="JSHint" enabled="true" level="ERROR" enabled_by_default="true"/>
+    <inspection_tool class="PhpCSValidationInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true"/>
+    <inspection_tool class="PhpClassNamingConventionInspection" enabled="true" level="WEAK WARNING"
+                     enabled_by_default="true">
+        <option name="m_regex" value="[a-z][_a-z\d]*"/>
+        <option name="m_minLength" value="0"/>
+        <option name="m_maxLength" value="132"/>
     </inspection_tool>
-    <inspection_tool class="PhpConstantNamingConventionInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
-      <option name="m_minLength" value="0" />
-      <option name="m_maxLength" value="132" />
+    <inspection_tool class="PhpConstantNamingConventionInspection" enabled="true" level="WEAK WARNING"
+                     enabled_by_default="true">
+        <option name="m_minLength" value="0"/>
+        <option name="m_maxLength" value="132"/>
     </inspection_tool>
-    <inspection_tool class="PhpDocMissingThrowsInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
-    <inspection_tool class="PhpEnforceDocCommentInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
-      <option name="CHECK_CONSTANT" value="true" />
-      <option name="CHECK_FIELD" value="true" />
-      <option name="CHECK_CLASS_CONSTANT" value="true" />
+    <inspection_tool class="PhpDocMissingThrowsInspection" enabled="false" level="WEAK WARNING"
+                     enabled_by_default="false"/>
+    <inspection_tool class="PhpEnforceDocCommentInspection" enabled="true" level="WEAK WARNING"
+                     enabled_by_default="true">
+        <option name="CHECK_CONSTANT" value="true"/>
+        <option name="CHECK_FIELD" value="true"/>
+        <option name="CHECK_CLASS_CONSTANT" value="true"/>
     </inspection_tool>
-    <inspection_tool class="PhpFunctionNamingConventionInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
-      <option name="m_minLength" value="0" />
-      <option name="m_maxLength" value="132" />
+    <inspection_tool class="PhpFunctionNamingConventionInspection" enabled="true" level="WEAK WARNING"
+                     enabled_by_default="true">
+        <option name="m_minLength" value="0"/>
+        <option name="m_maxLength" value="132"/>
     </inspection_tool>
-    <inspection_tool class="PhpMethodNamingConventionInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
-      <option name="m_regex" value="[a-z][_a-z\d]*" />
-      <option name="m_minLength" value="0" />
-      <option name="m_maxLength" value="132" />
+    <inspection_tool class="PhpMethodNamingConventionInspection" enabled="true" level="WEAK WARNING"
+                     enabled_by_default="true">
+        <option name="m_regex" value="[a-z][_a-z\d]*"/>
+        <option name="m_minLength" value="0"/>
+        <option name="m_maxLength" value="132"/>
     </inspection_tool>
-    <inspection_tool class="PhpPropertyNamingConventionInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
-      <option name="m_regex" value="[a-z][a-z\d]*" />
-      <option name="m_minLength" value="0" />
-      <option name="m_maxLength" value="132" />
+    <inspection_tool class="PhpPropertyNamingConventionInspection" enabled="true" level="WEAK WARNING"
+                     enabled_by_default="true">
+        <option name="m_regex" value="[a-z][a-z\d]*"/>
+        <option name="m_minLength" value="0"/>
+        <option name="m_maxLength" value="132"/>
     </inspection_tool>
     <inspection_tool class="PhpUndefinedVariableInspection" enabled="true" level="ERROR" enabled_by_default="true">
-      <option name="IGNORE_INCLUDE" value="true" />
+        <option name="IGNORE_INCLUDE" value="true"/>
     </inspection_tool>
-    <inspection_tool class="PhpVariableNamingConventionInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
-      <option name="m_regex" value="^(CFG|SESSION|USER|COURSE|SITE|PAGE|PERF|DB|THEME|OUTPUT|[a-z][a-z\d]*)$" />
-      <option name="m_minLength" value="0" />
-      <option name="m_maxLength" value="132" />
+    <inspection_tool class="PhpVariableNamingConventionInspection" enabled="true" level="WEAK WARNING"
+                     enabled_by_default="true">
+        <option name="m_regex" value="^(CFG|SESSION|USER|COURSE|SITE|PAGE|PERF|DB|THEME|OUTPUT|[a-z][a-z\d]*)$"/>
+        <option name="m_minLength" value="0"/>
+        <option name="m_maxLength" value="132"/>
     </inspection_tool>
-    <inspection_tool class="Stylelint" enabled="true" level="ERROR" enabled_by_default="true" />
-  </profile>
-</component>
+    <inspection_tool class="Stylelint" enabled="true" level="ERROR" enabled_by_default="true"/>
+</profile>
