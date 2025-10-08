@@ -5,19 +5,51 @@
 All Moodle Dev plugin changes will be documented here
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 
-## [Unreleased]
+## [Unreleased] 
 
 ### Added
 
-- Bundled Moodle inspection profile and registered it in plugin.xml so it becomes available after plugin installation
-- Automatically set the bundled "Moodle" inspection profile as the Project profile on first project open so it appears in Settings | Editor | Inspections and is selected in the Project profiles dropdown (non-intrusive: won’t override an existing custom selection)
-- On project open, construct InspectionProfileImpl from bundled resources/inspectionProfiles/Moodle.xml and set it as the project profile via ProjectInspectionProfileManager#setCurrentProfile
+- Bundled Moodle inspection profile and registered it in `plugin.xml` so it becomes available after plugin installation.
+- Automatically set the bundled "Moodle" inspection profile as the Project profile on first project open (non‑intrusive: won’t override an existing custom selection).
+- On project open, construct `InspectionProfileImpl` from bundled `resources/inspectionProfiles/Moodle.xml` and set it as the project profile via `ProjectInspectionProfileManager#setCurrentProfile`.
+
+### Changed
+
+- Dependency updates and build tooling:
+  - IntelliJ Platform Gradle plugin: 2.7.2 → 2.9.0.
+  - Kotlin JVM: 2.2.10 → 2.2.20.
+  - Kover: 0.9.1 → 0.9.2.
+  - GitHub Actions: `actions/setup-java` 4 → 5, `gradle/actions` 4 → 5.
+- Removed `MoodleManagerListener` (registration moved to `plugin.xml`) and registered bundled inspection profile via `<bundledInspectionProfile/>`.
 
 ### Fixed
 
-- Corrected automatic selection of the bundled "Moodle" inspection profile as the Project profile on project open so it reliably appears in Settings | Editor | Inspections profiles dropdown
-- Replaced deprecated ProcessAdapter with ProcessListener in ComposerUtil.kt to maintain compatibility with latest IntelliJ Platform SDK
-- Removed usage of unstable UI DSL builder textFieldWithBrowseButton in MoodleSettingsForm by using Swing TextFieldWithBrowseButton within cell(...); satisfies UnstableApiUsage inspection
+- Corrected automatic selection of the bundled "Moodle" inspection profile as the Project profile so it reliably appears in Settings | Editor | Inspections.
+- Replaced deprecated `ProcessAdapter` with `ProcessListener` in `ComposerUtil.kt` to maintain compatibility with the latest IntelliJ Platform SDK.
+- Removed usage of unstable UI DSL `textFieldWithBrowseButton` in `MoodleSettingsForm`; used Swing `TextFieldWithBrowseButton` within `cell(...)` to satisfy `UnstableApiUsage` inspection.
+
+## [2.1.1] - 2025-08-15
+
+### Changed
+
+- Bump dependencies: IntelliJ Platform Gradle plugin 2.7.1 → 2.7.2, Kotlin 2.2.0 → 2.2.10, Qodana plugin/action, and `actions/checkout` 4 → 5.
+
+### Fixed
+
+- Replace deprecated `ProcessAdapter` with `ProcessListener` for IntelliJ SDK compatibility.
+- Refactor `MoodleSettingsForm` to replace unstable `textFieldWithBrowseButton` with `TextFieldWithBrowseButton`.
+
+## [2.1.0] - 2025-08-12
+
+### Added
+
+- Development tooling: add `.devcontainer.json` and `.junie` workflow.
+
+### Changed
+
+- Remove unnecessary `isAvailable` overrides in actions.
+- Dependency updates: IntelliJ Platform Gradle plugin to 2.7.1, Kotlin to 2.2.0, Gradle toolchains Foojay resolver, and JetBrains changelog plugin updates.
+- CI/CD and quality: update Qodana versions and GitHub workflows.
 
 ## [2.0.0] - 2025-04-15
 
@@ -190,7 +222,10 @@ Add support for PHPStorm 2022.2
 - Add live Template for Moodle $ADMIN by type ADMIN
 - Add Moodle code style for predefined code styles for PHP/Javascript/SCSS/LESS
 
-[Unreleased]: https://github.com/SysBind/moodle-dev/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/SysBind/moodle-dev/compare/2.2.0...HEAD
+[2.2.0]: https://github.com/SysBind/moodle-dev/compare/2.1.1...2.2.0
+[2.1.1]: https://github.com/SysBind/moodle-dev/compare/2.1.0...2.1.1
+[2.1.0]: https://github.com/SysBind/moodle-dev/compare/v2.0.0...2.1.0
 [2.0.0]: https://github.com/SysBind/moodle-dev/compare/v1.3.3...v2.0.0
 [1.3.3]: https://github.com/SysBind/moodle-dev/compare/v1.3.2...v1.3.3
 [1.3.2]: https://github.com/SysBind/moodle-dev/compare/v1.3.1...v1.3.2
