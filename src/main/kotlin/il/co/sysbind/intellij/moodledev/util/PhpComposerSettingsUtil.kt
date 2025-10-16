@@ -43,7 +43,31 @@ object PhpComposerSettingsUtil {
                 null
             } ?: return
 
-            // Look for a setter that likely controls synchronization; prefer names containing "sync"
+            // 1) Prefer enum-based API: setSynchronizationState(SynchronizationState.DONT_SYNCHRONIZE)
+            try {
+                val enumClass = try {
+                    Class.forName("com.jetbrains.php.composer.SynchronizationState")
+                } catch (e: ClassNotFoundException) {
+                    null
+                }
+                val setState = clazz.methods.firstOrNull { m ->
+                    m.name.equals("setSynchronizationState", true) && m.parameterCount == 1 && (enumClass == null || m.parameterTypes[0].isEnum)
+                }
+                if (setState != null) {
+                    val dont = enumClass?.enumConstants?.firstOrNull { (it as Enum<*>).name.equals("DONT_SYNCHRONIZE", true) }
+                        ?: setState.parameterTypes[0].enumConstants.firstOrNull { (it as Enum<*>).name.contains("DONT", true) }
+                    if (dont != null) {
+                        setState.isAccessible = true
+                        setState.invoke(instance, dont)
+                        log.info("Disabled Composer sync via setSynchronizationState(DONT_SYNCHRONIZE).")
+                        return
+                    }
+                }
+            } catch (ignore: Throwable) {
+                // fall through to boolean-based API
+            }
+
+            // 2) Boolean-based API fallbacks: look for setter containing "sync"
             val candidates = clazz.methods.filter { method ->
                 method.name.startsWith("set") &&
                         method.parameterCount == 1 &&

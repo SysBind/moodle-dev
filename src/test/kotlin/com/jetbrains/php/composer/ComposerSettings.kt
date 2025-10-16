@@ -8,11 +8,22 @@ import com.intellij.openapi.project.Project
  */
 class ComposerSettings private constructor(val project: Project? = null) {
     var synchronizeWithComposerJson: Boolean = true
+    var synchronizationState: SynchronizationState = SynchronizationState.SYNCHRONIZE
 
+    // Enum mirrors real plugin concept for workspace.xml persistence
+    enum class SynchronizationState { SYNCHRONIZE, DONT_SYNCHRONIZE }
+
+    // Preferred newer API
+    fun setSynchronizationState(state: SynchronizationState) {
+        synchronizationState = state
+        // Keep boolean flag consistent with enum semantics
+        synchronizeWithComposerJson = state == SynchronizationState.SYNCHRONIZE
+    }
 
     // Alternative setter name to ensure our reflection fallback remains covered
     fun setAutoSyncEnabled(value: Boolean) {
         synchronizeWithComposerJson = value
+        synchronizationState = if (value) SynchronizationState.SYNCHRONIZE else SynchronizationState.DONT_SYNCHRONIZE
     }
 
     companion object {
