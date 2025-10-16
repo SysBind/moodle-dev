@@ -27,11 +27,17 @@ object PhpComposerSettingsUtil {
                 null
             } ?: return
 
-            // Obtain getInstance(Project) if available
+            // Obtain getInstance(Project) if available, else fall back to no-arg getInstance()
             val instance = try {
-                val m = clazz.methods.firstOrNull { it.name == "getInstance" && it.parameterCount == 1 && it.parameterTypes[0] == Project::class.java }
-                    ?: clazz.methods.firstOrNull { it.name.equals("getInstance", true) }
-                if (m != null) m.invoke(null, project) else null
+                val withProject = clazz.methods.firstOrNull {
+                    it.name.equals("getInstance", true) && it.parameterCount == 1 && Project::class.java.isAssignableFrom(it.parameterTypes[0])
+                }
+                val noArg = clazz.methods.firstOrNull { it.name.equals("getInstance", true) && it.parameterCount == 0 }
+                when {
+                    withProject != null -> withProject.invoke(null, project)
+                    noArg != null -> noArg.invoke(null)
+                    else -> null
+                }
             } catch (e: Exception) {
                 log.warn("Failed to obtain ComposerSettings instance: ${e.message}")
                 null
