@@ -7,6 +7,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 
 ## [Unreleased] 
 
+### Added
+- Unit and UI tests to verify Composer "Synchronize IDE settings with composer.json" is disabled when enabling the Moodle framework.
+
 ## [2.2.1] - 2025-10-16
 
 ### Fixed
