@@ -2,7 +2,7 @@ package il.co.sysbind.intellij.moodledev.util
 
 import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.execution.process.OSProcessHandler
-import com.intellij.execution.process.ProcessAdapter
+import com.intellij.execution.process.ProcessListener
 import com.intellij.execution.process.ProcessEvent
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
@@ -53,7 +53,7 @@ object ComposerUtil {
 
                 val output = StringBuilder()
                 val processHandler = OSProcessHandler(commandLine)
-                processHandler.addProcessListener(object : ProcessAdapter() {
+                processHandler.addProcessListener(object : ProcessListener {
                     override fun onTextAvailable(event: ProcessEvent, outputType: Key<*>) {
                         // Only append the actual output, not the command itself
                         val text = event.text.trim()
@@ -146,7 +146,7 @@ object ComposerUtil {
             commandLine.workDirectory = workDir
 
             val processHandler = OSProcessHandler(commandLine)
-            processHandler.addProcessListener(object : ProcessAdapter() {
+            processHandler.addProcessListener(object : ProcessListener {
                 override fun onTextAvailable(event: ProcessEvent, outputType: Key<*>) {
                     log.debug("Composer install output: ${event.text}")
                 }
@@ -195,7 +195,7 @@ object ComposerUtil {
 
                     val output = StringBuilder()
                     val processHandler = OSProcessHandler(commandLine)
-                    processHandler.addProcessListener(object : ProcessAdapter() {
+                    processHandler.addProcessListener(object : ProcessListener {
                         override fun onTextAvailable(event: ProcessEvent, outputType: Key<*>) {
                             output.append(event.text)
                         }
@@ -272,7 +272,7 @@ object ComposerUtil {
 
         try {
             val processHandler = OSProcessHandler(commandLine)
-            processHandler.addProcessListener(object : ProcessAdapter() {
+            processHandler.addProcessListener(object : ProcessListener {
                 override fun onTextAvailable(event: ProcessEvent, outputType: Key<*>) {
                     log.debug("Composer output: ${event.text}")
                 }

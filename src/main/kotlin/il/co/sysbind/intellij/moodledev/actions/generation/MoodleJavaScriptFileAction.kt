@@ -6,8 +6,6 @@ import com.intellij.ide.fileTemplates.FileTemplate
 import com.intellij.ide.fileTemplates.FileTemplateManager
 import com.intellij.ide.fileTemplates.FileTemplateUtil
 import com.intellij.lang.javascript.JavaScriptFileType
-import com.intellij.openapi.actionSystem.CommonDataKeys
-import com.intellij.openapi.actionSystem.DataContext
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDirectory
@@ -22,14 +20,6 @@ class MoodleJavaScriptFileAction: CreateFileFromTemplateAction(CAPTION, "", Java
 
     private companion object {
         private val CAPTION = MoodleBundle.getMessage("action.javascript.caption")
-    }
-
-    override fun isAvailable(dataContext: DataContext?): Boolean {
-        if (!super.isAvailable(dataContext)) return false
-        val project = CommonDataKeys.PROJECT.getData(dataContext!!) ?: return false
-        CommonDataKeys.VIRTUAL_FILE.getData(dataContext) ?: return false
-        val moodle = project.getService(MoodleProjectSettings::class.java).settings
-        return moodle.pluginEnabled
     }
 
     override fun buildDialog(project: Project, directory: PsiDirectory, builder: CreateFileFromTemplateDialog.Builder) {
