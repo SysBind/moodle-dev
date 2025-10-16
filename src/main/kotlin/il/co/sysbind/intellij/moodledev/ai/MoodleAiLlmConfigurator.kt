@@ -6,7 +6,7 @@ import com.intellij.openapi.startup.ProjectActivity
 import il.co.sysbind.intellij.moodledev.project.MoodleProjectSettings
 import il.co.sysbind.intellij.moodledev.util.PluginUtil
 
-class MoodleAiLlmConfigurator : ProjectActivity {
+open class MoodleAiLlmConfigurator : ProjectActivity {
     private val log = Logger.getInstance(MoodleAiLlmConfigurator::class.java)
 
     override suspend fun execute(project: Project) {
@@ -14,13 +14,19 @@ class MoodleAiLlmConfigurator : ProjectActivity {
         val enabled = settingsService.settings.pluginEnabled
         if (!enabled) return
 
-        if (!PluginUtil.isPluginInstalled("com.intellij.ml.llm")) {
+        if (!isAiPluginInstalled()) {
             log.debug("LLM plugin not installed; skipping Moodle AI prompt configuration")
             return
         }
 
-        tryApplyAIPrompts()
+        applyAIPrompts()
     }
+
+    // Visible for testing
+    protected open fun isAiPluginInstalled(): Boolean = PluginUtil.isPluginInstalled("com.intellij.ml.llm")
+
+    // Visible for testing
+    protected open fun applyAIPrompts() = tryApplyAIPrompts()
 
     private fun tryApplyAIPrompts() {
         val phpDoc = MoodleAiPrompts.phpDocPrompt
