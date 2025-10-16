@@ -6,6 +6,12 @@ import org.junit.Test
 
 class PhpComposerSettingsUtilTest : BasePlatformTestCase() {
 
+    override fun setUp() {
+        super.setUp()
+        // Reset shared state of the fake ComposerSettings between tests
+        ComposerSettings.clearLastInstanceForTests()
+    }
+
     @Test
     fun testDisableComposerSync_DisablesOnFakeComposerSettings() {
         // Ensure there's no lingering instance from other tests

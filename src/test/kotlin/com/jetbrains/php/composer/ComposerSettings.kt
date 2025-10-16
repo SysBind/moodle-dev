@@ -9,9 +9,6 @@ import com.intellij.openapi.project.Project
 class ComposerSettings private constructor(val project: Project? = null) {
     var synchronizeWithComposerJson: Boolean = true
 
-    fun setSynchronizeWithComposerJson(value: Boolean) {
-        synchronizeWithComposerJson = value
-    }
 
     // Alternative setter name to ensure our reflection fallback remains covered
     fun setAutoSyncEnabled(value: Boolean) {
@@ -38,5 +35,11 @@ class ComposerSettings private constructor(val project: Project? = null) {
 
         @JvmStatic
         fun getLastInstance(): ComposerSettings? = lastInstance
+
+        // Test-only utility to reset singleton-like state between tests
+        @JvmStatic
+        fun clearLastInstanceForTests() {
+            lastInstance = null
+        }
     }
 }
