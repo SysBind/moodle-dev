@@ -7,6 +7,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 
 ## [Unreleased] 
 
+## [2.2.1] - 2025-10-16
+
+### Fixed
+- When enabling the Moodle framework, the plugin now programmatically disables PHP > Composer > "Synchronize IDE settings with composer.json" to prevent unintended overwrites of IDE configuration.
+
 ### Added
 
 - Bundled Moodle inspection profile and registered it in `plugin.xml` so it becomes available after plugin installation.
@@ -222,7 +227,8 @@ Add support for PHPStorm 2022.2
 - Add live Template for Moodle $ADMIN by type ADMIN
 - Add Moodle code style for predefined code styles for PHP/Javascript/SCSS/LESS
 
-[Unreleased]: https://github.com/SysBind/moodle-dev/compare/2.2.0...HEAD
+[Unreleased]: https://github.com/SysBind/moodle-dev/compare/2.2.1...HEAD
+[2.2.1]: https://github.com/SysBind/moodle-dev/compare/2.2.0...2.2.1
 [2.2.0]: https://github.com/SysBind/moodle-dev/compare/2.1.1...2.2.0
 [2.1.1]: https://github.com/SysBind/moodle-dev/compare/2.1.0...2.1.1
 [2.1.0]: https://github.com/SysBind/moodle-dev/compare/v2.0.0...2.1.0
