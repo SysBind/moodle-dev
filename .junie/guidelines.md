@@ -47,6 +47,7 @@ This is an IntelliJ Platform plugin project for Moodle development support.
    ```
 
 ## Testing
+- Follow [Testing Docs](https://plugins.jetbrains.com/docs/intellij/testing-plugins.html) and his links to learn more about testing and writing tests.
 - Run tests:
   ```bash
   ./gradlew test
