@@ -2,7 +2,7 @@
 <idea-plugin>
     <id>il.co.sysbind.intellij.moodledev</id>
     <name>Moodle Development</name>
-    <version>2.2.0</version>
+    <version>2.2.1</version>
     <vendor email="support@sysbind.co.il" url="https://sysbin.co.il">SysBind</vendor>
     <description><![CDATA[
     <h1>Plugin For Moodle Developers</h1>
@@ -39,6 +39,8 @@
         <predefinedCodeStyle implementation="il.co.sysbind.intellij.moodledev.codeStyle.MoodleLessPredefinedCodeStyle"/>
         <predefinedCodeStyle implementation="il.co.sysbind.intellij.moodledev.codeStyle.MoodleScssPredefinedCodeStyle"/>
         <bundledInspectionProfile path="/inspectionProfiles/Moodle" id="Moodle.InspectProfile"/>
+
+        <projectActivity implementation="il.co.sysbind.intellij.moodledev.ai.MoodleAiLlmConfigurator"/>
 
         <internalFileTemplate name="Moodle PHP File"/>
         <internalFileTemplate name="Moodle PHP Class"/>
