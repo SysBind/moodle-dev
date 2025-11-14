@@ -82,6 +82,15 @@ class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
         settings.userName = userName.component.text
         settings.userEmail = userEmail.component.text
 
+        // If Moodle framework is enabled, ensure Composer IDE sync is disabled
+        if (settings.pluginEnabled) {
+            try {
+                il.co.sysbind.intellij.moodledev.util.PhpComposerSettingsUtil.disableComposerSync(project)
+            } catch (t: Throwable) {
+                log.warn("Unable to disable Composer sync via utility: ${t.message}")
+            }
+        }
+
         // Configure PHP_Codesniffer if plugin is enabled
         if (settings.pluginEnabled) {
             // Check if composer is available
