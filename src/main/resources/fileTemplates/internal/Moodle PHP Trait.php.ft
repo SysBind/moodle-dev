@@ -3,8 +3,15 @@
 
 #if (${NAMESPACE})
 namespace ${NAMESPACE};
-
 #end
+
+/**
+ * ${PLUGIN_NAME} ${FILE_NAME} description here.
+ *
+ * @package    ${PLUGIN_NAME}
+ * @copyright  ${YEAR} ${USER_NAME} <${USER_EMAIL}>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 trait ${NAME} {
 
 }
