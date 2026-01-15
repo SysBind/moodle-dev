@@ -5,7 +5,15 @@
 All Moodle Dev plugin changes will be documented here
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 
-## [Unreleased] 
+## [Unreleased]
+
+### Added
+- Best-effort integration with JetBrains AI Assistant (com.intellij.ml.llm): when Moodle framework is enabled, the plugin tries to update AI prompts.
+  - "Write Documentation > PHP" prompt now instructs to follow Moodle PHPDoc rules and to add @covers only in unit tests.
+  - "Built-In Actions > Commit Message generation" prompt now follows Moodle git commit policy and format.
+
+### Changed
+- Bump plugin version to 2.2.1.
 
 ### Added
 
