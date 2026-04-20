@@ -40,6 +40,8 @@
         <predefinedCodeStyle implementation="il.co.sysbind.intellij.moodledev.codeStyle.MoodleScssPredefinedCodeStyle"/>
         <bundledInspectionProfile path="/inspectionProfiles/Moodle" id="Moodle.InspectProfile"/>
 
+        <projectActivity implementation="il.co.sysbind.intellij.moodledev.ai.MoodleAiLlmConfigurator"/>
+
         <internalFileTemplate name="Moodle PHP File"/>
         <internalFileTemplate name="Moodle PHP Class"/>
         <internalFileTemplate name="Moodle PHP Interface"/>
