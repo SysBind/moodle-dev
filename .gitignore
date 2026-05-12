@@ -7,3 +7,8 @@ build
 .kotlin
 /private.pem
 /chain.crt
+/.junie/memory/errors.md
+/.junie/memory/feedback.md
+/.junie/memory/language.json
+/.junie/memory/memory.version
+/.junie/memory/tasks.md
