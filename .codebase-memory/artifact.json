@@ -1,11 +1,11 @@
 {
     "schema_version": 2,
-    "commit": "7309c4c97c45b0dc6c61905c2f34f4e48a415b6e",
-    "indexed_at": "2026-08-03T22:00:22Z",
+    "commit": "efcab717a55c21661d4a6f6204e1347ea9da67e3",
+    "indexed_at": "2026-08-03T22:02:09Z",
     "project": "home-avi-Workspaces-Kotlin-moodle-dev",
     "nodes": 693,
     "edges": 1511,
-    "original_size": 3342336,
-    "compressed_size": 258305,
+    "original_size": 2949120,
+    "compressed_size": 237442,
     "compression_level": 3
 }

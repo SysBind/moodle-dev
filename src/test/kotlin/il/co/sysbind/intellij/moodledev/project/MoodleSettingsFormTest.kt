@@ -1,6 +1,7 @@
 package il.co.sysbind.intellij.moodledev.project
 
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import com.intellij.psi.codeStyle.CodeStyleSettingsManager
 import il.co.sysbind.intellij.moodledev.util.ComposerUtil
 import org.junit.Before
 import org.junit.Ignore
@@ -86,6 +87,9 @@ class MoodleSettingsFormTest : BasePlatformTestCase() {
 
     override fun tearDown() {
         println("[DEBUG_LOG] Test teardown started")
+        val codeStyleManager = CodeStyleSettingsManager.getInstance(project)
+        codeStyleManager.USE_PER_PROJECT_SETTINGS = false
+        codeStyleManager.mainProjectCodeStyle = null
         super.tearDown()
     }
 

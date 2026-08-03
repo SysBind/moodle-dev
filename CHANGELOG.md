@@ -8,12 +8,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 ## [Unreleased] 
 
 ### Added
+- Project-level settings storage for Moodle plugin settings in `.idea/moodle-dev.xml` for better VCS sharing.
+- Support for project-level Code Style settings, automatically switching the project scheme to "Project" when Moodle settings are applied.
+- Support for project-level Inspection Profile configuration.
+- Support for IDE Backup and Sync for Moodle plugin settings.
 
+### Changed
 - Bundled Moodle inspection profile and registered it in `plugin.xml` so it becomes available after plugin installation.
 - Automatically set the bundled "Moodle" inspection profile as the Project profile on first project open (non‑intrusive: won’t override an existing custom selection).
 - On project open, construct `InspectionProfileImpl` from bundled `resources/inspectionProfiles/Moodle.xml` and set it as the project profile via `ProjectInspectionProfileManager#setCurrentProfile`.
-
-### Changed
 - Fix Moodle file creation documentation according to code standards.
 - Dependency updates and build tooling:
   - IntelliJ Platform Gradle plugin: 2.7.2 → 2.9.0.

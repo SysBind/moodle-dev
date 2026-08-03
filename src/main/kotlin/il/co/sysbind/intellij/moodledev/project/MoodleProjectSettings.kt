@@ -1,13 +1,11 @@
 package il.co.sysbind.intellij.moodledev.project
 
-import com.intellij.openapi.components.PersistentStateComponent
-import com.intellij.openapi.components.State
-import com.intellij.openapi.components.Storage
-import com.intellij.openapi.components.StoragePathMacros
+import com.intellij.openapi.components.*
 
 @State(
     name = "il.co.sysbind.intellij.moodledev.settings.MoodleSettings",
-    storages = [Storage(StoragePathMacros.WORKSPACE_FILE)]
+    storages = [Storage("moodle-dev.xml", roamingType = RoamingType.DEFAULT)],
+    category = SettingsCategory.TOOLS
 )
 class MoodleProjectSettings : PersistentStateComponent<MoodleSettings> {
     var settings: MoodleSettings = MoodleSettings()

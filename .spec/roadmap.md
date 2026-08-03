@@ -12,6 +12,7 @@
 - [ ] Improve integration with Moodle's internal structure
 
 ## Phase 3: Developer Experience [ ]
+- [ ] Project-level settings storage
 - [ ] UI/UX refinements for configurations
 - [ ] Better documentation and tooltips
 - [ ] Integration with external Moodle tools

@@ -13,6 +13,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.guessProjectDir
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
 import com.intellij.profile.codeInspection.ProjectInspectionProfileManager
+import com.intellij.psi.codeStyle.CodeStyleSettingsManager
 import com.intellij.ui.components.JBCheckBox
 import com.intellij.ui.dsl.builder.*
 import com.jetbrains.php.config.interpreters.PhpInterpretersManagerImpl
@@ -109,11 +110,7 @@ class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
                 log.warn("Composer is not available, skipping Moodle CS setup")
             }
 
-            val codeStyleSettings = CodeStyle.getSettings(project)
-            MoodlePhpPredefinedCodeStyle().apply(codeStyleSettings, PhpLanguage.INSTANCE)
-            MoodleJavascriptPredefinedCodeStyle().apply(codeStyleSettings, JavascriptLanguage)
-            MoodleLessPredefinedCodeStyle().apply(codeStyleSettings, LESSLanguage.INSTANCE)
-            MoodleScssPredefinedCodeStyle().apply(codeStyleSettings, SCSSLanguage.INSTANCE)
+            configureCodeStyle()
             if (settings.moodlePath.isNotBlank()) {
                 // Get the PhpIncludePathManager for the current project
                 val includePathManager = PhpIncludePathManager.getInstance(project)
@@ -247,8 +244,11 @@ class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
 
                 // Enable PhpCSValidationInspection
                 val profileManager = ProjectInspectionProfileManager.getInstance(project)
-                profileManager.useApplicationProfile("Moodle")
+                profileManager.setRootProfile("Moodle")
                 profileManager.fireProfileChanged()
+
+                // Configure Code Style
+                configureCodeStyle()
 
                 log.info("Successfully enabled PhpCSValidationInspection")
                 // Try to set the configuration for phpcs_by_interpreter
@@ -274,5 +274,18 @@ class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
         } catch (e: Exception) {
             log.error("Failed to configure PHP_Codesniffer automatically: ${e.message}", e)
         }
+    }
+
+    private fun configureCodeStyle() {
+        val codeStyleManager = CodeStyleSettingsManager.getInstance(project)
+        codeStyleManager.USE_PER_PROJECT_SETTINGS = true
+        val codeStyleSettings = codeStyleManager.mainProjectCodeStyle ?: codeStyleManager.createSettings()
+
+        MoodlePhpPredefinedCodeStyle().apply(codeStyleSettings, PhpLanguage.INSTANCE)
+        MoodleJavascriptPredefinedCodeStyle().apply(codeStyleSettings, JavascriptLanguage)
+        MoodleLessPredefinedCodeStyle().apply(codeStyleSettings, LESSLanguage.INSTANCE)
+        MoodleScssPredefinedCodeStyle().apply(codeStyleSettings, SCSSLanguage.INSTANCE)
+
+        codeStyleManager.mainProjectCodeStyle = codeStyleSettings
     }
 }
