@@ -6,6 +6,7 @@
 - [x] Core utility classes (Composer, Path utils)
 
 ## Phase 2: Enhanced Moodle Support [ ]
+- [x] Fix Composer global directory path detection (filter PHP warnings)
 - [ ] Add more Moodle-specific templates
 - [ ] Implement advanced Moodle inspections
 - [ ] Improve integration with Moodle's internal structure

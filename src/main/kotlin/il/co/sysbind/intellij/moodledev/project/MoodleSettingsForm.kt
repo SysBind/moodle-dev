@@ -30,6 +30,7 @@ import il.co.sysbind.intellij.moodledev.util.ComposerUtil
 import il.co.sysbind.intellij.moodledev.util.MoodleCorePathUtil
 import org.jetbrains.plugins.less.LESSLanguage
 import org.jetbrains.plugins.scss.SCSSLanguage
+import java.io.File
 import javax.swing.JComponent
 import javax.swing.JTextField
 
@@ -66,6 +67,12 @@ class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
                 .bindText(settings::moodlePath)
                 .enabledIf(pluginEnabled.selected)
         }
+
+        row {
+            button(MoodleBundle.message("configurable.phpcs.rerun")) {
+                detectAndNotifyPhpcs(true)
+            }.enabledIf(pluginEnabled.selected)
+        }
     }
 
     override fun createComponent(): JComponent {
@@ -84,100 +91,7 @@ class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
 
         // Configure PHP_Codesniffer if plugin is enabled
         if (settings.pluginEnabled) {
-            // Check if composer is available
-            if (!ComposerUtil.isComposerAvailable()) {
-                // Show notification that composer is not available
-                NotificationGroupManager.getInstance()
-                    .getNotificationGroup("Moodle.Notifications")
-                    .createNotification(
-                        MoodleBundle.getMessage("configurable.phpcs.title"),
-                        "Composer is not available. PHP_Codesniffer configuration will be skipped.",
-                        NotificationType.WARNING
-                    )
-                    .notify(project)
-                log.warn("Composer is not available, skipping PHP_Codesniffer configuration")
-            } else {
-                val detectedPhpcsPath = ComposerUtil.getPhpcsPath()
-                val detectedPhpcbfPath = ComposerUtil.getPhpcbfPath()
-
-                if (detectedPhpcsPath != null && detectedPhpcbfPath != null) {
-                    // Show notification for PHP_Codesniffer configuration
-                    NotificationGroupManager.getInstance()
-                        .getNotificationGroup("Moodle.Notifications")
-                        .createNotification(
-                            MoodleBundle.getMessage("configurable.phpcs.title"),
-                            MoodleBundle.getMessage("configurable.phpcs.detected", detectedPhpcsPath, detectedPhpcbfPath),
-                            NotificationType.INFORMATION
-                        )
-                        .addAction(NotificationAction.createSimple(MoodleBundle.getMessage("configurable.phpcs.auto.settings")) {
-                            try {
-                                ApplicationManager.getApplication().runWriteAction {
-                                    // Configure PHP_Codesniffer settings
-                                    val phpInterpreterManager = PhpInterpretersManagerImpl.getInstance(project)
-                                    val manager = PhpCSConfigurationManager.getInstance(project)
-                                    val interprter = phpInterpreterManager.findInterpreter("System PHP")
-                                    val configuration = manager.getOrCreateConfigurationByInterpreter(interprter, true)
-
-                                    configuration.phpCodeBeautifierPath = detectedPhpcbfPath
-                                    configuration.toolPath = detectedPhpcsPath
-                                    val optionsConfig = PhpCSOptionsConfiguration.getInstance(project)
-                                    optionsConfig.isShowSniffs = true
-                                    optionsConfig.codingStandard = "moodle"
-                                    optionsConfig.extensions = "php"
-
-                                    // Enable PhpCSValidationInspection
-                                    val profileManager = ProjectInspectionProfileManager.getInstance(project)
-                                    profileManager.useApplicationProfile("Moodle")
-                                    profileManager.fireProfileChanged()
-
-                                    log.info("Successfully enabled PhpCSValidationInspection")
-                                    // Try to set the configuration for phpcs_by_interpreter
-                                    try {
-                                        manager.markAndSetNewSettings(listOf(configuration))
-                                        log.info("Successfully set tool path for phpcs_by_interpreter")
-                                    } catch (e: Exception) {
-                                        log.warn("Could not set tool path for phpcs_by_interpreter: ${e.message}")
-                                    }
-
-                                    // Show success notification
-                                    NotificationGroupManager.getInstance()
-                                        .getNotificationGroup("Moodle.Notifications")
-                                        .createNotification(
-                                            MoodleBundle.getMessage("configurable.phpcs.title"),
-                                            MoodleBundle.getMessage("configurable.phpcs.success", detectedPhpcsPath, detectedPhpcbfPath),
-                                            NotificationType.INFORMATION
-                                        )
-                                        .notify(project)
-
-                                    log.info("Successfully configured PHP_Codesniffer automatically")
-                                }
-                            } catch (e: Exception) {
-                                log.error("Failed to configure PHP_Codesniffer automatically: ${e.message}", e)
-                            }
-                        })
-                        .addAction(NotificationAction.createSimple(MoodleBundle.getMessage("configurable.phpcs.open.settings")) {
-                            ShowSettingsUtil.getInstance().showSettingsDialog(
-                                project,
-                                MoodleBundle.getMessage("configurable.phpcs.settings.path")
-                            )
-                            log.info("Opened PHP_Codesniffer settings")
-                        })
-                        .addAction(NotificationAction.createSimple(MoodleBundle.getMessage("configurable.phpcs.copy.paths")) {
-                            val content = MoodleBundle.getMessage("configurable.phpcs.paths.content", detectedPhpcsPath, detectedPhpcbfPath)
-                            val clipboard = com.intellij.openapi.ide.CopyPasteManager.getInstance()
-                            clipboard.setContents(java.awt.datatransfer.StringSelection(content))
-                            log.info("Copied PHP_Codesniffer paths to clipboard")
-                        })
-                        .addAction(NotificationAction.createSimple(MoodleBundle.getMessage("configurable.phpcs.ignore")) {
-                            log.info("User chose to ignore PHP_Codesniffer configuration")
-                        })
-                        .notify(project)
-
-                    log.info("Showed PHP_Codesniffer configuration options to user")
-                } else {
-                    log.warn("Failed to get PHP_Codesniffer paths from composer global directory")
-                }
-            }
+            detectAndNotifyPhpcs()
         }
         if (settings.moodlePath != "") {
             MoodleCorePathUtil.isMoodlePathValid(settings.moodlePath)
@@ -247,5 +161,118 @@ class MoodleSettingsForm(val project: Project) : PhpFrameworkConfigurable {
 
     override fun isBeingUsed(): Boolean {
         return settings.pluginEnabled
+    }
+
+    private fun detectAndNotifyPhpcs(manual: Boolean = false) {
+        // Check if composer is available
+        if (!ComposerUtil.isComposerAvailable()) {
+            NotificationGroupManager.getInstance()
+                .getNotificationGroup("Moodle.Notifications")
+                .createNotification(
+                    MoodleBundle.getMessage("configurable.phpcs.title"),
+                    "Composer is not available. PHP_Codesniffer configuration will be skipped.",
+                    NotificationType.WARNING
+                )
+                .notify(project)
+            log.warn("Composer is not available, skipping PHP_Codesniffer configuration")
+            return
+        }
+
+        val detectedPhpcsPath = ComposerUtil.getPhpcsPath()
+        val detectedPhpcbfPath = ComposerUtil.getPhpcbfPath()
+
+        if (detectedPhpcsPath != null && detectedPhpcbfPath != null &&
+            File(detectedPhpcsPath).exists() && File(detectedPhpcbfPath).exists()
+        ) {
+            // Show notification for PHP_Codesniffer configuration
+            NotificationGroupManager.getInstance()
+                .getNotificationGroup("Moodle.Notifications")
+                .createNotification(
+                    MoodleBundle.getMessage("configurable.phpcs.title"),
+                    MoodleBundle.getMessage("configurable.phpcs.detected", detectedPhpcsPath, detectedPhpcbfPath),
+                    NotificationType.INFORMATION
+                )
+                .addAction(NotificationAction.createSimple(MoodleBundle.getMessage("configurable.phpcs.auto.settings")) {
+                    configurePhpcs(detectedPhpcsPath, detectedPhpcbfPath)
+                })
+                .addAction(NotificationAction.createSimple(MoodleBundle.getMessage("configurable.phpcs.open.settings")) {
+                    ShowSettingsUtil.getInstance().showSettingsDialog(
+                        project,
+                        MoodleBundle.getMessage("configurable.phpcs.settings.path")
+                    )
+                    log.info("Opened PHP_Codesniffer settings")
+                })
+                .addAction(NotificationAction.createSimple(MoodleBundle.getMessage("configurable.phpcs.copy.paths")) {
+                    val content = MoodleBundle.getMessage("configurable.phpcs.paths.content", detectedPhpcsPath, detectedPhpcbfPath)
+                    val clipboard = com.intellij.openapi.ide.CopyPasteManager.getInstance()
+                    clipboard.setContents(java.awt.datatransfer.StringSelection(content))
+                    log.info("Copied PHP_Codesniffer paths to clipboard")
+                })
+                .addAction(NotificationAction.createSimple(MoodleBundle.getMessage("configurable.phpcs.ignore")) {
+                    log.info("User chose to ignore PHP_Codesniffer configuration")
+                })
+                .notify(project)
+
+            log.info("Showed PHP_Codesniffer configuration options to user")
+        } else {
+            if (manual) {
+                NotificationGroupManager.getInstance()
+                    .getNotificationGroup("Moodle.Notifications")
+                    .createNotification(
+                        MoodleBundle.getMessage("configurable.phpcs.title"),
+                        MoodleBundle.getMessage("configurable.phpcs.notfound"),
+                        NotificationType.WARNING
+                    )
+                    .notify(project)
+            }
+            log.warn("Failed to get valid PHP_Codesniffer paths from composer global directory")
+        }
+    }
+
+    private fun configurePhpcs(phpcsPath: String, phpcbfPath: String) {
+        try {
+            ApplicationManager.getApplication().runWriteAction {
+                // Configure PHP_Codesniffer settings
+                val phpInterpreterManager = PhpInterpretersManagerImpl.getInstance(project)
+                val manager = PhpCSConfigurationManager.getInstance(project)
+                val interpreter = phpInterpreterManager.findInterpreter("System PHP")
+                val configuration = manager.getOrCreateConfigurationByInterpreter(interpreter, true)
+
+                configuration.phpCodeBeautifierPath = phpcbfPath
+                configuration.toolPath = phpcsPath
+                val optionsConfig = PhpCSOptionsConfiguration.getInstance(project)
+                optionsConfig.isShowSniffs = true
+                optionsConfig.codingStandard = "moodle"
+                optionsConfig.extensions = "php"
+
+                // Enable PhpCSValidationInspection
+                val profileManager = ProjectInspectionProfileManager.getInstance(project)
+                profileManager.useApplicationProfile("Moodle")
+                profileManager.fireProfileChanged()
+
+                log.info("Successfully enabled PhpCSValidationInspection")
+                // Try to set the configuration for phpcs_by_interpreter
+                try {
+                    manager.markAndSetNewSettings(listOf(configuration))
+                    log.info("Successfully set tool path for phpcs_by_interpreter")
+                } catch (e: Exception) {
+                    log.warn("Could not set tool path for phpcs_by_interpreter: ${e.message}")
+                }
+
+                // Show success notification
+                NotificationGroupManager.getInstance()
+                    .getNotificationGroup("Moodle.Notifications")
+                    .createNotification(
+                        MoodleBundle.getMessage("configurable.phpcs.title"),
+                        MoodleBundle.getMessage("configurable.phpcs.success", phpcsPath, phpcbfPath),
+                        NotificationType.INFORMATION
+                    )
+                    .notify(project)
+
+                log.info("Successfully configured PHP_Codesniffer automatically")
+            }
+        } catch (e: Exception) {
+            log.error("Failed to configure PHP_Codesniffer automatically: ${e.message}", e)
+        }
     }
 }

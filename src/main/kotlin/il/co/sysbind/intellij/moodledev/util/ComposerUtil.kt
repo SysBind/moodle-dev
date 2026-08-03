@@ -1,6 +1,7 @@
 package il.co.sysbind.intellij.moodledev.util
 
 import com.intellij.execution.configurations.GeneralCommandLine
+import com.intellij.execution.process.CapturingProcessHandler
 import com.intellij.execution.process.OSProcessHandler
 import com.intellij.execution.process.ProcessListener
 import com.intellij.execution.process.ProcessEvent
@@ -26,11 +27,10 @@ object ComposerUtil {
             val commandLine = GeneralCommandLine("composer")
             commandLine.addParameters(listOf("--version"))
 
-            val processHandler = OSProcessHandler(commandLine)
-            processHandler.startNotify()
-            processHandler.waitFor()
+            val processHandler = CapturingProcessHandler(commandLine)
+            val output = processHandler.runProcess(5000)
 
-            isComposerAvailable = processHandler.exitCode == 0
+            isComposerAvailable = output.exitCode == 0
             log.debug("Composer availability check: $isComposerAvailable")
             return isComposerAvailable!!
         } catch (e: Exception) {
@@ -51,28 +51,23 @@ object ComposerUtil {
                 val commandLine = GeneralCommandLine("composer")
                 commandLine.addParameters(listOf("config", "--global", "home"))
 
-                val output = StringBuilder()
-                val processHandler = OSProcessHandler(commandLine)
-                processHandler.addProcessListener(object : ProcessListener {
-                    override fun onTextAvailable(event: ProcessEvent, outputType: Key<*>) {
-                        // Only append the actual output, not the command itself
-                        val text = event.text.trim()
-                        if (!text.startsWith("composer config --global home")) {
-                            output.append(text)
-                        }
+                val processHandler = CapturingProcessHandler(commandLine)
+                val output = processHandler.runProcess(10000)
+
+                if (output.exitCode == 0) {
+                    val stdout = output.stdout.trim()
+                    log.debug("Composer config global home output: $stdout")
+
+                    val lastLine = stdout.lines().lastOrNull { it.isNotBlank() }?.trim()
+                    if (lastLine != null) {
+                        composerGlobalDir = lastLine
+                        log.debug("Found composer global directory: $composerGlobalDir")
+                        return composerGlobalDir
                     }
-                })
-
-                processHandler.startNotify()
-                processHandler.waitFor()
-
-                if (processHandler.exitCode == 0 && output.isNotEmpty()) {
-                    // Clean up the output - remove any extra whitespace or newlines
-                    composerGlobalDir = output.toString().trim()
-                    log.debug("Found composer global directory: $composerGlobalDir")
-                    return composerGlobalDir
                 } else {
-                    log.warn("Composer command exited with code ${processHandler.exitCode} or empty output")
+                    log.warn("Composer config command exited with code ${output.exitCode}")
+                    log.warn("STDOUT: ${output.stdout}")
+                    log.warn("STDERR: ${output.stderr}")
                 }
             } catch (e: Exception) {
                 log.error("Failed to get composer global directory: ${e.message}", e)
