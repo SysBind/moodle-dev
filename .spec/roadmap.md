@@ -16,3 +16,10 @@
 - [ ] UI/UX refinements for configurations
 - [ ] Better documentation and tooltips
 - [ ] Integration with external Moodle tools
+
+## Phase 4: AI Assistant Integration [ ]
+- [ ] Implement support for Moodle-specific prompts in AI Assistant
+- [ ] Support for both old and new Prompt Library APIs
+- [ ] Support for specific language prompt IDs (PHP, JavaScript)
+- [ ] Support for generic documentation prompt ID
+- [ ] Fallback to customizable prompts extension point
