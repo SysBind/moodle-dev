@@ -1,5 +1,6 @@
 package il.co.sysbind.intellij.moodledev.util
 
+import com.intellij.openapi.roots.ProjectFileIndex
 import com.intellij.openapi.vfs.LocalFileSystem
 import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.openapi.vfs.VirtualFile
@@ -44,25 +45,33 @@ object MoodleCorePathUtil {
     }
 
     fun getMoodleVersion(dir: VirtualFile?): String {
-        val versionFilePath = findMoodleVersion(dir).toString()
-        if (Files.exists(FileSystems.getDefault().getPath(versionFilePath))) {
-            val componentLine = Files.readAllLines(FileSystems.getDefault().getPath(versionFilePath))
-                .firstOrNull { it.trim().startsWith("\$version") }
-            if (componentLine != null) {
-                val pluginName = componentLine.split("=")[1].trim().substringBefore(".")
-                    .removeSurrounding("\"", "\"").removeSurrounding("\'", "\'")
-                return pluginName
-            }
+        val versionFile = findMoodleVersion(dir) ?: return ""
+        val componentLine = VfsUtil.loadText(versionFile).lines()
+            .firstOrNull { it.trim().startsWith("\$version") }
+        if (componentLine != null) {
+            return extractValue(componentLine)
+        }
+        return ""
+    }
+
+    private fun extractValue(line: String): String {
+        val stringMatch = Regex("""(['"])(.*?)\1""").find(line)
+        if (stringMatch != null) {
+            return stringMatch.groupValues[2]
+        }
+        val numberMatch = Regex("""=\s*([0-9.]+)""").find(line)
+        if (numberMatch != null) {
+            return numberMatch.groupValues[1].substringBefore(".")
         }
         return ""
     }
 
     private fun findFileUpwards(startDir: PsiDirectory, filename: String): VirtualFile? {
-        var dir: VirtualFile = startDir.virtualFile
+        var dir: VirtualFile? = startDir.virtualFile
         val project = startDir.project
-        while (dir.path.startsWith(project.basePath.toString())) {
-            // stop loop if dir is not under baseDir
-            val file = VfsUtil.findRelativeFile(dir, filename)
+        val fileIndex = ProjectFileIndex.getInstance(project)
+        while (dir != null && fileIndex.isInContent(dir)) {
+            val file = dir.findChild(filename)
             if (file != null) {
                 return file
             }
@@ -72,32 +81,30 @@ object MoodleCorePathUtil {
     }
 
     fun getPluginName(startDir: PsiDirectory): String {
-        val versionFilePath = findFileUpwards(startDir, MOODLE_VERSION_FILE)?.path
-        if (versionFilePath != null && Files.exists(FileSystems.getDefault().getPath(versionFilePath))) {
-            val componentLine = Files.readAllLines(FileSystems.getDefault().getPath(versionFilePath))
-                .firstOrNull { it.trim().startsWith("\$plugin->component") }
-            if (componentLine != null) {
-                val pluginName = componentLine.split("=")[1].trim().removeSuffix(";")
-                    .removeSurrounding("\"", "\"").removeSurrounding("\'", "\'")
-                return pluginName
-            }
+        val versionFile = findFileUpwards(startDir, MOODLE_VERSION_FILE) ?: return ""
+        val componentLine = VfsUtil.loadText(versionFile).lines()
+            .firstOrNull { it.trim().startsWith("\$plugin->component") }
+        if (componentLine != null) {
+            return extractValue(componentLine)
         }
         return ""
     }
 
     fun getNamespace(directory: PsiDirectory): String {
         val namespace = getPluginName(directory)
-        val suffixDirectory = directory.toString().substringAfter(MOODLE_CLASSES_DIR, "")
+        val path = directory.virtualFile.path
+        val suffixDirectory = path.substringAfter(MOODLE_CLASSES_DIR, "")
             .replace("/", "\\")
         return namespace + suffixDirectory
     }
 
     fun getModuleName(directory: PsiDirectory, type: String): String {
         val namespace = getPluginName(directory)
+        val path = directory.virtualFile.path
         var suffixDirectory = ""
         suffixDirectory = when(type) {
-            "js" -> directory.toString().substringAfter(MOODLE_JS_DIR, "")
-            "mustache" -> directory.toString().substringAfter(MOODLE_TEMPLATES_DIR, "")
+            "js" -> path.substringAfter(MOODLE_JS_DIR, "")
+            "mustache" -> path.substringAfter(MOODLE_TEMPLATES_DIR, "")
             else -> ""
         }
         return namespace + suffixDirectory

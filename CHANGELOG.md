@@ -24,6 +24,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 
 ### Fixed
 
+- Robust parsing of `version.php` to correctly ignore PHP comments and remarks when detecting plugin names and versions.
+- Refactored namespace and module detection to use reliable absolute paths from IntelliJ's virtual file system, ensuring consistent behavior across different project structures and OSs.
 - Corrected automatic selection of the bundled "Moodle" inspection profile as the Project profile so it reliably appears in Settings | Editor | Inspections.
 - Replaced deprecated `ProcessAdapter` with `ProcessListener` in `ComposerUtil.kt` to maintain compatibility with the latest IntelliJ Platform SDK.
 - Removed usage of unstable UI DSL `textFieldWithBrowseButton` in `MoodleSettingsForm`; used Swing `TextFieldWithBrowseButton` within `cell(...)` to satisfy `UnstableApiUsage` inspection.

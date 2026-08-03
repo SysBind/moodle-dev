@@ -12,3 +12,7 @@ This is an IntelliJ Platform plugin project designed to provide support for Mood
 - Moodle project wizard/generator.
 - Integration with Moodle's composer-based structure.
 - Configuration and management of Moodle environments.
+
+## External Documentation
+- [Moodle Developer Documentation](https://moodledev.io)
+- [IntelliJ Platform Plugin Development Guide](https://plugins.jetbrains.com/docs/intellij/developing-plugins.html)
