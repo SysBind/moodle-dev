@@ -63,7 +63,7 @@ class MoodlePHPNewClassAction : PhpNewBaseAction(CAPTION, "", PhpIcons.PHP_FILE)
             }
 
             private fun classCreationTypeChanged() {
-                val selectedItem = selectedClassCreationType
+                val selectedItem = getSelectedClassCreationType()
                 when (selectedItem) {
                     ClassCreationType.CLASS -> {
                         myTemplateName = MoodleBundle.getMessage("action.class.template.class")
@@ -92,10 +92,6 @@ class MoodlePHPNewClassAction : PhpNewBaseAction(CAPTION, "", PhpIcons.PHP_FILE)
 
             override fun getTemplateName(): String {
                 return myTemplateName
-            }
-
-            override fun hasCustomProperties(): Boolean {
-                return false
             }
 
             // Get namespace only after the user submits the dialog

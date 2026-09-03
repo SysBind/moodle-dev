@@ -26,6 +26,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 - Removed `MoodleManagerListener` (registration moved to `plugin.xml`) and registered bundled inspection profile via `<bundledInspectionProfile/>`.
 
 ### Fixed
+- Fixed compatibility and compilation in `MoodlePHPNewClassAction` with newer IntelliJ Platform/PHP plugin by calling `getSelectedClassCreationType()` and removing final `hasCustomProperties` override.
 - Resolved binary incompatibility by removing final `getId()` override in `MoodlePluginGenerator`.
 - Migrated `MoodleBundle` to the non-deprecated class-backed `DynamicBundle` constructor.
 - Robust parsing of `version.php` to correctly ignore PHP comments and remarks when detecting plugin names and versions.
