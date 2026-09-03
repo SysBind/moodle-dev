@@ -26,6 +26,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 - Removed `MoodleManagerListener` (registration moved to `plugin.xml`) and registered bundled inspection profile via `<bundledInspectionProfile/>`.
 
 ### Fixed
+- Resolved binary incompatibility by removing final `getId()` override in `MoodlePluginGenerator`.
+- Migrated `MoodleBundle` to the non-deprecated class-backed `DynamicBundle` constructor.
 - Robust parsing of `version.php` to correctly ignore PHP comments and remarks when detecting plugin names and versions.
 - Refactored namespace and module detection to use reliable absolute paths from IntelliJ's virtual file system, ensuring consistent behavior across different project structures and OSs.
 - Corrected automatic selection of the bundled "Moodle" inspection profile as the Project profile so it reliably appears in Settings | Editor | Inspections.

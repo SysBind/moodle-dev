@@ -28,9 +28,6 @@ class MoodlePluginGenerator : WebProjectTemplate<MoodlePluginGeneratorSettings>(
             append("Moodle Project")
         }
     }
-    override fun getId(): String {
-        return "MoodleDev"
-    }
 
     override fun getDescription(): String {
         return buildString {
